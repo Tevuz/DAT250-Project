@@ -1,4 +1,4 @@
-package no.hvl.dat250.g13.project;
+package no.hvl.dat250.g13.project.domain;
 
 import java.util.List;
 import jakarta.persistence.Entity;
