@@ -1,12 +1,8 @@
 package no.hvl.dat250.g13.project.domain;
 
+import jakarta.persistence.*;
+
 import java.util.List;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.ElementCollection;
 
 @Entity
 public class Vote {
@@ -14,23 +10,54 @@ public class Vote {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ElementCollection
-    private List<Long> options;
+    private Long voterId;
 
-    @ManyToOne
-    private User voter;
+    private Long surveyId;
 
-    @ManyToOne
-    private Survey survey;
+    @OneToMany
+    private List<OptionRef> options;
 
     // Default constructor (required by JPA)
     public Vote() {}
 
     // All-arguments constructor
-    public Vote(Long id, List<Long> options, User voter, Survey survey) {
+    public Vote(Long id, Long voterId, Long surveyId, List<OptionRef> options) {
         this.id = id;
+        this.voterId = voterId;
+        this.surveyId = surveyId;
         this.options = options;
-        this.voter = voter;
-        this.survey = survey;
+    }
+
+    // Getters and Setters
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getVoterId() {
+        return voterId;
+    }
+
+    public void setVoterId(Long voter_id) {
+        this.voterId = voter_id;
+    }
+
+    public Long getSurveyId() {
+        return surveyId;
+    }
+
+    public void setSurveyId(Long survey_id) {
+        this.surveyId = survey_id;
+    }
+
+    public List<OptionRef> getOptions() {
+        return options;
+    }
+
+    public void setOptions(List<OptionRef> options) {
+        this.options = options;
     }
 }

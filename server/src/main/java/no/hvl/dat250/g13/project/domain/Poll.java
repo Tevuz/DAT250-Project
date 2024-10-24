@@ -12,9 +12,6 @@ public class Poll {
 
     private int order;
 
-    @ManyToOne
-    private Survey survey;
-
     @OneToMany(mappedBy = "poll", cascade = CascadeType.ALL)
     private List<Option> options;
 
@@ -22,10 +19,9 @@ public class Poll {
     public Poll() {}
 
     // All-arguments constructor
-    public Poll(Long id, int order, Survey survey, List<Option> options) {
+    public Poll(Long id, int order, List<Option> options) {
         this.id = id;
         this.order = order;
-        this.survey = survey;
         this.options = options;
     }
 
@@ -44,14 +40,6 @@ public class Poll {
 
     public void setOrder(int order) {
         this.order = order;
-    }
-
-    public Survey getSurvey() {
-        return survey;
-    }
-
-    public void setSurvey(Survey survey) {
-        this.survey = survey;
     }
 
     public List<Option> getOptions() {

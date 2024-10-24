@@ -15,9 +15,6 @@ public class Survey {
     @OneToMany(mappedBy = "survey", cascade = CascadeType.ALL)
     private List<Poll> polls;
 
-    @OneToMany(mappedBy = "survey", cascade = CascadeType.ALL)
-    private List<Vote> votes;
-
     @ManyToOne
     private User author;
 
@@ -25,17 +22,11 @@ public class Survey {
     public Survey() {}
 
     // All-arguments constructor
-    public Survey(Long id, String title, List<Poll> polls, List<Vote> votes, User author) {
+    public Survey(Long id, String title, List<Poll> polls, User author) {
         this.id = id;
         this.title = title;
         this.polls = polls;
-        this.votes = votes;
         this.author = author;
-    }
-
-    // Method to calculate total votes (size of vote list)
-    public int voteTotal() {
-        return votes != null ? votes.size() : 0;
     }
 
     // Getters and Setters
@@ -61,14 +52,6 @@ public class Survey {
 
     public void setPolls(List<Poll> polls) {
         this.polls = polls;
-    }
-
-    public List<Vote> getVotes() {
-        return votes;
-    }
-
-    public void setVotes(List<Vote> votes) {
-        this.votes = votes;
     }
 
     public User getAuthor() {

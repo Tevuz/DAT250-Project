@@ -11,20 +11,16 @@ public class Option {
 
     private int order;
 
-    private int voteCount;
-
-    @ManyToOne
-    private Poll poll;
+    private String text;
 
     // Default constructor (required by JPA)
     public Option() {}
 
     // All-arguments constructor
-    public Option(Long id, int order, int voteCount, Poll poll) {
+    public Option(Long id, int order, String text) {
         this.id = id;
         this.order = order;
-        this.voteCount = voteCount;
-        this.poll = poll;
+        this.text = text;
     }
 
     // Getters and Setters
@@ -44,19 +40,11 @@ public class Option {
         this.order = order;
     }
 
-    public int getVoteCount() {
-        return voteCount;
+    public String getText() {
+        return text;
     }
 
-    public void setVoteCount(int voteCount) {
-        this.voteCount = voteCount;
-    }
-
-    public Poll getPoll() {
-        return poll;
-    }
-
-    public void setPoll(Poll poll) {
-        this.poll = poll;
+    public void setText(String text) {
+        this.text = text;
     }
 }
