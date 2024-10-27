@@ -2,17 +2,17 @@ package no.hvl.dat250.g13.project.domain;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
 public class Vote {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
-    private Long voterId;
+    @Embeddable
+    public record VoteKey(Long voterId, Long surveyId) implements Serializable {}
 
-    private Long surveyId;
+    @EmbeddedId
+    private VoteKey id;
 
     @OneToMany
     private List<OptionRef> options;
@@ -21,36 +21,38 @@ public class Vote {
     public Vote() {}
 
     // All-arguments constructor
-    public Vote(Long id, Long voterId, Long surveyId, List<OptionRef> options) {
-        this.id = id;
-        this.voterId = voterId;
-        this.surveyId = surveyId;
+    public Vote(Long voterId, Long surveyId, List<OptionRef> options) {
+        this.id = new VoteKey(voterId, surveyId);
         this.options = options;
     }
 
     // Getters and Setters
-    public Long getId() {
+    public VoteKey getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(VoteKey id) {
         this.id = id;
     }
 
-    public Long getVoterId() {
-        return voterId;
+    public void setId(Long voterId, Long surveyId) {
+        this.id = new VoteKey(voterId, surveyId);
     }
 
-    public void setVoterId(Long voter_id) {
-        this.voterId = voter_id;
+    public Long getVoterId() {
+        return id.voterId;
+    }
+
+    public void setVoterId(Long voterId) {
+        this.id = new VoteKey(voterId, id.surveyId);
     }
 
     public Long getSurveyId() {
-        return surveyId;
+        return id.surveyId;
     }
 
-    public void setSurveyId(Long survey_id) {
-        this.surveyId = survey_id;
+    public void setSurveyId(Long surveyId) {
+        this.id = new VoteKey(id.voterId, surveyId);
     }
 
     public List<OptionRef> getOptions() {

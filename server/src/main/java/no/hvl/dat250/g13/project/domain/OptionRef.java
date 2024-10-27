@@ -9,7 +9,7 @@ public class OptionRef {
 
     @EmbeddedId
     private OptionRefId id;
-    public record OptionRefId(Long voteId, Long optionId) implements Serializable { }
+    public record OptionRefId(Long surveyId, Long optionId) implements Serializable { }
 
     // Default constructor (required by JPA)
     public OptionRef() {}
@@ -19,8 +19,8 @@ public class OptionRef {
         this.id = id;
     }
 
-    public OptionRef(Long voteId, Long optionId) {
-        this.id = new OptionRefId(voteId, optionId);
+    public OptionRef(Long surveyId, Long optionId) {
+        this.id = new OptionRefId(surveyId, optionId);
     }
 
     // Getters and Setters
