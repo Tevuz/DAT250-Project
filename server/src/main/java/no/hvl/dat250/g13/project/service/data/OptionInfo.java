@@ -2,17 +2,26 @@ package no.hvl.dat250.g13.project.service.data;
 
 import no.hvl.dat250.g13.project.domain.Option;
 
+import java.util.Optional;
+
 public record OptionInfo(
-        Long id,
-        int order,
-        String text,
-        Integer voteCount
+        Optional<Long> id,
+        Optional<Integer> order,
+        Optional<String> text,
+        Optional<Integer> voteCount
 ) {
     public OptionInfo(Option option, Integer voteCount) {
-        this(option.getId(), option.getIndex(), option.getText(), voteCount);
+        this(Optional.of(option.getId()), Optional.of(option.getIndex()), Optional.of(option.getText()), Optional.of(voteCount));
     }
 
     public OptionInfo(Option option) {
-        this(option.getId(), option.getIndex(), option.getText(), null);
+        this(option, 0);
+    }
+
+    public Option into() {
+        Option option = new Option();
+        option.setIndex(order.orElse(0));
+        option.setText(text().orElse(""));
+        return null;
     }
 }
