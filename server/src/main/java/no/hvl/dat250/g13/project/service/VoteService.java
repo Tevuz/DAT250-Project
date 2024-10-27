@@ -63,7 +63,7 @@ public class VoteService {
         if (info.options().isEmpty())
             return new Result.Error<>(new ServiceError(HttpStatus.BAD_REQUEST, "Option selection was not provided"));
 
-        Optional<Vote> optional = voteRepository.findById(info.id());
+        Optional<Vote> optional = voteRepository.findById(info.id().get());
         if (optional.isEmpty())
             return new Result.Error<>(new ServiceError(HttpStatus.NOT_FOUND, "Vote does not exist"));
 
@@ -91,7 +91,7 @@ public class VoteService {
         if (info.survey_id().isEmpty())
             return new Result.Error<>(new ServiceError(HttpStatus.BAD_REQUEST, "Survey id was not provided"));
 
-        Optional<Vote> optional = voteRepository.findById(info.id());
+        Optional<Vote> optional = voteRepository.findById(info.id().get());
         if (optional.isEmpty())
             return new Result.Error<>(new ServiceError(HttpStatus.NOT_FOUND, "Vote does not exist"));
 
@@ -165,10 +165,10 @@ public class VoteService {
         if (info.survey_id().isEmpty())
             return new Result.Error<>(new ServiceError(HttpStatus.BAD_REQUEST, "Survey id was not provided"));
 
-        if (!voteRepository.existsById(info.id()))
+        if (!voteRepository.existsById(info.id().get()))
             return new Result.Error<>(new ServiceError(HttpStatus.NOT_FOUND, "Vote does not exist"));
 
-        voteRepository.deleteById(info.id());
+        voteRepository.deleteById(info.id().get());
         return new Result.Ok<>(null);
     }
 }

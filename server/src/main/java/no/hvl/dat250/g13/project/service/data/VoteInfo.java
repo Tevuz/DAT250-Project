@@ -21,13 +21,14 @@ public record VoteInfo(
 
     public Vote into() {
         Vote vote = new Vote();
-        user_id.ifPresent(vote::setVoterId);
-        survey_id.ifPresent(vote::setSurveyId);
+        id().ifPresent(vote::setId);
         survey_id.ifPresent((id) -> vote.setOptions(options.stream().map(option -> new OptionRef(id, option)).toList()));
         return vote;
     }
 
-    public Vote.VoteKey id() {
-        return new Vote.VoteKey(user_id.get(), survey_id.get());
+    public Optional<Vote.VoteKey> id() {
+        if (user_id.isEmpty() || survey_id.isEmpty())
+            return Optional.empty();
+        return Optional.of(new Vote.VoteKey(user_id.get(), survey_id.get()));
     }
 }
