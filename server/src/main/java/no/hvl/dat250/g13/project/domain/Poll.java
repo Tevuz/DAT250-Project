@@ -2,6 +2,7 @@ package no.hvl.dat250.g13.project.domain;
 
 import jakarta.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class Poll {
@@ -71,5 +72,18 @@ public class Poll {
 
     public void setOptions(List<Option> options) {
         this.options = options;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Poll poll = (Poll) o;
+        return index == poll.index && Objects.equals(id, poll.id) && Objects.equals(survey, poll.survey) && Objects.equals(text, poll.text) && Objects.equals(options, poll.options);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, index, survey, text, options);
     }
 }

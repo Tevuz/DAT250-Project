@@ -2,6 +2,7 @@ package no.hvl.dat250.g13.project.domain;
 
 import jakarta.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class Survey {
@@ -60,5 +61,18 @@ public class Survey {
 
     public void setAuthor(UserEntity author) {
         this.author = author;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Survey survey = (Survey) o;
+        return Objects.equals(id, survey.id) && Objects.equals(title, survey.title) && Objects.equals(polls, survey.polls) && Objects.equals(author, survey.author);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, polls, author);
     }
 }

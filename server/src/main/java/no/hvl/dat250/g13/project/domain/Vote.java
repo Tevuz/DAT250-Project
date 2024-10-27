@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class Vote {
@@ -61,5 +62,18 @@ public class Vote {
 
     public void setOptions(List<OptionRef> options) {
         this.options = options;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Vote vote = (Vote) o;
+        return Objects.equals(id, vote.id) && Objects.equals(options, vote.options);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, options);
     }
 }

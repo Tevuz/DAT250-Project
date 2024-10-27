@@ -3,6 +3,7 @@ package no.hvl.dat250.g13.project.domain;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 @Entity
 public class OptionRef {
@@ -34,5 +35,18 @@ public class OptionRef {
 
     public Long getOptionId() {
         return id.optionId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        OptionRef optionRef = (OptionRef) o;
+        return Objects.equals(id, optionRef.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
     }
 }

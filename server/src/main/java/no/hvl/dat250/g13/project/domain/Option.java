@@ -2,6 +2,8 @@ package no.hvl.dat250.g13.project.domain;
 
 import jakarta.persistence.*;
 
+import java.util.Objects;
+
 @Entity
 public class Option {
 
@@ -60,4 +62,16 @@ public class Option {
         this.poll = poll;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Option option = (Option) o;
+        return index == option.index && Objects.equals(id, option.id) && Objects.equals(text, option.text) && Objects.equals(poll, option.poll);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, index, text, poll);
+    }
 }
