@@ -29,6 +29,7 @@ public class VoteService {
      *      <ul>
      *          <li>{@link VoteInfo} if created</li>
      *          <li>{@link ServiceError} with {@link HttpStatus#BAD_REQUEST BAD_REQUEST} if the request is missing data </li>
+     *          <li>{@link ServiceError} with {@link HttpStatus#CONFLICT CONFLICT} if the vote already exists </li>
      *      </ul>
      */
     public Result<VoteInfo, ServiceError> createVote(VoteInfo info) {
@@ -38,6 +39,9 @@ public class VoteService {
             return new Result.Error<>(new ServiceError(HttpStatus.BAD_REQUEST, "Survey id was not provided"));
         if (info.options().isEmpty())
             return new Result.Error<>(new ServiceError(HttpStatus.BAD_REQUEST, "Option selection was not provided"));
+
+        if (voteRepository.existsById(info.id().get()))
+            return new Result.Error<>(new ServiceError(HttpStatus.CONFLICT, "Vote already exists"));
 
         Vote vote = info.into();
         return new Result.Ok<>(new VoteInfo(voteRepository.save(vote)));
