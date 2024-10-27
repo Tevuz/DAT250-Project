@@ -3,6 +3,7 @@
   import { isAuthenticated } from './stores/auth'; // Import your authentication store
   import { onMount } from 'svelte';
   import LoginButton from './routes/LoginButton.svelte'; // Assuming you have this component
+  import Register from "./Components/Login.svelte";
 
   let authenticated;
 
@@ -23,5 +24,9 @@
   <p>This is the main content that only shows when logged in.</p>
 {:else}
   <!-- Login Screen -->
+  <h1>Please log in</h1>
+
+  <Register />
+  <br>
   <LoginButton /> <!-- Render your login button component -->
 {/if}

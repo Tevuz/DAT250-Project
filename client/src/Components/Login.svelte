@@ -7,7 +7,7 @@
 
     function handleLogin() {
         // Replace this logic with actual authentication logic
-        if (username === 'user' && password === 'password') {
+        if (username === 'user' && password === 'password') { // Temporary
             isAuthenticated.set(true);  // Update authentication state
         } else {
             alert('Invalid credentials');
@@ -15,7 +15,6 @@
     }
 </script>
 
-<h1>Register</h1>
 <form on:submit|preventDefault={handleLogin}>
     <input
             type="text"
@@ -27,5 +26,7 @@
             placeholder="Password"
             bind:value={password}
     />
-    <button type="submit">Register</button>
+    <br><br>
+    <button type="submit">Log in</button>
+    <br>
 </form>
