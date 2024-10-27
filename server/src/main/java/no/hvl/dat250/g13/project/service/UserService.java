@@ -51,6 +51,7 @@ public class UserService {
      *          <li>{@link UserInfo} if updated</li>
      *          <li>{@link ServiceError} of {@link HttpStatus#BAD_REQUEST BAD_REQUEST} if the request is missing user id </li>
      *          <li>{@link ServiceError} of {@link HttpStatus#NOT_FOUND NOT_FOUND} if user with {@code info.id} does not exist </li>
+     *          <li>{@link ServiceError} with {@link HttpStatus#CONFLICT CONFLICT} if the username is taken </li>
      *      </ul>
      */
     public Result<UserInfo, ServiceError> updateUser(UserInfo info) {
@@ -63,6 +64,12 @@ public class UserService {
             return new Result.Error<>(new ServiceError(HttpStatus.NOT_FOUND,"User does not exist"));
 
         UserEntity user = optional.get();
+
+        if (info.username().isPresent() &&
+            !info.username().get().equals(user.getUsername()) &&
+            userRepository.existsByUsername(info.username().get()))
+            return new Result.Error<>(new ServiceError(HttpStatus.CONFLICT, "Username is not available"));
+
         info.username().ifPresent(user::setUsername);
 
         return new Result.Ok<>(new UserInfo(userRepository.save(user)));
