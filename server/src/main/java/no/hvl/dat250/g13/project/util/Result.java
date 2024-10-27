@@ -8,8 +8,16 @@ public abstract sealed class Result<T, E> permits Result.Ok, Result.Error{
         return Optional.empty();
     }
 
+    public T value() {
+        throw new UnsupportedOperationException("Result is not ok");
+    }
+
     public Optional<E> getError() {
         return Optional.empty();
+    }
+
+    public E error() {
+        throw new UnsupportedOperationException("Result is not error");
     }
 
     public boolean isOk() {
@@ -33,7 +41,11 @@ public abstract sealed class Result<T, E> permits Result.Ok, Result.Error{
         }
 
         public Optional<T> getOk() {
-            return Optional.of(value);
+            return Optional.ofNullable(value);
+        }
+
+        public T value() {
+            return value;
         }
     }
 
@@ -44,13 +56,18 @@ public abstract sealed class Result<T, E> permits Result.Ok, Result.Error{
             this.error = error;
         }
 
-        public Optional<E> getError() {
-            return Optional.of(error);
-        }
-
         @Override
         public boolean isError() {
             return true;
         }
+
+        public Optional<E> getError() {
+            return Optional.ofNullable(error);
+        }
+
+        public E error() {
+            return error;
+        }
+
     }
 }
