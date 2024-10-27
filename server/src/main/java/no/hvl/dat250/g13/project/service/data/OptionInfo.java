@@ -9,10 +9,10 @@ public record OptionInfo(
         Integer voteCount
 ) {
     public OptionInfo(Option option, Integer voteCount) {
-        this(option.getId(), option.getOrder(), option.getText(), voteCount);
+        this(option.getId(), option.getIndex(), option.getText(), voteCount);
     }
 
     public OptionInfo(Option option) {
-        this(option.getId(), option.getOrder(), option.getText(), null);
+        this(option.getId(), option.getIndex(), option.getText(), null);
     }
 }

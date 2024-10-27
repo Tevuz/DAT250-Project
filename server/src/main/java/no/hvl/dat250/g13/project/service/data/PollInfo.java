@@ -10,6 +10,6 @@ public record PollInfo(
         List<OptionInfo> options
 ) {
     public PollInfo(Poll poll) {
-        this(poll.getId(), poll.getOrder(), poll.getOptions().stream().map(OptionInfo::new).toList());
+        this(poll.getId(), poll.getIndex(), poll.getOptions().stream().map(OptionInfo::new).toList());
     }
 }

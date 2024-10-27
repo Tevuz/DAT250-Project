@@ -16,13 +16,13 @@ public class Survey {
     private List<Poll> polls;
 
     @ManyToOne
-    private User author;
+    private UserEntity author;
 
     // Default constructor (required by JPA)
     public Survey() {}
 
     // All-arguments constructor
-    public Survey(Long id, String title, List<Poll> polls, User author) {
+    public Survey(Long id, String title, List<Poll> polls, UserEntity author) {
         this.id = id;
         this.title = title;
         this.polls = polls;
@@ -54,11 +54,11 @@ public class Survey {
         this.polls = polls;
     }
 
-    public User getAuthor() {
+    public UserEntity getAuthor() {
         return author;
     }
 
-    public void setAuthor(User author) {
+    public void setAuthor(UserEntity author) {
         this.author = author;
     }
 }

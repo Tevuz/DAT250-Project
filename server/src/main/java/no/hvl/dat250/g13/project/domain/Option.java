@@ -9,18 +9,22 @@ public class Option {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private int order;
+    private int index;
 
     private String text;
+
+    @ManyToOne
+    private Poll poll;
 
     // Default constructor (required by JPA)
     public Option() {}
 
     // All-arguments constructor
-    public Option(Long id, int order, String text) {
+    public Option(Long id, int order, String text, Poll poll) {
         this.id = id;
-        this.order = order;
+        this.index = order;
         this.text = text;
+        this.poll = poll;
     }
 
     // Getters and Setters
@@ -32,12 +36,12 @@ public class Option {
         this.id = id;
     }
 
-    public int getOrder() {
-        return order;
+    public int getIndex() {
+        return index;
     }
 
-    public void setOrder(int order) {
-        this.order = order;
+    public void setIndex(int order) {
+        this.index = order;
     }
 
     public String getText() {
@@ -47,4 +51,13 @@ public class Option {
     public void setText(String text) {
         this.text = text;
     }
+
+    public Poll getPoll() {
+        return poll;
+    }
+
+    public void setPoll(Poll poll) {
+        this.poll = poll;
+    }
+
 }
