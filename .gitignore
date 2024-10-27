@@ -67,3 +67,6 @@ dist-ssr
 report.synctex.gz
 report.out
 report.pdf
+
+# .env
+.env
