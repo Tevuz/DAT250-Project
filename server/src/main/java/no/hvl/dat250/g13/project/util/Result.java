@@ -29,7 +29,7 @@ public abstract sealed class Result<T, E> permits Result.Ok, Result.Error{
     }
 
     public static final class Ok<T, E> extends Result<T, E> {
-        private T value;
+        private final T value;
 
         public <S extends T> Ok(S value) {
             this.value = value;
@@ -50,7 +50,7 @@ public abstract sealed class Result<T, E> permits Result.Ok, Result.Error{
     }
 
     public static final class Error<T, E> extends Result<T, E> {
-        public E error;
+        public final E error;
 
         public <S extends E>  Error(S error) {
             this.error = error;
