@@ -40,7 +40,7 @@ public class SurveyService {
             return new Result.Error<>(new ServiceError(HttpStatus.BAD_REQUEST, "Poll text was not provided"));
         if (info.polls().orElse(List.of()).stream().anyMatch(poll -> poll.options().isEmpty()))
             return new Result.Error<>(new ServiceError(HttpStatus.BAD_REQUEST, "Options for poll was not provided"));
-        if (info.polls().orElse(List.of()).stream().anyMatch(option -> Strings.isBlank(option.text().orElse(""))))
+        if (info.polls().orElse(List.of()).stream().flatMap(poll -> poll.options().stream()).anyMatch(option -> Strings.isBlank(option.text().orElse(""))))
             return new Result.Error<>(new ServiceError(HttpStatus.BAD_REQUEST, "Option text was not provided"));
 
         Survey survey = info.into();

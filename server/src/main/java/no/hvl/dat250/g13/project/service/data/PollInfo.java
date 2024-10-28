@@ -12,11 +12,15 @@ public record PollInfo(
         List<OptionInfo> options
 ) {
     public PollInfo(Poll poll) {
-        this(Optional.of(poll.getId()), Optional.of(poll.getText()), Optional.of(poll.getIndex()), poll.getOptions().stream().map(OptionInfo::new).toList());
+        this(Optional.ofNullable(poll.getId()),
+                Optional.ofNullable(poll.getText()),
+                Optional.of(poll.getIndex()),
+                poll.getOptions().stream().map(OptionInfo::new).toList());
     }
 
     public Poll into() {
         Poll poll = new Poll();
+        poll.setId(id.orElse(null));
         poll.setText(text().orElse(""));
         poll.setIndex(order.orElse(0));
         poll.setOptions(options.stream().map(OptionInfo::into).toList());

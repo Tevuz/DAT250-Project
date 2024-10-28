@@ -14,7 +14,7 @@ public record SurveyInfo(
     public SurveyInfo(Survey survey, Integer voteTotal) {
         this(Optional.ofNullable(survey.getId()),
              Optional.ofNullable(survey.getTitle()),
-             Optional.ofNullable(survey.getPolls().stream().map(PollInfo::new).toList()),
+             Optional.of(survey.getPolls().stream().map(PollInfo::new).toList()),
              Optional.ofNullable(voteTotal));
     }
 
@@ -24,6 +24,7 @@ public record SurveyInfo(
 
     public Survey into() {
         Survey survey = new Survey();
+        survey.setId(id.orElse(null));
         survey.setTitle(title().orElse(""));
         survey.setPolls(polls().orElse(List.of()).stream().map(PollInfo::into).toList());
         return survey;

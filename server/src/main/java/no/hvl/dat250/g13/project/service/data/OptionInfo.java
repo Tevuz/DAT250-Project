@@ -11,17 +11,18 @@ public record OptionInfo(
         Optional<Integer> voteCount
 ) {
     public OptionInfo(Option option, Integer voteCount) {
-        this(Optional.of(option.getId()), Optional.of(option.getIndex()), Optional.of(option.getText()), Optional.of(voteCount));
+        this(Optional.ofNullable(option.getId()), Optional.of(option.getIndex()), Optional.ofNullable(option.getText()), Optional.ofNullable(voteCount));
     }
 
     public OptionInfo(Option option) {
-        this(option, 0);
+        this(option, null);
     }
 
     public Option into() {
         Option option = new Option();
+        option.setId(id.orElse(null));
         option.setIndex(order.orElse(0));
         option.setText(text().orElse(""));
-        return null;
+        return option;
     }
 }
