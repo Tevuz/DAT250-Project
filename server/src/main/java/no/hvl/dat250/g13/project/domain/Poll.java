@@ -27,9 +27,9 @@ public class Poll {
     public Poll() {}
 
     // All-arguments constructor
-    public Poll(PollKey id, int order, Survey survey, String text, List<Option> options) {
+    public Poll(PollKey id, int index, Survey survey, String text, List<Option> options) {
         this.id = id;
-        this.index = order;
+        this.index = index;
         this.survey = survey;
         this.text = text;
         this.options = options;
@@ -48,8 +48,8 @@ public class Poll {
         return index;
     }
 
-    public void setIndex(int order) {
-        this.index = order;
+    public void setIndex(int index) {
+        this.index = index;
     }
 
     public Survey getSurvey() {

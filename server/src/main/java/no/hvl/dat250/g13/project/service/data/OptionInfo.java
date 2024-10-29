@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public record OptionInfo(
         Optional<OptionKey> id,
-        Optional<Integer> order,
+        Optional<Integer> index,
         Optional<String> text,
         Optional<Integer> voteCount
 ) {
@@ -22,7 +22,7 @@ public record OptionInfo(
     public Option into() {
         Option option = new Option();
         option.setId(id.orElse(null));
-        option.setIndex(order.orElse(0));
+        option.setIndex(index.orElse(0));
         option.setText(text().orElse(""));
         return option;
     }

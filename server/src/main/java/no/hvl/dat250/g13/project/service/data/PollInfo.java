@@ -9,7 +9,7 @@ import java.util.Optional;
 public record PollInfo(
         Optional<PollKey> id,
         Optional<String> text,
-        Optional<Integer> order,
+        Optional<Integer> index,
         List<OptionInfo> options
 ) {
     public PollInfo(Poll poll) {
@@ -23,7 +23,7 @@ public record PollInfo(
         Poll poll = new Poll();
         poll.setId(id.orElse(null));
         poll.setText(text().orElse(""));
-        poll.setIndex(order.orElse(0));
+        poll.setIndex(index.orElse(0));
         poll.setOptions(options.stream().map(OptionInfo::into).toList());
         return poll;
     }

@@ -23,9 +23,9 @@ public class Option {
     public Option() {}
 
     // All-arguments constructor
-    public Option(OptionKey id, int order, String text, Poll poll) {
+    public Option(OptionKey id, int index, String text, Poll poll) {
         this.id = id;
-        this.index = order;
+        this.index = index;
         this.text = text;
         this.poll = poll;
     }
@@ -43,8 +43,8 @@ public class Option {
         return index;
     }
 
-    public void setIndex(int order) {
-        this.index = order;
+    public void setIndex(int index) {
+        this.index = index;
     }
 
     public String getText() {
