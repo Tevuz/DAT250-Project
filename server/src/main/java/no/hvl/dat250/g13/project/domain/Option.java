@@ -1,6 +1,7 @@
 package no.hvl.dat250.g13.project.domain;
 
 import jakarta.persistence.*;
+import no.hvl.dat250.g13.project.domain.Identifiers.OptionKey;
 
 import java.util.Objects;
 
@@ -9,7 +10,7 @@ public class Option {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private OptionKey id;
 
     private int index;
 
@@ -22,7 +23,7 @@ public class Option {
     public Option() {}
 
     // All-arguments constructor
-    public Option(Long id, int order, String text, Poll poll) {
+    public Option(OptionKey id, int order, String text, Poll poll) {
         this.id = id;
         this.index = order;
         this.text = text;
@@ -30,11 +31,11 @@ public class Option {
     }
 
     // Getters and Setters
-    public Long getId() {
+    public OptionKey getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(OptionKey id) {
         this.id = id;
     }
 

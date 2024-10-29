@@ -9,12 +9,12 @@ import jakarta.validation.constraints.NotNull;
 import java.io.IOException;
 import java.io.Serializable;
 
-@JsonSerialize(using = OptionKey.Serializer.class)
-public record OptionKey(@NotNull Long id) implements Serializable {
+@JsonSerialize(using = PollKey.Serializer.class)
+public record PollKey(@NotNull Long id) implements Serializable {
 
-    static class Serializer extends JsonSerializer<OptionKey> {
+    static class Serializer extends JsonSerializer<PollKey> {
         @Override
-        public void serialize(OptionKey key, JsonGenerator gen, SerializerProvider serializers) throws IOException {
+        public void serialize(PollKey key, JsonGenerator gen, SerializerProvider serializers) throws IOException {
             gen.writeNumber(key.id());
         }
     }

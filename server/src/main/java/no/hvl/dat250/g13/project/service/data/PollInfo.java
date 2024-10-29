@@ -1,12 +1,13 @@
 package no.hvl.dat250.g13.project.service.data;
 
+import no.hvl.dat250.g13.project.domain.Identifiers.PollKey;
 import no.hvl.dat250.g13.project.domain.Poll;
 
 import java.util.List;
 import java.util.Optional;
 
 public record PollInfo(
-        Optional<Long> id,
+        Optional<PollKey> id,
         Optional<String> text,
         Optional<Integer> order,
         List<OptionInfo> options

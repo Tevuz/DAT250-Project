@@ -1,6 +1,8 @@
 package no.hvl.dat250.g13.project.domain;
 
 import jakarta.persistence.*;
+import no.hvl.dat250.g13.project.domain.Identifiers.PollKey;
+
 import java.util.List;
 import java.util.Objects;
 
@@ -9,7 +11,7 @@ public class Poll {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private PollKey id;
 
     private int index;
 
@@ -25,7 +27,7 @@ public class Poll {
     public Poll() {}
 
     // All-arguments constructor
-    public Poll(Long id, int order, Survey survey, String text, List<Option> options) {
+    public Poll(PollKey id, int order, Survey survey, String text, List<Option> options) {
         this.id = id;
         this.index = order;
         this.survey = survey;
@@ -34,11 +36,11 @@ public class Poll {
     }
 
     // Getters and Setters
-    public Long getId() {
+    public PollKey getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(PollKey id) {
         this.id = id;
     }
 

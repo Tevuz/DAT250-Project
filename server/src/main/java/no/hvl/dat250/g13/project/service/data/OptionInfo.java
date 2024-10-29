@@ -1,11 +1,12 @@
 package no.hvl.dat250.g13.project.service.data;
 
+import no.hvl.dat250.g13.project.domain.Identifiers.OptionKey;
 import no.hvl.dat250.g13.project.domain.Option;
 
 import java.util.Optional;
 
 public record OptionInfo(
-        Optional<Long> id,
+        Optional<OptionKey> id,
         Optional<Integer> order,
         Optional<String> text,
         Optional<Integer> voteCount
