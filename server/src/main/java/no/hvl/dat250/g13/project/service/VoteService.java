@@ -1,16 +1,15 @@
 package no.hvl.dat250.g13.project.service;
 
-import no.hvl.dat250.g13.project.domain.OptionRef;
 import no.hvl.dat250.g13.project.domain.Vote;
 import no.hvl.dat250.g13.project.repository.VoteRepository;
-import no.hvl.dat250.g13.project.service.data.VoteInfo;
+import no.hvl.dat250.g13.project.service.data.VoteDTO;
 import no.hvl.dat250.g13.project.service.error.ServiceError;
 import no.hvl.dat250.g13.project.util.Result;
 import org.springframework.data.util.Streamable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
-import java.util.Optional;
+import java.util.HashSet;
 
 @Component
 public class VoteService {
@@ -24,155 +23,125 @@ public class VoteService {
     /**
      * Create a vote.
      *
-     * @param info {@link VoteInfo} with data for the new vote
-     * @return {@code Result<VoteInfo, ServiceError>}:
+     * @param info {@link VoteDTO.Info} with data for the new vote
+     * @return {@code Result<VoteDTO.Info, ServiceError>}:
      *      <ul>
-     *          <li>{@link VoteInfo} if created</li>
-     *          <li>{@link ServiceError} with {@link HttpStatus#BAD_REQUEST BAD_REQUEST} if the request is missing data </li>
+     *          <li>{@link VoteDTO.Info} if created</li>
      *          <li>{@link ServiceError} with {@link HttpStatus#CONFLICT CONFLICT} if the vote already exists </li>
      *      </ul>
      */
-    public Result<VoteInfo, ServiceError> createVote(VoteInfo info) {
-        if (info.user_id().isEmpty())
-            return new Result.Error<>(new ServiceError(HttpStatus.BAD_REQUEST, "User id was not provided"));
-        if (info.survey_id().isEmpty())
-            return new Result.Error<>(new ServiceError(HttpStatus.BAD_REQUEST, "Survey id was not provided"));
-        if (info.options().isEmpty())
-            return new Result.Error<>(new ServiceError(HttpStatus.BAD_REQUEST, "Option selection was not provided"));
-
-        if (voteRepository.existsById(info.id().get()))
+    public Result<VoteDTO.Info, ServiceError> createVote(VoteDTO.Create info) {
+        if (voteRepository.existsBy(info.user_id(), info.survey_id()))
             return new Result.Error<>(new ServiceError(HttpStatus.CONFLICT, "Vote already exists"));
 
-        Vote vote = info.into();
-        return new Result.Ok<>(new VoteInfo(voteRepository.save(vote)));
+        Iterable<Vote> vote = info.into();
+        return new Result.Ok<>(new VoteDTO.Info(info.user_id(), info.survey_id(), voteRepository.saveAll(vote)));
     }
 
 
     /**
      * Update a vote.
      *
-     * @param info {@link VoteInfo} with new options to replace the vote with id=={@code info.id}
-     * @return {@code Result<VoteInfo, ServiceError>}:
+     * @param info {@link VoteDTO.Info} with new options to replace the vote with id=={@code info.id}
+     * @return {@code Result<VoteDTO.Info, ServiceError>}:
      *      <ul>
-     *          <li>{@link VoteInfo} if updated</li>
-     *          <li>{@link ServiceError} of {@link HttpStatus#BAD_REQUEST BAD_REQUEST} if the request is missing data</li>
+     *          <li>{@link VoteDTO.Info} if updated</li>
      *          <li>{@link ServiceError} of {@link HttpStatus#NOT_FOUND NOT_FOUND} if vote with {@code info.id} does not exist </li>
      *      </ul>
      */
-    public Result<VoteInfo, ServiceError> updateVote(VoteInfo info) {
-        if (info.user_id().isEmpty())
-            return new Result.Error<>(new ServiceError(HttpStatus.BAD_REQUEST, "User id was not provided"));
-        if (info.survey_id().isEmpty())
-            return new Result.Error<>(new ServiceError(HttpStatus.BAD_REQUEST, "Survey id was not provided"));
-        if (info.options().isEmpty())
-            return new Result.Error<>(new ServiceError(HttpStatus.BAD_REQUEST, "Option selection was not provided"));
-
-        Optional<Vote> optional = voteRepository.findById(info.id().get());
-        if (optional.isEmpty())
+    public Result<VoteDTO.Info, ServiceError> updateVote(VoteDTO.Update info) {
+        var votes = Streamable.of(voteRepository.findAllBy(info.user_id(), info.survey_id())).toSet();
+        if (votes.isEmpty())
             return new Result.Error<>(new ServiceError(HttpStatus.NOT_FOUND, "Vote does not exist"));
 
-        Vote vote = optional.get();
-        vote.setOptions(info.options().stream().map(option -> new OptionRef(info.survey_id().get(), option)).toList());
+        var save = new HashSet<Vote>();
+        var delete = new HashSet<Vote>();
 
-        return new Result.Ok<>(new VoteInfo(voteRepository.save(vote)));
+        info.apply(votes, save, delete);
+
+        voteRepository.deleteAll(delete);
+        var result = voteRepository.saveAll(save);
+
+        return new Result.Ok<>(new VoteDTO.Info(info.user_id(), info.survey_id(), result));
     }
 
 
     /**
      * Read a vote.
      *
-     * @param info {@link VoteInfo} with user id and survey id for the vote to read
-     * @return {@code Result<VoteInfo, ServiceError>}:
+     * @param info {@link VoteDTO.Info} with user id and survey id for the vote to read
+     * @return {@code Result<VoteDTO.Info, ServiceError>}:
      *      <ul>
-     *          <li>{@link VoteInfo} if found</li>
-     *          <li>{@link ServiceError} of {@link HttpStatus#BAD_REQUEST BAD_REQUEST} if the request is missing user id or survey id </li>
+     *          <li>{@link VoteDTO.Info} if found</li>
      *          <li>{@link ServiceError} of {@link HttpStatus#NOT_FOUND NOT_FOUND} if vote with {@code info.id} does not exist </li>
      *      </ul>
      */
-    public Result<VoteInfo, ServiceError> readVoteById(VoteInfo info) {
-        if (info.user_id().isEmpty())
-            return new Result.Error<>(new ServiceError(HttpStatus.BAD_REQUEST, "User id was not provided"));
-        if (info.survey_id().isEmpty())
-            return new Result.Error<>(new ServiceError(HttpStatus.BAD_REQUEST, "Survey id was not provided"));
-
-        Optional<Vote> optional = voteRepository.findById(info.id().get());
-        if (optional.isEmpty())
+    public Result<VoteDTO.Info, ServiceError> readVoteById(VoteDTO.Id info) {
+        var votes = Streamable.of(voteRepository.findAllBy(info.user_id(), info.survey_id())).toSet();
+        if (votes.isEmpty())
             return new Result.Error<>(new ServiceError(HttpStatus.NOT_FOUND, "Vote does not exist"));
 
-        return new Result.Ok<>(new VoteInfo(optional.get()));
+        return new Result.Ok<>(new VoteDTO.Info(info.user_id(), info.survey_id(), votes));
     }
 
 
     /**
      * Read all votes registered to a user.
      *
-     * @param info {@link VoteInfo} with user id for the votes to read
-     * @return {@code Result<VoteInfo, ServiceError>}:
+     * @param info {@link VoteDTO.Info} with user id for the votes to read
+     * @return {@code Result<VoteDTO.Info, ServiceError>}:
      *      <ul>
-     *          <li>{@link Iterable} of {@link VoteInfo}</li>
-     *          <li>{@link ServiceError} of {@link HttpStatus#BAD_REQUEST BAD_REQUEST} if the request is missing user id</li>
+     *          <li>{@link Iterable} of {@link VoteDTO.Info}</li>
      *      </ul>
      */
-    public Result<Iterable<VoteInfo>, ServiceError> readVotesByUserId(VoteInfo info) {
-        if (info.user_id().isEmpty())
-            return new Result.Error<>(new ServiceError(HttpStatus.BAD_REQUEST, "User id was not provided"));
-
-        var votes = voteRepository.findAllByIdVoterId(info.user_id().get());
-        return new Result.Ok<>(Streamable.of(votes).map(VoteInfo::new).toList());
+    public Result<VoteDTO.UserVotes, ServiceError> readVotesByUserId(VoteDTO.UserId info) {
+        var votes = voteRepository.findAllByUserId(info.user_id());
+        return new Result.Ok<>(new VoteDTO.UserVotes(info.user_id(), votes));
     }
 
     /**
      * Read all votes registered to a survey.
      *
-     * @param info {@link VoteInfo} with survey id for the votes to read
-     * @return {@code Result<VoteInfo, ServiceError>}:
+     * @param info {@link VoteDTO.Info} with survey id for the votes to read
+     * @return {@code Result<VoteDTO.Info, ServiceError>}:
      *      <ul>
-     *          <li>{@link Iterable} of {@link VoteInfo}</li>
-     *          <li>{@link ServiceError} of {@link HttpStatus#BAD_REQUEST BAD_REQUEST} if the request is missing survey id</li>
+     *          <li>{@link Iterable} of {@link VoteDTO.Info}</li>
      *      </ul>
      */
-    public Result<Iterable<VoteInfo>, ServiceError> readVotesBySurveyId(VoteInfo info) {
-        if (info.survey_id().isEmpty())
-            return new Result.Error<>(new ServiceError(HttpStatus.BAD_REQUEST, "Survey id was not provided"));
-
-        var votes = voteRepository.findAllByIdSurveyId(info.survey_id().get());
-        return new Result.Ok<>(Streamable.of(votes).map(VoteInfo::new));
+    public Result<VoteDTO.SurveyVotes, ServiceError> readVotesBySurveyId(VoteDTO.SurveyId info) {
+        var votes = voteRepository.findAllBySurveyId(info.survey_id());
+        return new Result.Ok<>(new VoteDTO.SurveyVotes(info.survey_id(), votes));
     }
 
     /**
      * Read all votes.
      *
-     * @return {@code Result<VoteInfo, ServiceError>}:
+     * @return {@code Result<VoteDTO.Info, ServiceError>}:
      *      <ul>
-     *          <li>{@link Iterable} of {@link VoteInfo}</li>
+     *          <li>{@link Iterable} of {@link VoteDTO.Info}</li>
      *      </ul>
      */
-    public Result<Iterable<VoteInfo>, ServiceError> readAllVotes() {
+    public Result<Iterable<VoteDTO.Info>, ServiceError> readAllVotes() {
         var votes = voteRepository.findAll();
-        return new Result.Ok<>(Streamable.of(votes).map(VoteInfo::new));
+        return new Result.Ok<>(VoteDTO.Info.from(votes));
     }
 
     /**
      * Delete a vote.
      *
-     * @param info {@link VoteInfo} with user id and survey id for the vote to delete
-     * @return {@code Result<VoteInfo, ServiceError>}:
+     * @param info {@link VoteDTO.Info} with user id and survey id for the vote to delete
+     * @return {@code Result<VoteDTO.Info, ServiceError>}:
      *      <ul>
-     *          <li>{@link VoteInfo null} if deleted</li>
-     *          <li>{@link ServiceError} of {@link HttpStatus#BAD_REQUEST BAD_REQUEST} if the request is missing user id or survey id </li>
+     *          <li>{@link VoteDTO.Info null} if deleted</li>
      *          <li>{@link ServiceError} of {@link HttpStatus#NOT_FOUND NOT_FOUND} if vote with {@code info.id} does not exist </li>
      *      </ul>
      */
-    public Result<VoteInfo, ServiceError> deleteVote(VoteInfo info) {
-        if (info.user_id().isEmpty())
-            return new Result.Error<>(new ServiceError(HttpStatus.BAD_REQUEST, "User id was not provided"));
-        if (info.survey_id().isEmpty())
-            return new Result.Error<>(new ServiceError(HttpStatus.BAD_REQUEST, "Survey id was not provided"));
-
-        if (!voteRepository.existsById(info.id().get()))
+    public Result<VoteDTO.Info, ServiceError> deleteVote(VoteDTO.Id info) {
+        var votes = Streamable.of(voteRepository.findAllBy(info.user_id(), info.survey_id()));
+        if (votes.isEmpty())
             return new Result.Error<>(new ServiceError(HttpStatus.NOT_FOUND, "Vote does not exist"));
 
-        voteRepository.deleteById(info.id().get());
+        voteRepository.deleteAll(votes);
         return new Result.Ok<>(null);
     }
 }

@@ -1,67 +1,60 @@
 package no.hvl.dat250.g13.project.domain;
 
 import jakarta.persistence.*;
+import no.hvl.dat250.g13.project.domain.Identifiers.OptionKey;
+import no.hvl.dat250.g13.project.domain.Identifiers.SurveyKey;
+import no.hvl.dat250.g13.project.domain.Identifiers.UserKey;
+import no.hvl.dat250.g13.project.domain.Identifiers.VoteKey;
 
-import java.io.Serializable;
-import java.util.List;
 import java.util.Objects;
 
 @Entity
+@IdClass(VoteKey.class)
 public class Vote {
 
-    @Embeddable
-    public record VoteKey(Long voterId, Long surveyId) implements Serializable {}
-
-    @EmbeddedId
-    private VoteKey id;
-
-    @OneToMany
-    private List<OptionRef> options;
+    @Id
+    private UserKey userId;
+    @Id
+    private SurveyKey surveyId;
+    @Id
+    private OptionKey optionId;
 
     // Default constructor (required by JPA)
-    public Vote() {}
+    public Vote() {
+    }
 
     // All-arguments constructor
-    public Vote(Long voterId, Long surveyId, List<OptionRef> options) {
-        this.id = new VoteKey(voterId, surveyId);
-        this.options = options;
+    public Vote(UserKey userId, SurveyKey surveyId, OptionKey optionId) {
+        this.userId = userId;
+        this.surveyId = surveyId;
+        this.optionId = optionId;
     }
+
 
     // Getters and Setters
-    public VoteKey getId() {
-        return id;
+
+    public UserKey getUserId() {
+        return userId;
     }
 
-    public void setId(VoteKey id) {
-        this.id = id;
+    public void setUserId(UserKey userId) {
+        this.userId = userId;
     }
 
-    public void setId(Long voterId, Long surveyId) {
-        this.id = new VoteKey(voterId, surveyId);
+    public SurveyKey getSurveyId() {
+        return surveyId;
     }
 
-    public Long getVoterId() {
-        return id.voterId;
+    public void setSurveyId(SurveyKey surveyId) {
+        this.surveyId = surveyId;
     }
 
-    public void setVoterId(Long voterId) {
-        this.id = new VoteKey(voterId, id.surveyId);
+    public OptionKey getOptionId() {
+        return optionId;
     }
 
-    public Long getSurveyId() {
-        return id.surveyId;
-    }
-
-    public void setSurveyId(Long surveyId) {
-        this.id = new VoteKey(id.voterId, surveyId);
-    }
-
-    public List<OptionRef> getOptions() {
-        return options;
-    }
-
-    public void setOptions(List<OptionRef> options) {
-        this.options = options;
+    public void setOptionId(OptionKey optionId) {
+        this.optionId = optionId;
     }
 
     @Override
@@ -69,11 +62,11 @@ public class Vote {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Vote vote = (Vote) o;
-        return Objects.equals(id, vote.id) && Objects.equals(options, vote.options);
+        return Objects.equals(userId, vote.userId) && Objects.equals(surveyId, vote.surveyId) && Objects.equals(optionId, vote.optionId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, options);
+        return Objects.hash(userId, surveyId, optionId);
     }
 }

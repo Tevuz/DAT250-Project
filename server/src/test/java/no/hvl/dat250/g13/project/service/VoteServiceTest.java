@@ -1,7 +1,11 @@
 package no.hvl.dat250.g13.project.service;
 
+import no.hvl.dat250.g13.project.domain.Identifiers.OptionKey;
+import no.hvl.dat250.g13.project.domain.Identifiers.SurveyKey;
+import no.hvl.dat250.g13.project.domain.Identifiers.UserKey;
+import no.hvl.dat250.g13.project.domain.Vote;
 import no.hvl.dat250.g13.project.repository.VoteRepository;
-import no.hvl.dat250.g13.project.service.data.VoteInfo;
+import no.hvl.dat250.g13.project.service.data.VoteDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -11,10 +15,11 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.util.Streamable;
 import org.springframework.http.HttpStatus;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.AdditionalAnswers.returnsFirstArg;
+import static org.mockito.ArgumentMatchers.any;
 
 @SpringBootTest
 class VoteServiceTest {
@@ -25,16 +30,9 @@ class VoteServiceTest {
     @MockBean
     private VoteRepository voteRepository;
 
-    private static final VoteInfo infoUserIdEmpty = new VoteInfo(Optional.empty(), Optional.of(2L), List.of(1L));
-    private static final VoteInfo infoSurveyIdEmpty = new VoteInfo(Optional.of(1L), Optional.empty(), List.of(1L));
-    private static final VoteInfo infoOptionsEmpty = new VoteInfo(Optional.of(1L), Optional.of(2L), List.of());
-    private static final VoteInfo infoExists = new VoteInfo(Optional.of(3L), Optional.of(3L), List.of(1L));
-    private static final VoteInfo infoEntry = new VoteInfo(Optional.of(4L), Optional.of(4L), List.of(1L));
-    private static final VoteInfo infoNotFound = new VoteInfo(Optional.of(5L), Optional.of(5L), List.of(1L));
-
     @BeforeEach
     void setupMock() {
-        Mockito.when(voteRepository.save(infoExists.into())).thenReturn(infoExists.into());
+        /*Mockito.when(voteRepository.save(infoExists.into())).thenReturn(infoExists.into());
         Mockito.when(voteRepository.save(infoEntry.into())).thenReturn(infoEntry.into());
 
         Mockito.when(voteRepository.findById(infoExists.id().get())).thenReturn(Optional.of(infoExists.into()));
@@ -45,128 +43,78 @@ class VoteServiceTest {
 
         Mockito.when(voteRepository.existsById(infoExists.id().get())).thenReturn(true);
         Mockito.when(voteRepository.existsById(infoEntry.id().get())).thenReturn(false);
-        Mockito.when(voteRepository.existsById(infoNotFound.id().get())).thenReturn(false);
+        Mockito.when(voteRepository.existsById(infoNotFound.id().get())).thenReturn(false);*/
+
+        Mockito.when(voteRepository.save(any())).then(returnsFirstArg());
+
+        Mockito.when(voteRepository.findAllByUserId(new UserKey(2L))).thenReturn(Streamable.of(new Vote(new UserKey(2L), new SurveyKey(2L), new OptionKey(1L))));
+        Mockito.when(voteRepository.findAllBySurveyId(new SurveyKey(2L))).thenReturn(Streamable.of(new Vote(new UserKey(2L), new SurveyKey(2L), new OptionKey(1L))));
+
+        Mockito.when(voteRepository.existsBy(new UserKey(1L), new SurveyKey(1L))).thenReturn(false);
+        Mockito.when(voteRepository.existsBy(new UserKey(2L), new SurveyKey(2L))).thenReturn(true);
+        Mockito.when(voteRepository.existsBy(new UserKey(3L), new SurveyKey(3L))).thenReturn(false);
+
+        Mockito.when(voteRepository.findAllBy(new UserKey(2L), new SurveyKey(2L))).thenReturn(Streamable.of(new Vote(new UserKey(2L), new SurveyKey(2L), new OptionKey(1L))));
+        Mockito.when(voteRepository.findAllBy(new UserKey(3L), new SurveyKey(3L))).thenReturn(Streamable.of());
     }
 
     @Test
     void createVote_ok() {
-        var vote = voteService.createVote(infoEntry);
+        var info = new VoteDTO.Create(new UserKey(1L), new SurveyKey(1L), Set.of(new OptionKey(1L)));
+        var vote = voteService.createVote(info);
         assertTrue(vote.isOk());
     }
 
     @Test
-    void createVote_userIdNotProvided() {
-        var vote = voteService.createVote(infoUserIdEmpty);
-        assertTrue(vote.isError());
-        assertEquals(HttpStatus.BAD_REQUEST, vote.error().status());
-    }
-
-    @Test
-    void createVote_surveyIdNotProvided() {
-        var vote = voteService.createVote(infoSurveyIdEmpty);
-        assertTrue(vote.isError());
-        assertEquals(HttpStatus.BAD_REQUEST, vote.error().status());
-    }
-
-    @Test
     void createVote_exists() {
-        var vote = voteService.createVote(infoExists);
+        var info = new VoteDTO.Create(new UserKey(2L), new SurveyKey(2L), Set.of(new OptionKey(1L)));
+        var vote = voteService.createVote(info);
         assertTrue(vote.isError());
         assertEquals(HttpStatus.CONFLICT, vote.error().status());
     }
 
     @Test
-    void createVote_optionsEmpty() {
-        var vote = voteService.createVote(infoOptionsEmpty);
-        assertTrue(vote.isError());
-        assertEquals(HttpStatus.BAD_REQUEST, vote.error().status());
-    }
-
-    @Test
-    void updateVote() {
-        var vote = voteService.updateVote(infoExists);
+    void updateVote_ok() {
+        var info = new VoteDTO.Update(new UserKey(2L), new SurveyKey(2L), "REPLACE", Set.of(new OptionKey(1L)));
+        var vote = voteService.updateVote(info);
         assertTrue(vote.isOk());
     }
 
     @Test
-    void updateVote_userIdNotProvided() {
-        var vote = voteService.updateVote(infoUserIdEmpty);
-        assertTrue(vote.isError());
-        assertEquals(HttpStatus.BAD_REQUEST, vote.error().status());
-    }
-
-    @Test
-    void updateVote_surveyIdNotProvided() {
-        var vote = voteService.updateVote(infoSurveyIdEmpty);
-        assertTrue(vote.isError());
-        assertEquals(HttpStatus.BAD_REQUEST, vote.error().status());
-    }
-
-    @Test
-    void updateVote_optionsEmpty() {
-        var vote = voteService.updateVote(infoOptionsEmpty);
-        assertTrue(vote.isError());
-        assertEquals(HttpStatus.BAD_REQUEST, vote.error().status());
-    }
-
-    @Test
     void updateVote_idNotFound() {
-        var vote = voteService.updateVote(infoNotFound);
+        var info = new VoteDTO.Update(new UserKey(3L), new SurveyKey(3L), "REPLACE", Set.of(new OptionKey(1L)));
+        var vote = voteService.updateVote(info);
         assertTrue(vote.isError());
         assertEquals(HttpStatus.NOT_FOUND, vote.error().status());
     }
 
     @Test
     void readVoteById_ok() {
-        var vote = voteService.readVoteById(infoExists);
+        var info = new VoteDTO.Id(new UserKey(2L), new SurveyKey(2L));
+        var vote = voteService.readVoteById(info);
         assertTrue(vote.isOk());
     }
 
     @Test
-    void readVoteById_userIdNotProvided() {
-        var vote = voteService.readVoteById(infoUserIdEmpty);
-        assertTrue(vote.isError());
-        assertEquals(HttpStatus.BAD_REQUEST, vote.error().status());
-    }
-
-    @Test
-    void readVoteById_surveyIdNotProvided() {
-        var vote = voteService.readVoteById(infoSurveyIdEmpty);
-        assertTrue(vote.isError());
-        assertEquals(HttpStatus.BAD_REQUEST, vote.error().status());
-    }
-
-    @Test
     void readVoteById_notFound() {
-        var vote = voteService.readVoteById(infoNotFound);
+        var info = new VoteDTO.Id(new UserKey(3L), new SurveyKey(3L));
+        var vote = voteService.readVoteById(info);
         assertTrue(vote.isError());
         assertEquals(HttpStatus.NOT_FOUND, vote.error().status());
     }
 
     @Test
     void readVotesByUserId_ok() {
-        var vote = voteService.readVotesByUserId(infoExists);
+        var info = new VoteDTO.UserId(new UserKey(2L));
+        var vote = voteService.readVotesByUserId(info);
         assertTrue(vote.isOk());
     }
 
     @Test
-    void readVotesByUserId_userIdNotProvided() {
-        var vote = voteService.readVotesByUserId(infoUserIdEmpty);
-        assertTrue(vote.isError());
-        assertEquals(HttpStatus.BAD_REQUEST, vote.error().status());
-    }
-
-    @Test
     void readVotesBySurveyId_ok() {
-        var votes = voteService.readVotesBySurveyId(infoExists);
+        var info = new VoteDTO.SurveyId(new SurveyKey(2L));
+        var votes = voteService.readVotesBySurveyId(info);
         assertTrue(votes.isOk());
-    }
-
-    @Test
-    void readVotesBySurveyId_surveyIdNotProvided() {
-        var votes = voteService.readVotesBySurveyId(infoSurveyIdEmpty);
-        assertTrue(votes.isError());
-        assertEquals(HttpStatus.BAD_REQUEST, votes.error().status());
     }
 
     @Test
@@ -177,27 +125,15 @@ class VoteServiceTest {
 
     @Test
     void deleteVote_ok() {
-        var vote = voteService.deleteVote(infoExists);
+        var info = new VoteDTO.Id(new UserKey(2L), new SurveyKey(2L));
+        var vote = voteService.deleteVote(info);
         assertTrue(vote.isOk());
     }
 
     @Test
-    void deleteVote_userIdNotProvided() {
-        var votes = voteService.deleteVote(infoUserIdEmpty);
-        assertTrue(votes.isError());
-        assertEquals(HttpStatus.BAD_REQUEST, votes.error().status());
-    }
-
-    @Test
-    void deleteVote_surveyIdNotProvided() {
-        var votes = voteService.deleteVote(infoSurveyIdEmpty);
-        assertTrue(votes.isError());
-        assertEquals(HttpStatus.BAD_REQUEST, votes.error().status());
-    }
-
-    @Test
     void deleteVote_notFound() {
-        var votes = voteService.deleteVote(infoNotFound);
+        var info = new VoteDTO.Id(new UserKey(1L), new SurveyKey(1L));
+        var votes = voteService.deleteVote(info);
         assertTrue(votes.isError());
         assertEquals(HttpStatus.NOT_FOUND, votes.error().status());
     }
