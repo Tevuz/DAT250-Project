@@ -1,12 +1,11 @@
 \section{Technology Assessment}
 \label{sec:technology}
 
+Introduce in (sufficient) depth the key concepts and architecture of the chosen software technology. As part of this, you may consider using a running example to introduce the technology.
 
-Introduce in (sufficient) depth the key concepts and architecture of the chosen software technology. As part if this, you may consider using a running example to introduce the technology.
-
-This part and other parts of the report probably needs to refer to
+This part and other parts of the report probably need to refer to
 figures. Figure~\ref{fig:framework} from \cite{brown:96} just
-illustrates how figure can be included in the report.
+illustrates how a figure can be included in the report.
 
 \begin{figure}[thb]
 	\centering
@@ -17,20 +16,43 @@ illustrates how figure can be included in the report.
 
 \subsection{Descriptive Modeling}
 
-write where the technology comes from, its history, its context and what problem it solves.
+Write about where the technology comes from, its history, its context, and what problem it solves.
 Consider drawing a graph like in \cite{brown:96}.
 
 \subsection{Experiment Design}
 
-Write you hypotheses about what benefits the technology bring and how you can support or reject them via experiments.
+\subsubsection*{Hypotheses}
+
+\begin{enumerate}
+    \item \textbf{Security Improvement Hypothesis}: OAuth 2.0 will provide improved security over traditional username and password authentication by reducing the need to store sensitive user credentials directly within the app's database.
+
+    \item \textbf{User Experience Improvement Hypothesis}: OAuth 2.0 will enhance the user experience by simplifying the login process, allowing users to log in with existing accounts from trusted providers like Google or GitHub.
+\end{enumerate}
+
+\subsubsection*{Experiment Design to Support or Reject Hypotheses}
+
+\begin{enumerate}
+    \item \textbf{Testing the Security Improvement Hypothesis}
+
+    \begin{itemize}
+        \item \textbf{Experiment}: Conduct a security risk analysis of both authentication methods. For the traditional method, store user credentials in a local database, then perform a simulated data breach to see how each system protects user information. Measure the impact of using OAuth 2.0, which keeps sensitive data with the provider, thereby limiting the risk of exposure in case of a breach.
+        \item \textbf{Expected Outcome}: If OAuth 2.0 significantly reduces the risk of data exposure, the hypothesis will be supported.
+    \end{itemize}
+
+    \item \textbf{Testing the User Experience Improvement Hypothesis}
+
+    \begin{itemize}
+        \item \textbf{Experiment}: Implement both authentication methods (traditional and OAuth 2.0) and conduct a usability test with a sample group of users. Track metrics such as the time taken to complete the login process, user feedback, and abandonment rate (users who quit during signup).
+        \item \textbf{Expected Outcome}: If OAuth 2.0 shows a lower abandonment rate and faster login times, it supports the hypothesis that OAuth improves user experience.
+    \end{itemize}
+\end{enumerate}
 
 \subsection{Experiment Evaluation}
 
-Write about the results of your experiments, either via personal experience reports, quantitative benchmarks, a demostrator case study or a combination of multiple approaches.
+Write about the results of your experiments, either via personal experience reports, quantitative benchmarks, a demonstrator case study, or a combination of multiple approaches.
 
-
-For some reports you may have to include a table with experimental
-results are other kinds of tables that for instance compares
+For some reports, you may have to include a table with experimental
+results or other kinds of tables that, for instance, compare
 technologies. Table~\ref{tab:results} gives an example of how to create a table.
 
 \begin{table}[bth]
