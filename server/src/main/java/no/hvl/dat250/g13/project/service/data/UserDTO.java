@@ -9,19 +9,29 @@ import no.hvl.dat250.g13.project.domain.UserEntity;
 import java.util.Objects;
 import java.util.Optional;
 
-import static no.hvl.dat250.g13.project.service.data.ValidationConstants.*;
-
 public abstract class UserDTO {
+
+    // ---- User Constraints ----
+    public static final int USERNAME_LENGTH_MIN = 3;
+    public static final int USERNAME_LENGTH_MAX = 20;
+    public static final String USERNAME_PATTERN = "^[a-zA-Z0-9_-]*$";
+
+    // ---- User Messages ----
+    public static final String MESSAGE_USER_ID_REQUIRED = "User id is required";
+    public static final String MESSAGE_USERNAME_REQUIRED = "Username is required";
+    public static final String MESSAGE_USERNAME_TO_LONG = "Username is to long";
+    public static final String MESSAGE_USERNAME_TO_SHORT = "Username is to short";
+    public static final String MESSAGE_USERNAME_NOT_MATCHING_PATTERN = "Username can only contain: A-Z a-z 0-9 _ -";
 
     /**
      *
      * @param username
      */
     public record Create(
-            @NotNull(message = "Username is required")
-            @Size(min = USERNAME_LENGTH_MIN, message = "Username is to short")
-            @Size(max = USERNAME_LENGTH_MAX, message = "Username is to long")
-            @Pattern(regexp = USERNAME_PATTERN, message = "Username can only contain [ A-Z a-z 0-9 _ - ]")
+            @NotNull(message = MESSAGE_USERNAME_REQUIRED)
+            @Size(min = USERNAME_LENGTH_MIN, message = MESSAGE_USERNAME_TO_SHORT)
+            @Size(max = USERNAME_LENGTH_MAX, message = MESSAGE_USERNAME_TO_LONG)
+            @Pattern(regexp = USERNAME_PATTERN, message = MESSAGE_USERNAME_NOT_MATCHING_PATTERN)
             String username
     ) {
         public Create(UserEntity entity) {
@@ -41,12 +51,12 @@ public abstract class UserDTO {
      * @param username
      */
     public record Update(
-            @NotNull(message = "Id is required")
+            @NotNull(message = MESSAGE_USER_ID_REQUIRED)
             Long id,
             Optional<
-                @Size(min = USERNAME_LENGTH_MIN, message = "Username is to short")
-                @Size(max = USERNAME_LENGTH_MAX, message = "Username is to long")
-                @Pattern(regexp = USERNAME_PATTERN)
+                @Size(min = USERNAME_LENGTH_MIN, message = MESSAGE_USERNAME_TO_SHORT)
+                @Size(max = USERNAME_LENGTH_MAX, message = MESSAGE_USERNAME_TO_LONG)
+                @Pattern(regexp = USERNAME_PATTERN, message = MESSAGE_USERNAME_NOT_MATCHING_PATTERN)
                 String> username
     ) {
         public Update(UserEntity entity) {
@@ -67,12 +77,12 @@ public abstract class UserDTO {
      * @param username
      */
     public record Info(
-            @NotNull(message = "Id is required")
+            @NotNull(message = MESSAGE_USER_ID_REQUIRED)
             Long id,
-            @NotNull(message = "Username is required")
-            @Size(min = USERNAME_LENGTH_MIN, message = "Username is to short")
-            @Size(max = USERNAME_LENGTH_MAX, message = "Username is to long")
-            @Pattern(regexp = USERNAME_PATTERN)
+            @NotNull(message = MESSAGE_USERNAME_REQUIRED)
+            @Size(min = USERNAME_LENGTH_MIN, message = MESSAGE_USERNAME_TO_SHORT)
+            @Size(max = USERNAME_LENGTH_MAX, message = MESSAGE_USERNAME_TO_LONG)
+            @Pattern(regexp = USERNAME_PATTERN, message = MESSAGE_USERNAME_NOT_MATCHING_PATTERN)
             String username
     ) {
         public Info(UserEntity entity) {
@@ -85,7 +95,7 @@ public abstract class UserDTO {
      * @param id
      */
     public record Id(
-            @NotNull(message = "Id is required")
+            @NotNull(message = MESSAGE_USER_ID_REQUIRED)
             Long id
     ) {
         public Id(UserEntity entity) {
@@ -98,10 +108,10 @@ public abstract class UserDTO {
      * @param username
      */
     public record Username(
-            @NotNull(message = "Username is required")
-            @Size(min = USERNAME_LENGTH_MIN, message = "Username is to short")
-            @Size(max = USERNAME_LENGTH_MAX, message = "Username is to long")
-            @Pattern(regexp = USERNAME_PATTERN)
+            @NotNull(message = MESSAGE_USERNAME_REQUIRED)
+            @Size(min = USERNAME_LENGTH_MIN, message = MESSAGE_USERNAME_TO_SHORT)
+            @Size(max = USERNAME_LENGTH_MAX, message = MESSAGE_USERNAME_TO_LONG)
+            @Pattern(regexp = USERNAME_PATTERN, message = MESSAGE_USERNAME_NOT_MATCHING_PATTERN)
             String username
     ) {
         public Username(UserEntity entity) {

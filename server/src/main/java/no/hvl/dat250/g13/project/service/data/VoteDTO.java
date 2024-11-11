@@ -14,6 +14,11 @@ import java.util.stream.Collectors;
 
 public abstract class VoteDTO {
 
+    // ---- Vote Messages ----
+    public static final String MESSAGE_VOTE_SURVEY_ID_REQUIRED = "Survey id is required";
+    public static final String MESSAGE_VOTE_USER_ID_REQUIRED = "User id is required";
+    public static final String MESSAGE_VOTE_OPTIONS_REQUIRED = "Selected options is required";
+
     /**
      *
      * @param user_id
@@ -21,11 +26,11 @@ public abstract class VoteDTO {
      * @param options
      */
     public record Create(
-            @NotNull(message = "User id is required")
+            @NotNull(message = MESSAGE_VOTE_USER_ID_REQUIRED)
             UserKey user_id,
-            @NotNull(message = "Survey id is required")
+            @NotNull(message = MESSAGE_VOTE_SURVEY_ID_REQUIRED)
             SurveyKey survey_id,
-            @NotNull(message = "Selected options is required")
+            @NotNull(message = MESSAGE_VOTE_OPTIONS_REQUIRED)
             Set<OptionKey> options
     ) {
         public Set<Vote> into() {
@@ -41,9 +46,9 @@ public abstract class VoteDTO {
      * @param options
      */
     public record Update(
-            @NotNull(message = "User id is required")
+            @NotNull(message = MESSAGE_VOTE_USER_ID_REQUIRED)
             UserKey user_id,
-            @NotNull(message = "Survey id is required")
+            @NotNull(message = MESSAGE_VOTE_SURVEY_ID_REQUIRED)
             SurveyKey survey_id,
             @Pattern(regexp = "^(REPLACE|UNION|INTERSECT)$")
             String mode,
@@ -82,11 +87,11 @@ public abstract class VoteDTO {
      * @param options
      */
     public record Info(
-            @NotNull(message = "User id is required")
+            @NotNull(message = MESSAGE_VOTE_USER_ID_REQUIRED)
             UserKey user_id,
-            @NotNull(message = "Survey id is required")
+            @NotNull(message = MESSAGE_VOTE_SURVEY_ID_REQUIRED)
             SurveyKey survey_id,
-            @NotNull(message = "Selected options is required")
+            @NotNull(message = MESSAGE_VOTE_OPTIONS_REQUIRED)
             Set<OptionKey> options
     ) {
         public Info(UserKey user_id, SurveyKey survey_id, Iterable<Vote> votes) {
@@ -105,9 +110,9 @@ public abstract class VoteDTO {
      * @param options
      */
     public record UserVotes(
-            @NotNull(message = "User id is required")
+            @NotNull(message = MESSAGE_VOTE_USER_ID_REQUIRED)
             UserKey user_id,
-            @NotNull(message = "Selected options is required")
+            @NotNull(message = MESSAGE_VOTE_OPTIONS_REQUIRED)
             Map<SurveyKey, Set<OptionKey>> options
     ) {
         public UserVotes(UserKey user_id, Iterable<Vote> votes) {
@@ -121,9 +126,9 @@ public abstract class VoteDTO {
      * @param options
      */
     public record SurveyVotes(
-            @NotNull(message = "Survey id is required")
+            @NotNull(message = MESSAGE_VOTE_SURVEY_ID_REQUIRED)
             SurveyKey survey_id,
-            @NotNull(message = "Selected options is required")
+            @NotNull(message = MESSAGE_VOTE_OPTIONS_REQUIRED)
             Map<UserKey, Set<OptionKey>> options
     ) {
         public SurveyVotes(SurveyKey survey_id, Iterable<Vote> votes) {
@@ -137,9 +142,9 @@ public abstract class VoteDTO {
      * @param survey_id
      */
     public record Id(
-            @NotNull(message = "User id is required")
+            @NotNull(message = MESSAGE_VOTE_USER_ID_REQUIRED)
             UserKey user_id,
-            @NotNull(message = "Survey id is required")
+            @NotNull(message = MESSAGE_VOTE_SURVEY_ID_REQUIRED)
             SurveyKey survey_id
     ) {
         public Id(Vote vote) {
@@ -152,7 +157,7 @@ public abstract class VoteDTO {
      * @param user_id
      */
     public record UserId(
-            @NotNull(message = "User id is required")
+            @NotNull(message = MESSAGE_VOTE_USER_ID_REQUIRED)
             UserKey user_id
     ) { }
 
@@ -161,7 +166,7 @@ public abstract class VoteDTO {
      * @param survey_id
      */
     public record SurveyId(
-            @NotNull(message = "Survey id is required")
+            @NotNull(message = MESSAGE_VOTE_SURVEY_ID_REQUIRED)
             SurveyKey survey_id
     ) { }
 }
