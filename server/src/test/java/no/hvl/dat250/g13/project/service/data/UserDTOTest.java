@@ -63,7 +63,7 @@ public class UserDTOTest {
         var info = new UserDTO.Update(null, Optional.of("username"));
         var violations = validator.validate(info);
         assertEquals(1, violations.size());
-        assertEquals("Id is required", violations.iterator().next().getMessage());
+        assertEquals("User id is required", violations.iterator().next().getMessage());
     }
 
     @Test
@@ -101,7 +101,7 @@ public class UserDTOTest {
         var info = new UserDTO.Info(null, "username");
         var violations = validator.validate(info);
         assertEquals(1, violations.size());
-        assertEquals("Id is required", violations.iterator().next().getMessage());
+        assertEquals("User id is required", violations.iterator().next().getMessage());
     }
 
     @Test
@@ -154,7 +154,7 @@ public class UserDTOTest {
         var info = new UserDTO.Id((Long)null);
         var violations = validator.validate(info);
         assertEquals(1, violations.size());
-        assertEquals("Id is required", violations.iterator().next().getMessage());
+        assertEquals("User id is required", violations.iterator().next().getMessage());
     }
 
     @Test
