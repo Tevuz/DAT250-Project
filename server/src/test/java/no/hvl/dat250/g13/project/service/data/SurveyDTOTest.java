@@ -65,7 +65,7 @@ class SurveyDTOTest {
             var info = new SurveyDTO.Create("Survey", null, default_pollCreate());
             var violations = validator.validate(info);
             assertEquals(1, violations.size());
-            assertEquals("Survey author id is required", violations.iterator().next().getMessage());
+            assertEquals("Survey author value is required", violations.iterator().next().getMessage());
         }
         {
             var info = new SurveyDTO.Create("Survey", new UserKey(null), default_pollCreate());
@@ -105,7 +105,7 @@ class SurveyDTOTest {
                     List.of(), List.of(), List.of());
             var violations = validator.validate(info);
             assertEquals(1, violations.size());
-            assertEquals("Survey id is required", violations.iterator().next().getMessage());
+            assertEquals("Survey value is required", violations.iterator().next().getMessage());
         }
         {
             var info = new SurveyDTO.Update(new SurveyKey(null), Optional.empty(),
@@ -191,7 +191,7 @@ class SurveyDTOTest {
         info.apply(survey);
         assertEquals(2, survey.getPolls().size());
         assertEquals("Changed", survey.getPolls().get(1).getText());
-        assertTrue(survey.getPolls().stream().noneMatch(poll -> 9L == poll.getId().id()));
+        assertTrue(survey.getPolls().stream().noneMatch(poll -> 9L == poll.getId().value()));
     }
 
     @Test
@@ -205,9 +205,9 @@ class SurveyDTOTest {
                 List.of(), List.of(), List.of(pollDelete, pollIgnore));
         info.apply(survey);
         assertEquals(1, survey.getPolls().size());
-        assertTrue(survey.getPolls().stream().noneMatch(option -> 1L == option.getId().id()));
-        assertTrue(survey.getPolls().stream() .anyMatch(option -> 2L == option.getId().id()));
-        assertTrue(survey.getPolls().stream().noneMatch(option -> 9L == option.getId().id()));
+        assertTrue(survey.getPolls().stream().noneMatch(option -> 1L == option.getId().value()));
+        assertTrue(survey.getPolls().stream() .anyMatch(option -> 2L == option.getId().value()));
+        assertTrue(survey.getPolls().stream().noneMatch(option -> 9L == option.getId().value()));
     }
 
     @Test
@@ -223,7 +223,7 @@ class SurveyDTOTest {
             var info = new SurveyDTO.Id(null);
             var violations = validator.validate(info);
             assertEquals(1, violations.size());
-            assertEquals("Survey id is required", violations.iterator().next().getMessage());
+            assertEquals("Survey value is required", violations.iterator().next().getMessage());
         }
         {
             var info = new SurveyDTO.Id(new SurveyKey(null));

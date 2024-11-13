@@ -13,11 +13,11 @@ import java.util.Objects;
 public class Vote {
 
     @Id
-    private UserKey userId;
+    private Long userId;
     @Id
-    private SurveyKey surveyId;
+    private Long surveyId;
     @Id
-    private OptionKey optionId;
+    private Long optionId;
 
     // Default constructor (required by JPA)
     public Vote() {
@@ -25,36 +25,36 @@ public class Vote {
 
     // All-arguments constructor
     public Vote(UserKey userId, SurveyKey surveyId, OptionKey optionId) {
-        this.userId = userId;
-        this.surveyId = surveyId;
-        this.optionId = optionId;
+        setUserId(userId);
+        setSurveyId(surveyId);
+        setOptionId(optionId);
     }
 
 
     // Getters and Setters
 
     public UserKey getUserId() {
-        return userId;
+        return new UserKey(userId);
     }
 
     public void setUserId(UserKey userId) {
-        this.userId = userId;
+        this.userId = userId.value();
     }
 
     public SurveyKey getSurveyId() {
-        return surveyId;
+        return new SurveyKey(surveyId);
     }
 
     public void setSurveyId(SurveyKey surveyId) {
-        this.surveyId = surveyId;
+        this.surveyId = surveyId.value();
     }
 
     public OptionKey getOptionId() {
-        return optionId;
+        return new OptionKey(optionId);
     }
 
     public void setOptionId(OptionKey optionId) {
-        this.optionId = optionId;
+        this.optionId = optionId.value();
     }
 
     @Override

@@ -12,7 +12,7 @@ public class Survey {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private SurveyKey id;
+    private Long id;
 
     private String title;
 
@@ -34,11 +34,11 @@ public class Survey {
 
     // Getters and Setters
     public SurveyKey getId() {
-        return id;
+        return new SurveyKey(id);
     }
 
     public void setId(SurveyKey id) {
-        this.id = id;
+        this.id = id.value();
     }
 
     public String getTitle() {

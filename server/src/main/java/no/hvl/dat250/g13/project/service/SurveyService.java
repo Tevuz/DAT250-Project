@@ -38,11 +38,11 @@ public class SurveyService {
     /**
      * Update a survey.
      *
-     * @param info {@link SurveyDTO.Info} with data to replace the survey with id=={@code info.id}
+     * @param info {@link SurveyDTO.Info} with data to replace the survey with value=={@code info.value}
      * @return {@code Result<SurveyDTO.Info, ServiceError>}:
      *      <ul>
      *          <li>{@link SurveyDTO.Info} if updated</li>
-     *          <li>{@link ServiceError} of {@link HttpStatus#NOT_FOUND NOT_FOUND} if survey with {@code info.id} does not exist </li>
+     *          <li>{@link ServiceError} of {@link HttpStatus#NOT_FOUND NOT_FOUND} if survey with {@code info.value} does not exist </li>
      *      </ul>
      */
     public Result<SurveyDTO.Info, ServiceError> updateSurvey(SurveyDTO.Update info) {
@@ -57,11 +57,11 @@ public class SurveyService {
     /**
      * Read a survey.
      *
-     * @param info {@link SurveyDTO.Info} with id for the survey to read
+     * @param info {@link SurveyDTO.Info} with value for the survey to read
      * @return {@code Result<SurveyDTO.Info, ServiceError>}:
      *      <ul>
      *          <li>{@link SurveyDTO.Info} if found</li>
-     *          <li>{@link ServiceError} of {@link HttpStatus#NOT_FOUND NOT_FOUND} if survey with {@code info.id} does not exist </li>
+     *          <li>{@link ServiceError} of {@link HttpStatus#NOT_FOUND NOT_FOUND} if survey with {@code info.value} does not exist </li>
      *      </ul>
      */
     public Result<SurveyDTO.Info, ServiceError> readSurveyById(SurveyDTO.Id info) {
@@ -101,11 +101,11 @@ public class SurveyService {
     /**
      * Delete a survey.
      *
-     * @param info {@link SurveyDTO.Id}  with id for the survey to delete
+     * @param info {@link SurveyDTO.Id}  with value for the survey to delete
      * @return Result&lt;SurveyDTO.Info, ServiceError&gt;
      *      <ul>
      *          <li>{@link Object null} if deleted successfully</li>
-     *          <li>{@link ServiceError} of {@link HttpStatus#NOT_FOUND NOT_FOUND} if survey with {@code info.id} does not exist </li>
+     *          <li>{@link ServiceError} of {@link HttpStatus#NOT_FOUND NOT_FOUND} if survey with {@code info.value} does not exist </li>
      *      </ul>
      */
     public Result<Object, ServiceError> deleteSurvey(SurveyDTO.Id info) {

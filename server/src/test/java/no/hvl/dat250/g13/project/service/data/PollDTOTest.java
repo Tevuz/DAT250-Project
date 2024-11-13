@@ -91,7 +91,7 @@ class PollDTOTest {
         var info = new PollDTO.Update(null, Optional.empty(), Optional.empty(), List.of(), List.of(), List.of());
         var violations = validator.validate(info);
         assertEquals(1, violations.size());
-        assertEquals("Poll id is required", violations.iterator().next().getMessage());
+        assertEquals("Poll value is required", violations.iterator().next().getMessage());
     }
 
     @Test
@@ -173,7 +173,7 @@ class PollDTOTest {
         info.apply(poll);
         assertEquals(2, poll.getOptions().size());
         assertEquals("Changed", poll.getOptions().get(1).getText());
-        assertTrue(poll.getOptions().stream().noneMatch(option -> 9L == option.getId().id()));
+        assertTrue(poll.getOptions().stream().noneMatch(option -> 9L == option.getId().value()));
     }
 
     @Test
@@ -187,9 +187,9 @@ class PollDTOTest {
                 List.of(), List.of(), List.of(optionDelete, optionIgnore));
         info.apply(poll);
         assertEquals(1, poll.getOptions().size());
-        assertTrue(poll.getOptions().stream().noneMatch(option -> 1L == option.getId().id()));
-        assertTrue(poll.getOptions().stream() .anyMatch(option -> 2L == option.getId().id()));
-        assertTrue(poll.getOptions().stream().noneMatch(option -> 9L == option.getId().id()));
+        assertTrue(poll.getOptions().stream().noneMatch(option -> 1L == option.getId().value()));
+        assertTrue(poll.getOptions().stream() .anyMatch(option -> 2L == option.getId().value()));
+        assertTrue(poll.getOptions().stream().noneMatch(option -> 9L == option.getId().value()));
     }
 
     @Test
@@ -205,7 +205,7 @@ class PollDTOTest {
             var info = new PollDTO.Id(null);
             var violations = validator.validate(info);
             assertEquals(1, violations.size());
-            assertEquals("Poll id is required", violations.iterator().next().getMessage());
+            assertEquals("Poll value is required", violations.iterator().next().getMessage());
         }
         {
             var info = new PollDTO.Id(new PollKey(null));

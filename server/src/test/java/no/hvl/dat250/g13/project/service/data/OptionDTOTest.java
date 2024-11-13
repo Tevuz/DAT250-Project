@@ -71,7 +71,7 @@ class OptionDTOTest {
         var info = new OptionDTO.Update(null, Optional.empty(), Optional.empty());
         var violations = validator.validate(info);
         assertEquals(1, violations.size());
-        assertEquals("Option id is required", violations.iterator().next().getMessage());
+        assertEquals("Option value is required", violations.iterator().next().getMessage());
     }
 
     @Test
@@ -160,6 +160,6 @@ class OptionDTOTest {
         var info = new OptionDTO.Id(null);
         var violations = validator.validate(info);
         assertEquals(1, violations.size());
-        assertEquals("Option id is required", violations.iterator().next().getMessage());
+        assertEquals("Option value is required", violations.iterator().next().getMessage());
     }
 }

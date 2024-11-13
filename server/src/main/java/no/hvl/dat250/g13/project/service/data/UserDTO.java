@@ -18,7 +18,7 @@ public abstract class UserDTO {
     public static final String USERNAME_PATTERN = "^[a-zA-Z0-9_-]*$";
 
     // ---- User Messages ----
-    public static final String MESSAGE_USER_ID_REQUIRED = "User id is required";
+    public static final String MESSAGE_USER_ID_REQUIRED = "User value is required";
     public static final String MESSAGE_USERNAME_REQUIRED = "Username is required";
     public static final String MESSAGE_USERNAME_TO_LONG = "Username is to long";
     public static final String MESSAGE_USERNAME_TO_SHORT = "Username is to short";
@@ -66,7 +66,7 @@ public abstract class UserDTO {
 
         public UserEntity apply(UserEntity entity) {
             if (!Objects.equals(id, entity.getId()))
-                throw new IllegalArgumentException("id mismatch");
+                throw new IllegalArgumentException("value mismatch");
             username.ifPresent(entity::setUsername);
             return entity;
         }

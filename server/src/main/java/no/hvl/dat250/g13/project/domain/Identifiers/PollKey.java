@@ -10,12 +10,12 @@ import java.io.IOException;
 import java.io.Serializable;
 
 @JsonSerialize(using = PollKey.Serializer.class)
-public record PollKey(@NotNull Long id) implements Serializable {
+public record PollKey(@NotNull Long value) implements Serializable {
 
     static class Serializer extends JsonSerializer<PollKey> {
         @Override
         public void serialize(PollKey key, JsonGenerator gen, SerializerProvider serializers) throws IOException {
-            gen.writeNumber(key.id());
+            gen.writeNumber(key.value());
         }
     }
 }

@@ -12,7 +12,7 @@ import java.util.function.Predicate;
 public abstract class OptionDTO {
 
     // ---- Option Messages ----
-    public static final String MESSAGE_OPTION_ID_REQUIRED = "Option id is required";
+    public static final String MESSAGE_OPTION_ID_REQUIRED = "Option value is required";
     public static final String MESSAGE_OPTION_TEXT_REQUIRED = "Option text is required";
 
     public record Create(

@@ -41,11 +41,11 @@ public class UserService {
     /**
      * Update a user.
      *
-     * @param info {@link UserDTO} with data to replace the user with id=={@code info.id}
+     * @param info {@link UserDTO} with data to replace the user with value=={@code info.value}
      * @return {@code Result<UserInfo, ServiceError>}:
      *      <ul>
      *          <li>{@link UserDTO} if updated</li>
-     *          <li>{@link ServiceError} of {@link HttpStatus#NOT_FOUND NOT_FOUND} if user with {@code info.id} does not exist </li>
+     *          <li>{@link ServiceError} of {@link HttpStatus#NOT_FOUND NOT_FOUND} if user with {@code info.value} does not exist </li>
      *          <li>{@link ServiceError} with {@link HttpStatus#CONFLICT CONFLICT} if the username is taken </li>
      *      </ul>
      */
@@ -68,12 +68,12 @@ public class UserService {
     /**
      * Read a user.
      *
-     * @param info {@link UserDTO} with id for the user to read
+     * @param info {@link UserDTO} with value for the user to read
      * @return {@code Result<UserInfo, ServiceError>}:
      *      <ul>
      *          <li>{@link UserDTO} if found</li>
-     *          <li>{@link ServiceError} of {@link HttpStatus#BAD_REQUEST BAD_REQUEST} if the request is missing user id </li>
-     *          <li>{@link ServiceError} of {@link HttpStatus#NOT_FOUND NOT_FOUND} if user with {@code info.id} does not exist </li>
+     *          <li>{@link ServiceError} of {@link HttpStatus#BAD_REQUEST BAD_REQUEST} if the request is missing user value </li>
+     *          <li>{@link ServiceError} of {@link HttpStatus#NOT_FOUND NOT_FOUND} if user with {@code info.value} does not exist </li>
      *      </ul>
      */
     public Result<UserDTO.Info, ServiceError> readUserById(UserDTO.Id info) {
@@ -99,11 +99,11 @@ public class UserService {
     /**
      * Delete a user.
      *
-     * @param info {@link UserDTO} with id for the user to delete
+     * @param info {@link UserDTO} with value for the user to delete
      * @return Result&lt;UserInfo, ServiceError&gt;
      *      <ul>
      *          <li>{@link UserDTO null} if deleted successfully</li>
-     *          <li>{@link ServiceError} of {@link HttpStatus#NOT_FOUND NOT_FOUND} if user with {@code info.id} does not exist </li>
+     *          <li>{@link ServiceError} of {@link HttpStatus#NOT_FOUND NOT_FOUND} if user with {@code info.value} does not exist </li>
      *      </ul>
      */
     public Result<UserDTO.Info, ServiceError> deleteUser(UserDTO.Id info) {

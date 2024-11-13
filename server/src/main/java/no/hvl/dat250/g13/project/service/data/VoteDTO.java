@@ -15,8 +15,8 @@ import java.util.stream.Collectors;
 public abstract class VoteDTO {
 
     // ---- Vote Messages ----
-    public static final String MESSAGE_VOTE_SURVEY_ID_REQUIRED = "Survey id is required";
-    public static final String MESSAGE_VOTE_USER_ID_REQUIRED = "User id is required";
+    public static final String MESSAGE_VOTE_SURVEY_ID_REQUIRED = "Survey value is required";
+    public static final String MESSAGE_VOTE_USER_ID_REQUIRED = "User value is required";
     public static final String MESSAGE_VOTE_OPTIONS_REQUIRED = "Selected options is required";
 
     /**

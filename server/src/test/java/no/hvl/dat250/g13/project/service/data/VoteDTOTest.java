@@ -39,7 +39,7 @@ class VoteDTOTest {
         var info = new VoteDTO.Create(null, new SurveyKey(1L), Set.of());
         var violations = validator.validate(info);
         assertEquals(1, violations.size());
-        assertEquals("User id is required", violations.iterator().next().getMessage());
+        assertEquals("User value is required", violations.iterator().next().getMessage());
     }
 
     @Test
@@ -47,7 +47,7 @@ class VoteDTOTest {
         var info = new VoteDTO.Create(new UserKey(1L),null, Set.of());
         var violations = validator.validate(info);
         assertEquals(1, violations.size());
-        assertEquals("Survey id is required", violations.iterator().next().getMessage());
+        assertEquals("Survey value is required", violations.iterator().next().getMessage());
     }
 
     @Test
@@ -71,7 +71,7 @@ class VoteDTOTest {
         var info = new VoteDTO.Update(null, new SurveyKey(1L), "REPLACE", Set.of());
         var violations = validator.validate(info);
         assertEquals(1, violations.size());
-        assertEquals("User id is required", violations.iterator().next().getMessage());
+        assertEquals("User value is required", violations.iterator().next().getMessage());
     }
 
     @Test
@@ -79,7 +79,7 @@ class VoteDTOTest {
         var info = new VoteDTO.Update(new UserKey(1L),null, "REPLACE", Set.of());
         var violations = validator.validate(info);
         assertEquals(1, violations.size());
-        assertEquals("Survey id is required", violations.iterator().next().getMessage());
+        assertEquals("Survey value is required", violations.iterator().next().getMessage());
     }
 
     @Test
@@ -137,7 +137,7 @@ class VoteDTOTest {
         var info = new VoteDTO.Info(null, new SurveyKey(1L), Set.of(new OptionKey(1L)));
         var violations = validator.validate(info);
         assertEquals(1, violations.size());
-        assertEquals("User id is required", violations.iterator().next().getMessage());
+        assertEquals("User value is required", violations.iterator().next().getMessage());
     }
 
     @Test
@@ -145,7 +145,7 @@ class VoteDTOTest {
         var info = new VoteDTO.Info(new UserKey(1L),null, Set.of(new OptionKey(1L)));
         var violations = validator.validate(info);
         assertEquals(1, violations.size());
-        assertEquals("Survey id is required", violations.iterator().next().getMessage());
+        assertEquals("Survey value is required", violations.iterator().next().getMessage());
     }
 
     @Test
@@ -162,7 +162,7 @@ class VoteDTOTest {
         var info = new VoteDTO.UserVotes(null, Set.of());
         var violations = validator.validate(info);
         assertEquals(1, violations.size());
-        assertEquals("User id is required", violations.iterator().next().getMessage());
+        assertEquals("User value is required", violations.iterator().next().getMessage());
     }
 
     @Test
@@ -178,7 +178,7 @@ class VoteDTOTest {
         var info = new VoteDTO.SurveyVotes(null, Set.of());
         var violations = validator.validate(info);
         assertEquals(1, violations.size());
-        assertEquals("Survey id is required", violations.iterator().next().getMessage());
+        assertEquals("Survey value is required", violations.iterator().next().getMessage());
     }
 
     @Test
@@ -201,7 +201,7 @@ class VoteDTOTest {
         var info = new VoteDTO.Id(null, new SurveyKey(1L));
         var violations = validator.validate(info);
         assertEquals(1, violations.size());
-        assertEquals("User id is required", violations.iterator().next().getMessage());
+        assertEquals("User value is required", violations.iterator().next().getMessage());
     }
 
     @Test
@@ -209,7 +209,7 @@ class VoteDTOTest {
         var info = new VoteDTO.Id(new UserKey(1L),null);
         var violations = validator.validate(info);
         assertEquals(1, violations.size());
-        assertEquals("Survey id is required", violations.iterator().next().getMessage());
+        assertEquals("Survey value is required", violations.iterator().next().getMessage());
     }
 
     @Test
@@ -224,7 +224,7 @@ class VoteDTOTest {
         var info = new VoteDTO.UserId(null);
         var violations = validator.validate(info);
         assertEquals(1, violations.size());
-        assertEquals("User id is required", violations.iterator().next().getMessage());
+        assertEquals("User value is required", violations.iterator().next().getMessage());
     }
 
     @Test
@@ -239,6 +239,6 @@ class VoteDTOTest {
         var info = new VoteDTO.SurveyId(null);
         var violations = validator.validate(info);
         assertEquals(1, violations.size());
-        assertEquals("Survey id is required", violations.iterator().next().getMessage());
+        assertEquals("Survey value is required", violations.iterator().next().getMessage());
     }
 }

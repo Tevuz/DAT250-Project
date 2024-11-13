@@ -14,7 +14,7 @@ import java.util.stream.Stream;
 public abstract class PollDTO {
 
     // ---- Poll Messages ----
-    public static final String MESSAGE_POLL_ID_REQUIRED = "Poll id is required";
+    public static final String MESSAGE_POLL_ID_REQUIRED = "Poll value is required";
     public static final String MESSAGE_POLL_TEXT_REQUIRED = "Poll text is required";
     public static final String MESSAGE_POLL_OPTIONS_REQUIRED = "Poll options is required";
 
@@ -45,7 +45,7 @@ public abstract class PollDTO {
     ) {
         public Poll apply(Poll poll) {
             if (!Objects.equals(id, poll.getId()))
-                throw new IllegalArgumentException("id mismatch");
+                throw new IllegalArgumentException("value mismatch");
             title.filter(Predicate.not(String::isBlank)).ifPresent(poll::setText);
             index.ifPresent(poll::setIndex);
             if (!option_deletions.isEmpty())

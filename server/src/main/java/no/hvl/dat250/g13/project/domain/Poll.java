@@ -11,7 +11,7 @@ public class Poll {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private PollKey id;
+    private Long id;
 
     private int index;
 
@@ -37,11 +37,11 @@ public class Poll {
 
     // Getters and Setters
     public PollKey getId() {
-        return id;
+        return new PollKey(id);
     }
 
     public void setId(PollKey id) {
-        this.id = id;
+        this.id = id.value();
     }
 
     public int getIndex() {

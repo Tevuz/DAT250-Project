@@ -42,11 +42,11 @@ public class VoteService {
     /**
      * Update a vote.
      *
-     * @param info {@link VoteDTO.Info} with new options to replace the vote with id=={@code info.id}
+     * @param info {@link VoteDTO.Info} with new options to replace the vote with value=={@code info.value}
      * @return {@code Result<VoteDTO.Info, ServiceError>}:
      *      <ul>
      *          <li>{@link VoteDTO.Info} if updated</li>
-     *          <li>{@link ServiceError} of {@link HttpStatus#NOT_FOUND NOT_FOUND} if vote with {@code info.id} does not exist </li>
+     *          <li>{@link ServiceError} of {@link HttpStatus#NOT_FOUND NOT_FOUND} if vote with {@code info.value} does not exist </li>
      *      </ul>
      */
     public Result<VoteDTO.Info, ServiceError> updateVote(VoteDTO.Update info) {
@@ -69,11 +69,11 @@ public class VoteService {
     /**
      * Read a vote.
      *
-     * @param info {@link VoteDTO.Info} with user id and survey id for the vote to read
+     * @param info {@link VoteDTO.Info} with user value and survey value for the vote to read
      * @return {@code Result<VoteDTO.Info, ServiceError>}:
      *      <ul>
      *          <li>{@link VoteDTO.Info} if found</li>
-     *          <li>{@link ServiceError} of {@link HttpStatus#NOT_FOUND NOT_FOUND} if vote with {@code info.id} does not exist </li>
+     *          <li>{@link ServiceError} of {@link HttpStatus#NOT_FOUND NOT_FOUND} if vote with {@code info.value} does not exist </li>
      *      </ul>
      */
     public Result<VoteDTO.Info, ServiceError> readVoteById(VoteDTO.Id info) {
@@ -88,7 +88,7 @@ public class VoteService {
     /**
      * Read all votes registered to a user.
      *
-     * @param info {@link VoteDTO.Info} with user id for the votes to read
+     * @param info {@link VoteDTO.Info} with user value for the votes to read
      * @return {@code Result<VoteDTO.Info, ServiceError>}:
      *      <ul>
      *          <li>{@link Iterable} of {@link VoteDTO.Info}</li>
@@ -102,7 +102,7 @@ public class VoteService {
     /**
      * Read all votes registered to a survey.
      *
-     * @param info {@link VoteDTO.Info} with survey id for the votes to read
+     * @param info {@link VoteDTO.Info} with survey value for the votes to read
      * @return {@code Result<VoteDTO.Info, ServiceError>}:
      *      <ul>
      *          <li>{@link Iterable} of {@link VoteDTO.Info}</li>
@@ -129,11 +129,11 @@ public class VoteService {
     /**
      * Delete a vote.
      *
-     * @param info {@link VoteDTO.Info} with user id and survey id for the vote to delete
+     * @param info {@link VoteDTO.Info} with user value and survey value for the vote to delete
      * @return {@code Result<VoteDTO.Info, ServiceError>}:
      *      <ul>
      *          <li>{@link VoteDTO.Info null} if deleted</li>
-     *          <li>{@link ServiceError} of {@link HttpStatus#NOT_FOUND NOT_FOUND} if vote with {@code info.id} does not exist </li>
+     *          <li>{@link ServiceError} of {@link HttpStatus#NOT_FOUND NOT_FOUND} if vote with {@code info.value} does not exist </li>
      *      </ul>
      */
     public Result<VoteDTO.Info, ServiceError> deleteVote(VoteDTO.Id info) {

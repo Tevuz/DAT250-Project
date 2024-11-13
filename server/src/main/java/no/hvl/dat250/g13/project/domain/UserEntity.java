@@ -9,7 +9,7 @@ import java.util.Objects;
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private UserKey id;
+    private Long id;
 
     private String username;
 
@@ -18,17 +18,17 @@ public class UserEntity {
 
     // All-arguments constructor
     public UserEntity(UserKey id, String username) {
-        this.id = id;
-        this.username = username;
+        setId(id);
+        setUsername(username);
     }
 
     // Getters and Setters
     public UserKey getId() {
-        return id;
+        return new UserKey(id);
     }
 
     public void setId(UserKey id) {
-        this.id = id;
+        this.id = id.value();
     }
 
     public String getUsername() {

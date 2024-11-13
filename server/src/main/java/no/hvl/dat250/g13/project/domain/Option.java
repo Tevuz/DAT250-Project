@@ -10,7 +10,7 @@ public class Option {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private OptionKey id;
+    private Long id;
 
     private int index;
 
@@ -32,11 +32,11 @@ public class Option {
 
     // Getters and Setters
     public OptionKey getId() {
-        return id;
+        return new OptionKey(id);
     }
 
     public void setId(OptionKey id) {
-        this.id = id;
+        this.id = id.value();
     }
 
     public int getIndex() {

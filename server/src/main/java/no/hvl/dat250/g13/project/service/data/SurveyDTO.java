@@ -17,8 +17,8 @@ import java.util.stream.Stream;
 public abstract class SurveyDTO {
 
     // ---- SurveyDTO Messages ----
-    public static final String MESSAGE_SURVEY_ID_REQUIRED = "Survey id is required";
-    public static final String MESSAGE_SURVEY_AUTHOR_ID_REQUIRED = "Survey author id is required";
+    public static final String MESSAGE_SURVEY_ID_REQUIRED = "Survey value is required";
+    public static final String MESSAGE_SURVEY_AUTHOR_ID_REQUIRED = "Survey author value is required";
     public static final String MESSAGE_SURVEY_TITLE_REQUIRED = "Survey title is required";
     public static final String MESSAGE_SURVEY_POLLS_REQUIRED = "Survey polls is required";
 
@@ -51,7 +51,7 @@ public abstract class SurveyDTO {
     ) {
         public Survey apply(Survey survey) {
             if (!Objects.equals(id, survey.getId()))
-                throw new IllegalArgumentException("id mismatch");
+                throw new IllegalArgumentException("value mismatch");
             title.filter(Predicate.not(String::isBlank)).ifPresent(survey::setTitle);
             if (!poll_deletions.isEmpty())
                     survey.setPolls(survey.getPolls().stream()

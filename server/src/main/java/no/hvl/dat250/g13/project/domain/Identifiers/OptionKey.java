@@ -10,12 +10,12 @@ import java.io.IOException;
 import java.io.Serializable;
 
 @JsonSerialize(using = OptionKey.Serializer.class)
-public record OptionKey(@NotNull Long id) implements Serializable {
+public record OptionKey(@NotNull Long value) implements Serializable {
 
     static class Serializer extends JsonSerializer<OptionKey> {
         @Override
         public void serialize(OptionKey key, JsonGenerator gen, SerializerProvider serializers) throws IOException {
-            gen.writeNumber(key.id());
+            gen.writeNumber(key.value());
         }
     }
 }
