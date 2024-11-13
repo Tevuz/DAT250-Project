@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
+import no.hvl.dat250.g13.project.domain.Identifiers.UserKey;
 import no.hvl.dat250.g13.project.domain.UserEntity;
 
 import java.util.Objects;
@@ -52,7 +53,7 @@ public abstract class UserDTO {
      */
     public record Update(
             @NotNull(message = MESSAGE_USER_ID_REQUIRED)
-            Long id,
+            UserKey id,
             Optional<
                 @Size(min = USERNAME_LENGTH_MIN, message = MESSAGE_USERNAME_TO_SHORT)
                 @Size(max = USERNAME_LENGTH_MAX, message = MESSAGE_USERNAME_TO_LONG)
@@ -63,7 +64,7 @@ public abstract class UserDTO {
             this(entity.getId(), Optional.ofNullable(entity.getUsername()));
         }
 
-        public UserEntity modify(UserEntity entity) {
+        public UserEntity apply(UserEntity entity) {
             if (!Objects.equals(id, entity.getId()))
                 throw new IllegalArgumentException("id mismatch");
             username.ifPresent(entity::setUsername);
@@ -78,7 +79,7 @@ public abstract class UserDTO {
      */
     public record Info(
             @NotNull(message = MESSAGE_USER_ID_REQUIRED)
-            Long id,
+            UserKey id,
             @NotNull(message = MESSAGE_USERNAME_REQUIRED)
             @Size(min = USERNAME_LENGTH_MIN, message = MESSAGE_USERNAME_TO_SHORT)
             @Size(max = USERNAME_LENGTH_MAX, message = MESSAGE_USERNAME_TO_LONG)
@@ -96,7 +97,7 @@ public abstract class UserDTO {
      */
     public record Id(
             @NotNull(message = MESSAGE_USER_ID_REQUIRED)
-            Long id
+            UserKey id
     ) {
         public Id(UserEntity entity) {
             this(entity.getId());

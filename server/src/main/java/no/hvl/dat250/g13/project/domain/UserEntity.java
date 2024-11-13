@@ -1,6 +1,7 @@
 package no.hvl.dat250.g13.project.domain;
 
 import jakarta.persistence.*;
+import no.hvl.dat250.g13.project.domain.Identifiers.UserKey;
 
 import java.util.Objects;
 
@@ -8,7 +9,7 @@ import java.util.Objects;
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private UserKey id;
 
     private String username;
 
@@ -16,17 +17,17 @@ public class UserEntity {
     public UserEntity() {}
 
     // All-arguments constructor
-    public UserEntity(Long id, String username) {
+    public UserEntity(UserKey id, String username) {
         this.id = id;
         this.username = username;
     }
 
     // Getters and Setters
-    public Long getId() {
+    public UserKey getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UserKey id) {
         this.id = id;
     }
 

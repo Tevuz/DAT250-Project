@@ -60,7 +60,7 @@ public class UserService {
             userRepository.existsByUsername(info.username().get()))
             return new Result.Error<>(new ServiceError(HttpStatus.CONFLICT, "Username is not available"));
 
-        info.modify(user);
+        info.apply(user);
 
         return new Result.Ok<>(new UserDTO.Info(userRepository.save(user)));
     }
