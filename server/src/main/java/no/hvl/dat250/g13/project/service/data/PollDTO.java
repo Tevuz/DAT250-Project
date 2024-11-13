@@ -24,7 +24,7 @@ public abstract class PollDTO {
             Optional<Integer> index,
             @NotEmpty(message = MESSAGE_POLL_OPTIONS_REQUIRED)
             List<OptionDTO.Create> options
-    ) {
+    ) implements Validate {
         public Poll into() {
             Poll poll = new Poll();
             poll.setText(title);
@@ -42,7 +42,7 @@ public abstract class PollDTO {
             List<OptionDTO.Create> option_additions,
             List<OptionDTO.Update> option_modifications,
             List<OptionDTO.Id> option_deletions
-    ) {
+    ) implements Validate {
         public Poll apply(Poll poll) {
             if (!Objects.equals(id, poll.getId()))
                 throw new IllegalArgumentException("value mismatch");
@@ -68,7 +68,7 @@ public abstract class PollDTO {
             String title,
             int order,
             List<OptionDTO.Info> options
-    ) {
+    ) implements Validate {
         public Info(Poll poll) {
             this(poll.getId(), poll.getText(), poll.getIndex(), poll.getOptions().stream().map(OptionDTO.Info::new).toList());
         }
@@ -78,5 +78,5 @@ public abstract class PollDTO {
             @NotNull(message = MESSAGE_POLL_ID_REQUIRED)
             @Valid
             PollKey id
-    ) { }
+    ) implements Validate { }
 }

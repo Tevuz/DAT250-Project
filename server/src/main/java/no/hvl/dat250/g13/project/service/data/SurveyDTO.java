@@ -30,7 +30,7 @@ public abstract class SurveyDTO {
             UserKey author,
             @NotEmpty(message = MESSAGE_SURVEY_POLLS_REQUIRED)
             List<PollDTO.Create> polls
-    ) {
+    ) implements Validate {
         public Survey into() {
             Survey survey = new Survey();
             survey.setTitle(title);
@@ -48,7 +48,7 @@ public abstract class SurveyDTO {
             List<PollDTO.Create> poll_additions,
             List<PollDTO.Update> poll_modifications,
             List<PollDTO.Id> poll_deletions
-    ) {
+    ) implements Validate {
         public Survey apply(Survey survey) {
             if (!Objects.equals(id, survey.getId()))
                 throw new IllegalArgumentException("value mismatch");
@@ -76,7 +76,7 @@ public abstract class SurveyDTO {
             String title,
             List<PollDTO.Info> polls,
             Optional<Integer> voteTotal
-    ) {
+    ) implements Validate {
         public Info(Survey survey) {
             this(survey.getId(), survey.getTitle(), survey.getPolls().stream().map(PollDTO.Info::new).toList(), Optional.empty());
         }
@@ -90,5 +90,5 @@ public abstract class SurveyDTO {
             @NotNull(message = MESSAGE_SURVEY_ID_REQUIRED)
             @Valid
             SurveyKey id
-    ) { }
+    ) implements Validate { }
 }

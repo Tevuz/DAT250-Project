@@ -1,5 +1,6 @@
 package no.hvl.dat250.g13.project.service.data;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -34,7 +35,7 @@ public abstract class UserDTO {
             @Size(max = USERNAME_LENGTH_MAX, message = MESSAGE_USERNAME_TO_LONG)
             @Pattern(regexp = USERNAME_PATTERN, message = MESSAGE_USERNAME_NOT_MATCHING_PATTERN)
             String username
-    ) {
+    ) implements Validate {
         public Create(UserEntity entity) {
             this(entity.getUsername());
         }
@@ -59,7 +60,7 @@ public abstract class UserDTO {
                 @Size(max = USERNAME_LENGTH_MAX, message = MESSAGE_USERNAME_TO_LONG)
                 @Pattern(regexp = USERNAME_PATTERN, message = MESSAGE_USERNAME_NOT_MATCHING_PATTERN)
                 String> username
-    ) {
+    ) implements Validate {
         public Update(UserEntity entity) {
             this(entity.getId(), Optional.ofNullable(entity.getUsername()));
         }
@@ -85,7 +86,7 @@ public abstract class UserDTO {
             @Size(max = USERNAME_LENGTH_MAX, message = MESSAGE_USERNAME_TO_LONG)
             @Pattern(regexp = USERNAME_PATTERN, message = MESSAGE_USERNAME_NOT_MATCHING_PATTERN)
             String username
-    ) {
+    ) implements Validate {
         public Info(UserEntity entity) {
             this(entity.getId(), entity.getUsername());
         }
@@ -98,7 +99,7 @@ public abstract class UserDTO {
     public record Id(
             @NotNull(message = MESSAGE_USER_ID_REQUIRED)
             UserKey id
-    ) {
+    ) implements Validate {
         public Id(UserEntity entity) {
             this(entity.getId());
         }
@@ -109,12 +110,12 @@ public abstract class UserDTO {
      * @param username
      */
     public record Username(
-            @NotNull(message = MESSAGE_USERNAME_REQUIRED)
+            @NotBlank(message = MESSAGE_USERNAME_REQUIRED)
             @Size(min = USERNAME_LENGTH_MIN, message = MESSAGE_USERNAME_TO_SHORT)
             @Size(max = USERNAME_LENGTH_MAX, message = MESSAGE_USERNAME_TO_LONG)
             @Pattern(regexp = USERNAME_PATTERN, message = MESSAGE_USERNAME_NOT_MATCHING_PATTERN)
             String username
-    ) {
+    ) implements Validate {
         public Username(UserEntity entity) {
             this(entity.getUsername());
         }

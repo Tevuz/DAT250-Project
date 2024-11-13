@@ -19,7 +19,7 @@ public abstract class OptionDTO {
             @NotBlank(message = MESSAGE_OPTION_TEXT_REQUIRED)
             String text,
             Optional<Integer> index
-    ) {
+    ) implements Validate {
         public Option into() {
             Option option = new Option();
             option.setText(text);
@@ -33,7 +33,7 @@ public abstract class OptionDTO {
             OptionKey id,
             Optional<String> text,
             Optional<Integer> index
-    ) {
+    ) implements Validate {
         public Option apply(Option option) {
             if (!Objects.equals(id, option.getId()))
                 throw new IllegalArgumentException("Id mismatch");
@@ -48,7 +48,7 @@ public abstract class OptionDTO {
         String text,
         Integer index,
         Optional<Integer> vote_count
-    ) {
+    ) implements Validate {
         public Info(Option option) {
             this(option.getId(), option.getText(), option.getIndex(), Optional.empty());
         }
@@ -61,6 +61,6 @@ public abstract class OptionDTO {
     public record Id(
             @NotNull(message = MESSAGE_OPTION_ID_REQUIRED)
             OptionKey id
-    ) { }
+    ) implements Validate { }
 
 }

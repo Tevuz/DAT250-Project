@@ -32,7 +32,7 @@ public abstract class VoteDTO {
             SurveyKey survey_id,
             @NotNull(message = MESSAGE_VOTE_OPTIONS_REQUIRED)
             Set<OptionKey> options
-    ) {
+    ) implements Validate {
         public Set<Vote> into() {
             return Streamable.of(options).map(option -> new Vote(user_id, survey_id, option)).toSet();
         }
@@ -53,7 +53,7 @@ public abstract class VoteDTO {
             @Pattern(regexp = "^(REPLACE|UNION|INTERSECT)$")
             String mode,
             Set<OptionKey> options
-    ) {
+    ) implements Validate {
         public Update(Vote vote) {
             this(vote.getUserId(), vote.getSurveyId(), "REPLACE", Set.of(vote.getOptionId()));
         }
@@ -93,7 +93,7 @@ public abstract class VoteDTO {
             SurveyKey survey_id,
             @NotNull(message = MESSAGE_VOTE_OPTIONS_REQUIRED)
             Set<OptionKey> options
-    ) {
+    ) implements Validate {
         public Info(UserKey user_id, SurveyKey survey_id, Iterable<Vote> votes) {
             this(user_id, survey_id, Streamable.of(votes).map(Vote::getOptionId).toSet());
         }
@@ -114,7 +114,7 @@ public abstract class VoteDTO {
             UserKey user_id,
             @NotNull(message = MESSAGE_VOTE_OPTIONS_REQUIRED)
             Map<SurveyKey, Set<OptionKey>> options
-    ) {
+    ) implements Validate {
         public UserVotes(UserKey user_id, Iterable<Vote> votes) {
             this(user_id, Streamable.of(votes).stream().collect(Collectors.groupingBy(Vote::getSurveyId, Collectors.mapping(Vote::getOptionId, Collectors.toSet()))));
         }
@@ -130,7 +130,7 @@ public abstract class VoteDTO {
             SurveyKey survey_id,
             @NotNull(message = MESSAGE_VOTE_OPTIONS_REQUIRED)
             Map<UserKey, Set<OptionKey>> options
-    ) {
+    ) implements Validate {
         public SurveyVotes(SurveyKey survey_id, Iterable<Vote> votes) {
             this(survey_id, Streamable.of(votes).stream().collect(Collectors.groupingBy(Vote::getUserId, Collectors.mapping(Vote::getOptionId, Collectors.toSet()))));
         }
@@ -146,7 +146,7 @@ public abstract class VoteDTO {
             UserKey user_id,
             @NotNull(message = MESSAGE_VOTE_SURVEY_ID_REQUIRED)
             SurveyKey survey_id
-    ) {
+    ) implements Validate {
         public Id(Vote vote) {
             this(vote.getUserId(), vote.getSurveyId());
         }
@@ -159,7 +159,7 @@ public abstract class VoteDTO {
     public record UserId(
             @NotNull(message = MESSAGE_VOTE_USER_ID_REQUIRED)
             UserKey user_id
-    ) { }
+    ) implements Validate { }
 
     /**
      *
@@ -168,5 +168,5 @@ public abstract class VoteDTO {
     public record SurveyId(
             @NotNull(message = MESSAGE_VOTE_SURVEY_ID_REQUIRED)
             SurveyKey survey_id
-    ) { }
+    ) implements Validate { }
 }
