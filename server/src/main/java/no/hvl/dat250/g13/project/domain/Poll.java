@@ -15,24 +15,24 @@ public class Poll {
 
     private int index;
 
-    @ManyToOne
-    private Survey survey;
-
     private String text;
 
-    @OneToMany(mappedBy = "poll", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "poll", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Option> options;
+
+    @ManyToOne
+    @JoinColumn
+    private Survey survey;
 
     // Default constructor (required by JPA)
     public Poll() {}
 
     // All-arguments constructor
-    public Poll(PollKey id, int index, Survey survey, String text, List<Option> options) {
-        this.id = id;
-        this.index = index;
-        this.survey = survey;
-        this.text = text;
-        this.options = options;
+    public Poll(PollKey id, int index, String text, List<Option> options) {
+        setId(id);
+        setIndex(index);
+        setText(text);
+        setOptions(options);
     }
 
     // Getters and Setters
@@ -52,14 +52,6 @@ public class Poll {
         this.index = index;
     }
 
-    public Survey getSurvey() {
-        return survey;
-    }
-
-    public void setSurvey(Survey survey) {
-        this.survey = survey;
-    }
-
     public String getText() {
         return text;
     }
@@ -73,7 +65,19 @@ public class Poll {
     }
 
     public void setOptions(List<Option> options) {
+        if (this.options != null)
+            this.options.forEach(option -> option.setPoll(null));
+        if (options != null)
+            options.forEach(option -> option.setPoll(this));
         this.options = options;
+    }
+
+    public Survey getSurvey() {
+        return survey;
+    }
+
+    public void setSurvey(Survey survey) {
+        this.survey = survey;
     }
 
     @Override
@@ -81,11 +85,11 @@ public class Poll {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Poll poll = (Poll) o;
-        return index == poll.index && Objects.equals(id, poll.id) && Objects.equals(survey, poll.survey) && Objects.equals(text, poll.text) && Objects.equals(options, poll.options);
+        return index == poll.index && Objects.equals(id, poll.id) && Objects.equals(text, poll.text) && Objects.equals(options, poll.options);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, index, survey, text, options);
+        return Objects.hash(id, index, text, options);
     }
 }

@@ -17,17 +17,17 @@ public class Option {
     private String text;
 
     @ManyToOne
+    @JoinColumn
     private Poll poll;
 
     // Default constructor (required by JPA)
     public Option() {}
 
     // All-arguments constructor
-    public Option(OptionKey id, int index, String text, Poll poll) {
-        this.id = id;
-        this.index = index;
-        this.text = text;
-        this.poll = poll;
+    public Option(OptionKey id, int index, String text) {
+        setId(id);
+        setIndex(index);
+        setText(text);
     }
 
     // Getters and Setters
@@ -68,11 +68,11 @@ public class Option {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Option option = (Option) o;
-        return index == option.index && Objects.equals(id, option.id) && Objects.equals(text, option.text) && Objects.equals(poll, option.poll);
+        return index == option.index && Objects.equals(id, option.id) && Objects.equals(text, option.text);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, index, text, poll);
+        return Objects.hash(id, index, text);
     }
 }
