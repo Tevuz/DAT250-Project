@@ -14,7 +14,7 @@ import java.util.Optional;
 @Component
 public class UserService {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -60,7 +60,7 @@ public class UserService {
             userRepository.existsByUsername(info.username().get()))
             return new Result.Error<>(new ServiceError(HttpStatus.CONFLICT, "Username is not available"));
 
-        user = info.modify(user);
+        info.modify(user);
 
         return new Result.Ok<>(new UserDTO.Info(userRepository.save(user)));
     }

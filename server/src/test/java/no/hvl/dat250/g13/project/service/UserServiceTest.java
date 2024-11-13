@@ -119,6 +119,6 @@ class UserServiceTest {
         var info = new UserDTO.Id(2L);
         var user = userService.deleteUser(info);
         assertTrue(user.isError());
-        assertEquals(HttpStatus.NOT_FOUND, user.getError().get().status());
+        assertEquals(HttpStatus.NOT_FOUND, user.error().status());
     }
 }

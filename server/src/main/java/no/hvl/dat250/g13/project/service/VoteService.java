@@ -14,7 +14,7 @@ import java.util.HashSet;
 @Component
 public class VoteService {
 
-    private VoteRepository voteRepository;
+    private final VoteRepository voteRepository;
 
     public VoteService(VoteRepository voteRepository) {
         this.voteRepository = voteRepository;

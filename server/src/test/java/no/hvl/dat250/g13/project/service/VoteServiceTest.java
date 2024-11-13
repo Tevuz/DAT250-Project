@@ -32,19 +32,6 @@ class VoteServiceTest {
 
     @BeforeEach
     void setupMock() {
-        /*Mockito.when(voteRepository.save(infoExists.into())).thenReturn(infoExists.into());
-        Mockito.when(voteRepository.save(infoEntry.into())).thenReturn(infoEntry.into());
-
-        Mockito.when(voteRepository.findById(infoExists.id().get())).thenReturn(Optional.of(infoExists.into()));
-        Mockito.when(voteRepository.findById(infoEntry.id().get())).thenReturn(Optional.of(infoEntry.into()));
-        Mockito.when(voteRepository.findById(infoNotFound.id().get())).thenReturn(Optional.empty());
-
-        Mockito.when(voteRepository.findAll()).thenReturn(Streamable.empty());
-
-        Mockito.when(voteRepository.existsById(infoExists.id().get())).thenReturn(true);
-        Mockito.when(voteRepository.existsById(infoEntry.id().get())).thenReturn(false);
-        Mockito.when(voteRepository.existsById(infoNotFound.id().get())).thenReturn(false);*/
-
         Mockito.when(voteRepository.save(any())).then(returnsFirstArg());
 
         Mockito.when(voteRepository.findAllByUserId(new UserKey(2L))).thenReturn(Streamable.of(new Vote(new UserKey(2L), new SurveyKey(2L), new OptionKey(1L))));

@@ -14,7 +14,7 @@ import java.util.Optional;
 @Component
 public class SurveyService {
 
-    private SurveyRepository surveyRepository;
+    private final SurveyRepository surveyRepository;
 
     public SurveyService(SurveyRepository surveyRepository) {
         this.surveyRepository = surveyRepository;

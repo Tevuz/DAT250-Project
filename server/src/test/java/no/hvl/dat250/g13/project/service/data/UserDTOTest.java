@@ -106,7 +106,7 @@ public class UserDTOTest {
 
     @Test
     void info_usernameMissing() {
-        var info = new UserDTO.Info(1L, (String)null);
+        var info = new UserDTO.Info(1L, null);
         var violations = validator.validate(info);
         assertEquals(1, violations.size());
         assertEquals("Username is required", violations.iterator().next().getMessage());
