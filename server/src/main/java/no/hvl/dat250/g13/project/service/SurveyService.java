@@ -2,7 +2,11 @@ package no.hvl.dat250.g13.project.service;
 
 import no.hvl.dat250.g13.project.domain.Survey;
 import no.hvl.dat250.g13.project.repository.SurveyRepository;
-import no.hvl.dat250.g13.project.service.data.SurveyDTO;
+import no.hvl.dat250.g13.project.repository.VoteRepository;
+import no.hvl.dat250.g13.project.service.data.survey.SurveyCreate;
+import no.hvl.dat250.g13.project.service.data.survey.SurveyId;
+import no.hvl.dat250.g13.project.service.data.survey.SurveyInfo;
+import no.hvl.dat250.g13.project.service.data.survey.SurveyUpdate;
 import no.hvl.dat250.g13.project.service.error.ServiceError;
 import no.hvl.dat250.g13.project.util.Result;
 import org.springframework.data.util.Streamable;
@@ -15,75 +19,89 @@ import java.util.Optional;
 public class SurveyService {
 
     private final SurveyRepository surveyRepository;
+    private final VoteRepository voteRepository;
 
-    public SurveyService(SurveyRepository surveyRepository) {
+    public SurveyService(SurveyRepository surveyRepository, VoteRepository voteRepository) {
         this.surveyRepository = surveyRepository;
+        this.voteRepository = voteRepository;
     }
 
     /**
      * Create a survey.
      *
-     * @param info {@link SurveyDTO.Info} with data for the new survey
+     * @param info {@link SurveyInfo} with data for the new survey
      * @return {@code Result<SurveyDTO.Info, ServiceError>}:
      *      <ul>
-     *          <li>{@link SurveyDTO.Info} if created</li>
+     *          <li>{@link SurveyInfo} if created</li>
      *      </ul>
      */
-    public Result<SurveyDTO.Info, ServiceError> createSurvey(SurveyDTO.Create info) {
+    public Result<SurveyInfo, ServiceError> createSurvey(SurveyCreate info) {
         Survey survey = info.into();
-        return new Result.Ok<>(new SurveyDTO.Info(surveyRepository.save(survey)));
+        return new Result.Ok<>(new SurveyInfo(surveyRepository.save(survey)));
     }
 
 
     /**
      * Update a survey.
      *
-     * @param info {@link SurveyDTO.Info} with data to replace the survey with value=={@code info.value}
+     * @param info {@link SurveyInfo} with data to replace the survey with value=={@code info.value}
      * @return {@code Result<SurveyDTO.Info, ServiceError>}:
      *      <ul>
-     *          <li>{@link SurveyDTO.Info} if updated</li>
+     *          <li>{@link SurveyInfo} if updated</li>
      *          <li>{@link ServiceError} of {@link HttpStatus#NOT_FOUND NOT_FOUND} if survey with {@code info.value} does not exist </li>
      *      </ul>
      */
-    public Result<SurveyDTO.Info, ServiceError> updateSurvey(SurveyDTO.Update info) {
+    public Result<SurveyInfo, ServiceError> updateSurvey(SurveyUpdate info) {
         Optional<Survey> optional = surveyRepository.findById(info.id());
         if (optional.isEmpty())
             return new Result.Error<>(new ServiceError(HttpStatus.NOT_FOUND, "Survey does not exist"));
 
         Survey survey = info.apply(optional.get());
-        return new Result.Ok<>(new SurveyDTO.Info(surveyRepository.save(survey)));
+        survey = surveyRepository.save(survey);
+        return new Result.Ok<>(new SurveyInfo(survey));
     }
 
     /**
      * Read a survey.
      *
-     * @param info {@link SurveyDTO.Info} with value for the survey to read
+     * @param info {@link SurveyInfo} with value for the survey to read
      * @return {@code Result<SurveyDTO.Info, ServiceError>}:
      *      <ul>
-     *          <li>{@link SurveyDTO.Info} if found</li>
+     *          <li>{@link SurveyInfo} if found</li>
      *          <li>{@link ServiceError} of {@link HttpStatus#NOT_FOUND NOT_FOUND} if survey with {@code info.value} does not exist </li>
      *      </ul>
      */
-    public Result<SurveyDTO.Info, ServiceError> readSurveyById(SurveyDTO.Id info) {
+    public Result<SurveyInfo, ServiceError> readSurveyById(SurveyId info) {
         Optional<Survey> optional = surveyRepository.findById(info.id());
         if (optional.isEmpty())
             return new Result.Error<>(new ServiceError(HttpStatus.NOT_FOUND, "Survey does not exist"));
 
-        return new Result.Ok<>(new SurveyDTO.Info(optional.get()));
-    }
+        optional.ifPresent(survey -> survey.setVoteTotal(voteRepository.countBySurvey(survey.getId())));
+        optional.stream()
+                .flatMap(survey -> survey.getPolls().stream())
+                .flatMap(poll -> poll.getOptions().stream())
+                .forEach(option -> option.setVoteCount(voteRepository.countByOption(option.getId())));
 
+        return new Result.Ok<>(new SurveyInfo(optional.get()));
+    }
 
     /**
      * Read all surveys.
      *
      * @return {@code Result<SurveyDTO.Info, ServiceError>}:
      *      <ul>
-     *          <li>{@link SurveyDTO.Info} list of all surveys</li>
+     *          <li>{@link SurveyInfo} list of all surveys</li>
      *      </ul>
      */
-    public Result<Iterable<SurveyDTO.Info>, ServiceError> readAllSurveys() {
+    public Result<Iterable<SurveyInfo>, ServiceError> readAllSurveys() {
         var surveys = surveyRepository.findAll();
-        return new Result.Ok<>(Streamable.of(surveys).map(SurveyDTO.Info::new));
+        Streamable.of(surveys).forEach(survey -> survey.setVoteTotal(voteRepository.countBySurvey(survey.getId())));
+        Streamable.of(surveys).stream()
+                .flatMap(survey -> survey.getPolls().stream())
+                .flatMap(poll -> poll.getOptions().stream())
+                .forEach(option -> option.setVoteCount(voteRepository.countByOption(option.getId())));
+
+        return new Result.Ok<>(Streamable.of(surveys).map(SurveyInfo::new).toList());
     }
 
     /*
@@ -101,14 +119,14 @@ public class SurveyService {
     /**
      * Delete a survey.
      *
-     * @param info {@link SurveyDTO.Id}  with value for the survey to delete
+     * @param info {@link SurveyId}  with value for the survey to delete
      * @return Result&lt;SurveyDTO.Info, ServiceError&gt;
      *      <ul>
      *          <li>{@link Object null} if deleted successfully</li>
      *          <li>{@link ServiceError} of {@link HttpStatus#NOT_FOUND NOT_FOUND} if survey with {@code info.value} does not exist </li>
      *      </ul>
      */
-    public Result<Object, ServiceError> deleteSurvey(SurveyDTO.Id info) {
+    public Result<Object, ServiceError> deleteSurvey(SurveyId info) {
         if (!surveyRepository.existsById(info.id()))
             return new Result.Error<>(new ServiceError(HttpStatus.NOT_FOUND, "Survey does not exist"));
 

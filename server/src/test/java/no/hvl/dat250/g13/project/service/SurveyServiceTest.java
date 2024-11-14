@@ -1,10 +1,10 @@
 package no.hvl.dat250.g13.project.service;
 
-import no.hvl.dat250.g13.project.domain.Identifiers.SurveyKey;
-import no.hvl.dat250.g13.project.domain.Identifiers.UserKey;
 import no.hvl.dat250.g13.project.domain.Survey;
 import no.hvl.dat250.g13.project.repository.SurveyRepository;
-import no.hvl.dat250.g13.project.service.data.*;
+import no.hvl.dat250.g13.project.service.data.survey.SurveyCreate;
+import no.hvl.dat250.g13.project.service.data.survey.SurveyId;
+import no.hvl.dat250.g13.project.service.data.survey.SurveyUpdate;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +30,7 @@ class SurveyServiceTest {
 
     @Test
     void createSurvey_ok() {
-        var create = new SurveyDTO.Create("Survey", new UserKey(1L), List.of());
+        var create = new SurveyCreate("Survey", 1l, List.of());
 
         Mockito.when(surveyRepository.save(any())).then(returnsFirstArg());
 
@@ -40,13 +40,13 @@ class SurveyServiceTest {
 
     @Test
     void updateSurvey_ok() {
-        var update = new SurveyDTO.Update(new SurveyKey(1L), Optional.empty(), List.of(), List.of(), List.of());
+        var update = new SurveyUpdate(1l, Optional.empty(), List.of(), List.of(), List.of());
         var survey = new Survey();
         survey.setId(update.id());
         survey.setPolls(List.of());
 
         Mockito.when(surveyRepository.existsById(any())).thenReturn(true);
-        Mockito.when(surveyRepository.findById(update.id())).thenReturn(Optional.of(survey));
+        Mockito.when(surveyRepository.findById(any())).thenReturn(Optional.of(survey));
         Mockito.when(surveyRepository.save(any())).then(returnsFirstArg());
 
         var result = surveyService.updateSurvey(update);
@@ -55,10 +55,10 @@ class SurveyServiceTest {
 
     @Test
     void updateSurvey_idNotFound() {
-        var update = new SurveyDTO.Update(new SurveyKey(1L), Optional.empty(), List.of(), List.of(), List.of());
+        var update = new SurveyUpdate(1l, Optional.empty(), List.of(), List.of(), List.of());
 
         Mockito.when(surveyRepository.existsById(any())).thenReturn(false);
-        Mockito.when(surveyRepository.findById(update.id())).thenReturn(Optional.empty());
+        Mockito.when(surveyRepository.findById(any())).thenReturn(Optional.empty());
         Mockito.when(surveyRepository.save(any())).thenReturn(returnsFirstArg());
 
         var result = surveyService.updateSurvey(update);
@@ -68,13 +68,13 @@ class SurveyServiceTest {
 
     @Test
     void readSurveyById_ok() {
-        var key = new SurveyDTO.Id(new SurveyKey(1L));
+        var key = new SurveyId(1l);
         var survey = new Survey();
         survey.setId(key.id());
         survey.setPolls(List.of());
 
         Mockito.when(surveyRepository.existsById(any())).thenReturn(true);
-        Mockito.when(surveyRepository.findById(key.id())).thenReturn(Optional.of(survey));
+        Mockito.when(surveyRepository.findById(any())).thenReturn(Optional.of(survey));
 
         var result = surveyService.readSurveyById(key);
         assertTrue(result.isOk());
@@ -82,10 +82,10 @@ class SurveyServiceTest {
 
     @Test
     void readSurveyById_idNotFound() {
-        var key = new SurveyDTO.Id(new SurveyKey(1L));
+        var key = new SurveyId(1l);
 
         Mockito.when(surveyRepository.existsById(any())).thenReturn(false);
-        Mockito.when(surveyRepository.findById(key.id())).thenReturn(Optional.empty());
+        Mockito.when(surveyRepository.findById(any())).thenReturn(Optional.empty());
 
         var result = surveyService.readSurveyById(key);
         assertTrue(result.isError());
@@ -100,7 +100,7 @@ class SurveyServiceTest {
 
     @Test
     void deleteSurvey_ok() {
-        var key = new SurveyDTO.Id(new SurveyKey(1L));
+        var key = new SurveyId(1l);
 
         Mockito.when(surveyRepository.existsById(any())).thenReturn(true);
 
@@ -110,8 +110,8 @@ class SurveyServiceTest {
     }
 
     @Test
-    void deleteSurvey() {
-        var key = new SurveyDTO.Id(new SurveyKey(1L));
+    void deleteSurvey_notFound() {
+        var key = new SurveyId(1l);
 
         Mockito.when(surveyRepository.existsById(any())).thenReturn(false);
 

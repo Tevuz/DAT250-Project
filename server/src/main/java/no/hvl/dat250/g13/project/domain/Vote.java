@@ -1,10 +1,6 @@
 package no.hvl.dat250.g13.project.domain;
 
 import jakarta.persistence.*;
-import no.hvl.dat250.g13.project.domain.Identifiers.OptionKey;
-import no.hvl.dat250.g13.project.domain.Identifiers.SurveyKey;
-import no.hvl.dat250.g13.project.domain.Identifiers.UserKey;
-import no.hvl.dat250.g13.project.domain.Identifiers.VoteKey;
 
 import java.util.Objects;
 
@@ -24,7 +20,7 @@ public class Vote {
     }
 
     // All-arguments constructor
-    public Vote(UserKey userId, SurveyKey surveyId, OptionKey optionId) {
+    public Vote(Long userId, Long surveyId, Long optionId) {
         setUserId(userId);
         setSurveyId(surveyId);
         setOptionId(optionId);
@@ -32,29 +28,28 @@ public class Vote {
 
 
     // Getters and Setters
-
-    public UserKey getUserId() {
-        return new UserKey(userId);
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setUserId(UserKey userId) {
-        this.userId = userId.value();
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
-    public SurveyKey getSurveyId() {
-        return new SurveyKey(surveyId);
+    public Long getSurveyId() {
+        return surveyId;
     }
 
-    public void setSurveyId(SurveyKey surveyId) {
-        this.surveyId = surveyId.value();
+    public void setSurveyId(Long surveyId) {
+        this.surveyId = surveyId;
     }
 
-    public OptionKey getOptionId() {
-        return new OptionKey(optionId);
+    public Long getOptionId() {
+        return optionId;
     }
 
-    public void setOptionId(OptionKey optionId) {
-        this.optionId = optionId.value();
+    public void setOptionId(Long optionId) {
+        this.optionId = optionId;
     }
 
     @Override

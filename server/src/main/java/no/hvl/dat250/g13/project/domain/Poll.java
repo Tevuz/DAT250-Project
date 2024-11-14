@@ -1,8 +1,8 @@
 package no.hvl.dat250.g13.project.domain;
 
 import jakarta.persistence.*;
-import no.hvl.dat250.g13.project.domain.Identifiers.PollKey;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -18,7 +18,7 @@ public class Poll {
     private String text;
 
     @OneToMany(mappedBy = "poll", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Option> options;
+    private List<Option> options = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn
@@ -28,7 +28,7 @@ public class Poll {
     public Poll() {}
 
     // All-arguments constructor
-    public Poll(PollKey id, int index, String text, List<Option> options) {
+    public Poll(Long id, int index, String text, List<Option> options) {
         setId(id);
         setIndex(index);
         setText(text);
@@ -36,12 +36,12 @@ public class Poll {
     }
 
     // Getters and Setters
-    public PollKey getId() {
-        return new PollKey(id);
+    public Long getId() {
+        return id;
     }
 
-    public void setId(PollKey id) {
-        this.id = id.value();
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public int getIndex() {
@@ -69,7 +69,8 @@ public class Poll {
             this.options.forEach(option -> option.setPoll(null));
         if (options != null)
             options.forEach(option -> option.setPoll(this));
-        this.options = options;
+        this.options.clear();
+        this.options.addAll(options);
     }
 
     public Survey getSurvey() {

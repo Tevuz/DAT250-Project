@@ -3,7 +3,7 @@ package no.hvl.dat250.g13.project.service.data;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
-import no.hvl.dat250.g13.project.domain.Identifiers.UserKey;
+import no.hvl.dat250.g13.project.service.data.user.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -23,7 +23,7 @@ public class UserDTOTest {
 
     @Test
     void create_usernameMissing() {
-        var info = new UserDTO.Create((String)null);
+        var info = new UserCreate((String)null);
         var violations = validator.validate(info);
         assertEquals(1, violations.size());
         assertEquals("Username is required", violations.iterator().next().getMessage());
@@ -32,13 +32,13 @@ public class UserDTOTest {
     @Test
     void create_usernameMinLength() {
         {
-            var info = new UserDTO.Create("12");
+            var info = new UserCreate("12");
             var violations = validator.validate(info);
             assertEquals(1, violations.size());
-            assertEquals("Username is to short", violations.iterator().next().getMessage());
+            assertEquals("Username must be between 3 and 20 characters long", violations.iterator().next().getMessage());
         }
         {
-            var info = new UserDTO.Create("123");
+            var info = new UserCreate("123");
             var violations = validator.validate(info);
             assertEquals(0, violations.size());
         }
@@ -47,13 +47,13 @@ public class UserDTOTest {
     @Test
     void create_usernameMaxLength() {
         {
-            var info = new UserDTO.Create("12345678901234567890a");
+            var info = new UserCreate("12345678901234567890a");
             var violations = validator.validate(info);
             assertEquals(1, violations.size());
-            assertEquals("Username is to long", violations.iterator().next().getMessage());
+            assertEquals("Username must be between 3 and 20 characters long", violations.iterator().next().getMessage());
         }
         {
-            var info = new UserDTO.Create("12345678901234567890");
+            var info = new UserCreate("12345678901234567890");
             var violations = validator.validate(info);
             assertEquals(0, violations.size());
         }
@@ -61,7 +61,7 @@ public class UserDTOTest {
 
     @Test
     void update_idMissing() {
-        var info = new UserDTO.Update(null, Optional.of("username"));
+        var info = new UserUpdate(null, Optional.of("username"));
         var violations = validator.validate(info);
         assertEquals(1, violations.size());
         assertEquals("User value is required", violations.iterator().next().getMessage());
@@ -69,7 +69,7 @@ public class UserDTOTest {
 
     @Test
     void update_usernameOptional() {
-        var info = new UserDTO.Update(new UserKey(1L), Optional.empty());
+        var info = new UserUpdate(1L, Optional.empty());
         var violations = validator.validate(info);
         assertEquals(0, violations.size());
     }
@@ -77,13 +77,13 @@ public class UserDTOTest {
     @Test
     void update_usernameMinLength() {
         {
-            var info = new UserDTO.Update(new UserKey(1L), Optional.of("12"));
+            var info = new UserUpdate(1L, Optional.of("12"));
             var violations = validator.validate(info);
             assertEquals(1, violations.size());
-            assertEquals("Username is to short", violations.iterator().next().getMessage());
+            assertEquals("Username must be between 3 and 20 characters long", violations.iterator().next().getMessage());
         }
         {
-            var info = new UserDTO.Update(new UserKey(1L), Optional.of("123"));
+            var info = new UserUpdate(1L, Optional.of("123"));
             var violations = validator.validate(info);
             assertEquals(0, violations.size());
         }
@@ -92,13 +92,13 @@ public class UserDTOTest {
     @Test
     void update_usernameMaxLength() {
         {
-            var info = new UserDTO.Update(new UserKey(1L), Optional.of("12345678901234567890a"));
+            var info = new UserUpdate(1L, Optional.of("12345678901234567890a"));
             var violations = validator.validate(info);
             assertEquals(1, violations.size());
-            assertEquals("Username is to long", violations.iterator().next().getMessage());
+            assertEquals("Username must be between 3 and 20 characters long", violations.iterator().next().getMessage());
         }
         {
-            var info = new UserDTO.Update(new UserKey(1L), Optional.of("12345678901234567890"));
+            var info = new UserUpdate(1L, Optional.of("12345678901234567890"));
             var violations = validator.validate(info);
             assertEquals(0, violations.size());
         }
@@ -106,7 +106,7 @@ public class UserDTOTest {
 
     @Test
     void info_idMissing() {
-        var info = new UserDTO.Info(null, "username");
+        var info = new UserInfo(null, "username");
         var violations = validator.validate(info);
         assertEquals(1, violations.size());
         assertEquals("User value is required", violations.iterator().next().getMessage());
@@ -114,7 +114,7 @@ public class UserDTOTest {
 
     @Test
     void info_usernameMissing() {
-        var info = new UserDTO.Info(new UserKey(1L), null);
+        var info = new UserInfo(1L, null);
         var violations = validator.validate(info);
         assertEquals(1, violations.size());
         assertEquals("Username is required", violations.iterator().next().getMessage());
@@ -123,13 +123,13 @@ public class UserDTOTest {
     @Test
     void info_usernameMinLength() {
         {
-            var info = new UserDTO.Info(new UserKey(1L), "12");
+            var info = new UserInfo(1L, "12");
             var violations = validator.validate(info);
             assertEquals(1, violations.size());
-            assertEquals("Username is to short", violations.iterator().next().getMessage());
+            assertEquals("Username must be between 3 and 20 characters long", violations.iterator().next().getMessage());
         }
         {
-            var info = new UserDTO.Info(new UserKey(1L), "123");
+            var info = new UserInfo(1L, "123");
             var violations = validator.validate(info);
             assertEquals(0, violations.size());
         }
@@ -138,13 +138,13 @@ public class UserDTOTest {
     @Test
     void info_usernameMaxLength() {
         {
-            var info = new UserDTO.Info(new UserKey(1L), "12345678901234567890a");
+            var info = new UserInfo(1L, "12345678901234567890a");
             var violations = validator.validate(info);
             assertEquals(1, violations.size());
-            assertEquals("Username is to long", violations.iterator().next().getMessage());
+            assertEquals("Username must be between 3 and 20 characters long", violations.iterator().next().getMessage());
         }
         {
-            var info = new UserDTO.Info(new UserKey(1L), "12345678901234567890");
+            var info = new UserInfo(1L, "12345678901234567890");
             var violations = validator.validate(info);
             assertEquals(0, violations.size());
         }
@@ -152,14 +152,14 @@ public class UserDTOTest {
 
     @Test
     void id_ok() {
-        var info = new UserDTO.Id(new UserKey(1L));
+        var info = new UserId(1L);
         var violations = validator.validate(info);
         assertEquals(0, violations.size());
     }
 
     @Test
     void id_idMissing() {
-        var info = new UserDTO.Id((UserKey) null);
+        var info = new UserId((Long) null);
         var violations = validator.validate(info);
         assertEquals(1, violations.size());
         assertEquals("User value is required", violations.iterator().next().getMessage());
@@ -167,7 +167,7 @@ public class UserDTOTest {
 
     @Test
     void username_usernameMissing() {
-        var info = new UserDTO.Username((String)null);
+        var info = new UserUsername((String) null);
         var violations = validator.validate(info);
         assertEquals(1, violations.size());
         assertEquals("Username is required", violations.iterator().next().getMessage());
@@ -176,13 +176,13 @@ public class UserDTOTest {
     @Test
     void username_usernameMinLength() {
         {
-            var info = new UserDTO.Username("12");
+            var info = new UserUsername("12");
             var violations = validator.validate(info);
             assertEquals(1, violations.size());
-            assertEquals("Username is to short", violations.iterator().next().getMessage());
+            assertEquals("Username must be between 3 and 20 characters long", violations.iterator().next().getMessage());
         }
         {
-            var info = new UserDTO.Username("123");
+            var info = new UserUsername("123");
             var violations = validator.validate(info);
             assertEquals(0, violations.size());
         }
@@ -191,13 +191,13 @@ public class UserDTOTest {
     @Test
     void username_usernameMaxLength() {
         {
-            var info = new UserDTO.Username("12345678901234567890a");
+            var info = new UserUsername("12345678901234567890a");
             var violations = validator.validate(info);
             assertEquals(1, violations.size());
-            assertEquals("Username is to long", violations.iterator().next().getMessage());
+            assertEquals("Username must be between 3 and 20 characters long", violations.iterator().next().getMessage());
         }
         {
-            var info = new UserDTO.Username("12345678901234567890");
+            var info = new UserUsername("12345678901234567890");
             var violations = validator.validate(info);
             assertEquals(0, violations.size());
         }

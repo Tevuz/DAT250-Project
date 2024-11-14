@@ -1,28 +1,38 @@
 package no.hvl.dat250.g13.project.repository;
 
-import no.hvl.dat250.g13.project.domain.Identifiers.SurveyKey;
-import no.hvl.dat250.g13.project.domain.Identifiers.UserKey;
-import no.hvl.dat250.g13.project.domain.Identifiers.VoteKey;
+import no.hvl.dat250.g13.project.domain.VoteKey;
 import no.hvl.dat250.g13.project.domain.Vote;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface VoteRepository extends CrudRepository<Vote, VoteKey> {
 
-    Iterable<Vote> findAllByUserId(UserKey userId);
+    Iterable<Vote> findAllByUserId(Long userId);
 
-    Iterable<Vote> findAllBySurveyId(SurveyKey surveyId);
+    Iterable<Vote> findAllBySurveyId(Long surveyId);
 
-    boolean existsByUserIdAndSurveyId(UserKey userId, SurveyKey surveyId);
+    Iterable<Vote> findAllByOptionId(Long optionId);
 
-    default boolean existsBy(UserKey userId, SurveyKey surveyId) {
-        return existsByUserIdAndSurveyId(userId, surveyId);
+    boolean existsByUserIdAndSurveyId(Long userId, Long surveyId);
+
+    Iterable<Vote> findAllByUserIdAndSurveyId(Long userId, Long surveyId);
+
+    long countDistinctByUserIdAndSurveyId(Long userId, Long surveyId);
+    long countDistinctByUserIdAndOptionId(Long userId, Long optionId);
+
+    default long countBySurvey(Long surveyId) {
+        var votes = findAllBySurveyId(surveyId);
+        return Streamable.of(votes).stream()
+                .map(vote -> countDistinctByUserIdAndSurveyId(vote.getUserId(), surveyId))
+                .reduce(0L, Long::sum);
     }
 
-
-    Iterable<Vote> findAllByUserIdAndSurveyId(UserKey userId, SurveyKey surveyId);
-    default Iterable<Vote> findAllBy(UserKey userId, SurveyKey surveyId) {
-        return findAllByUserIdAndSurveyId(userId, surveyId);
+    default long countByOption(Long optionId) {
+        var votes = findAllByOptionId(optionId);
+        return Streamable.of(votes).stream()
+                .map(vote -> countDistinctByUserIdAndOptionId(vote.getUserId(), optionId))
+                .reduce(0L, Long::sum);
     }
 }

@@ -1,9 +1,10 @@
 package no.hvl.dat250.g13.project.service;
 
-import no.hvl.dat250.g13.project.domain.Identifiers.UserKey;
 import no.hvl.dat250.g13.project.domain.UserEntity;
 import no.hvl.dat250.g13.project.repository.UserRepository;
-import no.hvl.dat250.g13.project.service.data.UserDTO;
+import no.hvl.dat250.g13.project.service.data.user.UserCreate;
+import no.hvl.dat250.g13.project.service.data.user.UserId;
+import no.hvl.dat250.g13.project.service.data.user.UserUpdate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -33,23 +34,23 @@ class UserServiceTest {
 
         Mockito.when(userRepository.existsByUsername("exists")).thenReturn(true);
 
-        Mockito.when(userRepository.existsById(new UserKey(1L))).thenReturn(true);
-        Mockito.when(userRepository.existsById(new UserKey(2L))).thenReturn(false);
+        Mockito.when(userRepository.existsById(1L)).thenReturn(true);
+        Mockito.when(userRepository.existsById(2L)).thenReturn(false);
 
-        Mockito.when(userRepository.findById(new UserKey(1L))).thenReturn(Optional.of(new UserEntity(new UserKey(1L), "username")));
-        Mockito.when(userRepository.findById(new UserKey(2L))).thenReturn(Optional.empty());
+        Mockito.when(userRepository.findById(1L)).thenReturn(Optional.of(new UserEntity(1l, "username")));
+        Mockito.when(userRepository.findById(2L)).thenReturn(Optional.empty());
     }
 
     @Test
     void createUser_ok() {
-        var info = new UserDTO.Create("user");
+        var info = new UserCreate("user");
         var user = userService.createUser(info);
         assertTrue(user.isOk());
     }
 
     @Test
     void createUser_usernameTaken() {
-        var info = new UserDTO.Create("exists");
+        var info = new UserCreate("exists");
         var user = userService.createUser(info);
         assertTrue(user.isError());
         assertEquals(HttpStatus.CONFLICT, user.error().status());
@@ -57,14 +58,14 @@ class UserServiceTest {
 
     @Test
     void updateUser_ok() {
-        var info = new UserDTO.Update(new UserKey(1L), Optional.empty());
+        var info = new UserUpdate(1l, Optional.empty());
         var user = userService.updateUser(info);
         assertTrue(user.isOk());
     }
 
     @Test
     void updateUser_usernameChange() {
-        var info = new UserDTO.Update(new UserKey(1L), Optional.of("changed"));
+        var info = new UserUpdate(1l, Optional.of("changed"));
         var user = userService.updateUser(info);
         assertTrue(user.isOk());
         assertEquals("changed", user.value().username());
@@ -72,7 +73,7 @@ class UserServiceTest {
 
     @Test
     void updateUser_idNotFound() {
-        var info = new UserDTO.Update(new UserKey(2L), Optional.of("changed"));
+        var info = new UserUpdate(2l, Optional.of("changed"));
         var user = userService.updateUser(info);
         assertTrue(user.isError());
         assertEquals(HttpStatus.NOT_FOUND, user.error().status());
@@ -80,7 +81,7 @@ class UserServiceTest {
 
     @Test
     void updateUser_usernameTaken() {
-        var info = new UserDTO.Update(new UserKey(1L), Optional.of("exists"));
+        var info = new UserUpdate(1l, Optional.of("exists"));
         var user = userService.updateUser(info);
         assertTrue(user.isError());
         assertEquals(HttpStatus.CONFLICT, user.error().status());
@@ -88,14 +89,14 @@ class UserServiceTest {
 
     @Test
     void readUserById_ok() {
-        var info = new UserDTO.Id(new UserKey(1L));
+        var info = new UserId(1l);
         var user = userService.readUserById(info);
         assertTrue(user.isOk());
     }
 
     @Test
     void readUserById_idNotFound() {
-        var info = new UserDTO.Id(new UserKey(2L));
+        var info = new UserId(2l);
         var user = userService.readUserById(info);
         assertTrue(user.isError());
         assertEquals(HttpStatus.NOT_FOUND, user.error().status());
@@ -109,7 +110,7 @@ class UserServiceTest {
 
     @Test
     void deleteUser_ok() {
-        var info = new UserDTO.Id(new UserKey(1L));
+        var info = new UserId(1l);
         var user = userService.deleteUser(info);
         assertTrue(user.isOk());
         assertTrue(user.getOk().isEmpty());
@@ -117,7 +118,7 @@ class UserServiceTest {
 
     @Test
     void deleteUser_idNotFound() {
-        var info = new UserDTO.Id(new UserKey(2L));
+        var info = new UserId(2l);
         var user = userService.deleteUser(info);
         assertTrue(user.isError());
         assertEquals(HttpStatus.NOT_FOUND, user.error().status());

@@ -1,7 +1,6 @@
 package no.hvl.dat250.g13.project.domain;
 
 import jakarta.persistence.*;
-import no.hvl.dat250.g13.project.domain.Identifiers.OptionKey;
 
 import java.util.Objects;
 
@@ -20,23 +19,26 @@ public class Option {
     @JoinColumn
     private Poll poll;
 
+    @Transient
+    private Long voteCount;
+
     // Default constructor (required by JPA)
     public Option() {}
 
     // All-arguments constructor
-    public Option(OptionKey id, int index, String text) {
+    public Option(Long id, int index, String text) {
         setId(id);
         setIndex(index);
         setText(text);
     }
 
     // Getters and Setters
-    public OptionKey getId() {
-        return new OptionKey(id);
+    public Long getId() {
+        return id;
     }
 
-    public void setId(OptionKey id) {
-        this.id = id.value();
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public int getIndex() {
@@ -61,6 +63,14 @@ public class Option {
 
     public void setPoll(Poll poll) {
         this.poll = poll;
+    }
+
+    public Long getVoteCount() {
+        return voteCount;
+    }
+
+    public void setVoteCount(Long voteCount) {
+        this.voteCount = voteCount;
     }
 
     @Override

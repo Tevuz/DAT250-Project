@@ -1,12 +1,12 @@
 package no.hvl.dat250.g13.project.domain;
 
 import jakarta.persistence.*;
-import no.hvl.dat250.g13.project.domain.Identifiers.UserKey;
 
 import java.util.Objects;
 
 @Entity
 public class UserEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -17,18 +17,18 @@ public class UserEntity {
     public UserEntity() {}
 
     // All-arguments constructor
-    public UserEntity(UserKey id, String username) {
+    public UserEntity(Long id, String username) {
         setId(id);
         setUsername(username);
     }
 
     // Getters and Setters
-    public UserKey getId() {
-        return new UserKey(id);
+    public Long getId() {
+        return id;
     }
 
-    public void setId(UserKey id) {
-        this.id = id.value();
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getUsername() {
