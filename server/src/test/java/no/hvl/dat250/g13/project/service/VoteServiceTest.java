@@ -31,27 +31,27 @@ class VoteServiceTest {
     void setupMock() {
         Mockito.when(voteRepository.save(any())).then(returnsFirstArg());
 
-        Mockito.when(voteRepository.findAllByUserId(2l)).thenReturn(Streamable.of(new Vote(2l, 2l, 1l)));
-        Mockito.when(voteRepository.findAllBySurveyId(2l)).thenReturn(Streamable.of(new Vote(2l, 2l, 1l)));
+        Mockito.when(voteRepository.findAllByUserId(2L)).thenReturn(Streamable.of(new Vote(2L, 2L, 1L)));
+        Mockito.when(voteRepository.findAllBySurveyId(2L)).thenReturn(Streamable.of(new Vote(2L, 2L, 1L)));
 
-        Mockito.when(voteRepository.existsByUserIdAndSurveyId(1l, 1l)).thenReturn(false);
-        Mockito.when(voteRepository.existsByUserIdAndSurveyId(2l, 2l)).thenReturn(true);
-        Mockito.when(voteRepository.existsByUserIdAndSurveyId(3l, 3l)).thenReturn(false);
+        Mockito.when(voteRepository.existsByUserIdAndSurveyId(1L, 1L)).thenReturn(false);
+        Mockito.when(voteRepository.existsByUserIdAndSurveyId(2L, 2L)).thenReturn(true);
+        Mockito.when(voteRepository.existsByUserIdAndSurveyId(3L, 3L)).thenReturn(false);
 
-        Mockito.when(voteRepository.findAllByUserIdAndSurveyId(2l, 2l)).thenReturn(Streamable.of(new Vote(2l, 2l, 1l)));
-        Mockito.when(voteRepository.findAllByUserIdAndSurveyId(3l, 3l)).thenReturn(Streamable.of());
+        Mockito.when(voteRepository.findAllByUserIdAndSurveyId(2L, 2L)).thenReturn(Streamable.of(new Vote(2L, 2L, 1L)));
+        Mockito.when(voteRepository.findAllByUserIdAndSurveyId(3L, 3L)).thenReturn(Streamable.of());
     }
 
     @Test
     void createVote_ok() {
-        var info = new VoteCreate(1l, 1l, Set.of(1l));
+        var info = new VoteCreate(1L, 1L, Set.of(1L));
         var vote = voteService.createVote(info);
         assertTrue(vote.isOk());
     }
 
     @Test
     void createVote_exists() {
-        var info = new VoteCreate(2l, 2l, Set.of(1l));
+        var info = new VoteCreate(2L, 2L, Set.of(1L));
         var vote = voteService.createVote(info);
         assertTrue(vote.isError());
         assertEquals(HttpStatus.CONFLICT, vote.error().status());
@@ -59,14 +59,14 @@ class VoteServiceTest {
 
     @Test
     void updateVote_ok() {
-        var info = new VoteUpdate(2l, 2l, "REPLACE", Set.of(1l));
+        var info = new VoteUpdate(2L, 2L, "REPLACE", Set.of(1L));
         var vote = voteService.updateVote(info);
         assertTrue(vote.isOk());
     }
 
     @Test
     void updateVote_idNotFound() {
-        var info = new VoteUpdate(3l, 3l, "REPLACE", Set.of(1l));
+        var info = new VoteUpdate(3L, 3L, "REPLACE", Set.of(1L));
         var vote = voteService.updateVote(info);
         assertTrue(vote.isError());
         assertEquals(HttpStatus.NOT_FOUND, vote.error().status());
@@ -74,14 +74,14 @@ class VoteServiceTest {
 
     @Test
     void readVoteById_ok() {
-        var info = new VoteId(2l, 2l);
+        var info = new VoteId(2L, 2L);
         var vote = voteService.readVoteById(info);
         assertTrue(vote.isOk());
     }
 
     @Test
     void readVoteById_notFound() {
-        var info = new VoteId(3l, 3l);
+        var info = new VoteId(3L, 3L);
         var vote = voteService.readVoteById(info);
         assertTrue(vote.isError());
         assertEquals(HttpStatus.NOT_FOUND, vote.error().status());
@@ -89,14 +89,14 @@ class VoteServiceTest {
 
     @Test
     void readVotesByUserId_ok() {
-        var info = new VoteUserId(2l);
+        var info = new VoteUserId(2L);
         var vote = voteService.readVotesByUserId(info);
         assertTrue(vote.isOk());
     }
 
     @Test
     void readVotesBySurveyId_ok() {
-        var info = new VoteSurveyId(2l);
+        var info = new VoteSurveyId(2L);
         var votes = voteService.readVotesBySurveyId(info);
         assertTrue(votes.isOk());
     }
@@ -109,14 +109,14 @@ class VoteServiceTest {
 
     @Test
     void deleteVote_ok() {
-        var info = new VoteId(2l, 2l);
+        var info = new VoteId(2L, 2L);
         var vote = voteService.deleteVote(info);
         assertTrue(vote.isOk());
     }
 
     @Test
     void deleteVote_notFound() {
-        var info = new VoteId(1l, 1l);
+        var info = new VoteId(1L, 1L);
         var votes = voteService.deleteVote(info);
         assertTrue(votes.isError());
         assertEquals(HttpStatus.NOT_FOUND, votes.error().status());

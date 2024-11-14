@@ -27,7 +27,7 @@ class VoteDTOTest {
 
     @Test
     void create_ok() {
-        var info = new VoteCreate(1l, 1l, Set.of());
+        var info = new VoteCreate(1L, 1L, Set.of());
         var violations = validator.validate(info);
         assertEquals(0, violations.size());
     }
@@ -35,7 +35,7 @@ class VoteDTOTest {
 
     @Test
     void create_userIdMissing() {
-        var info = new VoteCreate(null, 1l, Set.of());
+        var info = new VoteCreate(null, 1L, Set.of());
         var violations = validator.validate(info);
         assertEquals(1, violations.size());
         assertEquals("User value is required", violations.iterator().next().getMessage());
@@ -43,7 +43,7 @@ class VoteDTOTest {
 
     @Test
     void create_surveyIdMissing() {
-        var info = new VoteCreate(1l,null, Set.of());
+        var info = new VoteCreate(1L,null, Set.of());
         var violations = validator.validate(info);
         assertEquals(1, violations.size());
         assertEquals("Survey value is required", violations.iterator().next().getMessage());
@@ -51,7 +51,7 @@ class VoteDTOTest {
 
     @Test
     void create_optionsMissing() {
-        var info = new VoteCreate(1l, 1l, null);
+        var info = new VoteCreate(1L, 1L, null);
         var violations = validator.validate(info);
         assertEquals(1, violations.size());
         assertEquals("Selected options is required", violations.iterator().next().getMessage());
@@ -59,7 +59,7 @@ class VoteDTOTest {
 
     @Test
     void update_ok() {
-        var info = new VoteUpdate(1l, 1l, "REPLACE", Set.of());
+        var info = new VoteUpdate(1L, 1L, "REPLACE", Set.of());
         var violations = validator.validate(info);
         assertEquals(0, violations.size());
     }
@@ -67,7 +67,7 @@ class VoteDTOTest {
 
     @Test
     void update_userIdMissing() {
-        var info = new VoteUpdate(null, 1l, "REPLACE", Set.of());
+        var info = new VoteUpdate(null, 1L, "REPLACE", Set.of());
         var violations = validator.validate(info);
         assertEquals(1, violations.size());
         assertEquals("User value is required", violations.iterator().next().getMessage());
@@ -75,7 +75,7 @@ class VoteDTOTest {
 
     @Test
     void update_surveyIdMissing() {
-        var info = new VoteUpdate(1l,null, "REPLACE", Set.of());
+        var info = new VoteUpdate(1L,null, "REPLACE", Set.of());
         var violations = validator.validate(info);
         assertEquals(1, violations.size());
         assertEquals("Survey value is required", violations.iterator().next().getMessage());
@@ -83,8 +83,8 @@ class VoteDTOTest {
 
     @Test
     void update_replace() {
-        var info = new VoteUpdate(1l,1l, "REPLACE", Set.of(1l));
-        var votes = Set.of(new Vote(1l, 1l, 2l));
+        var info = new VoteUpdate(1L,1L, "REPLACE", Set.of(1L));
+        var votes = Set.of(new Vote(1L, 1L, 2L));
 
         var save = new HashSet<Vote>();
         var delete = new HashSet<Vote>();
@@ -105,13 +105,13 @@ class VoteDTOTest {
 
         info.apply(votes, save, delete);
 
-        assertEquals(Optional.of(1l), save.stream().findAny().map(Vote::getOptionId));
+        assertEquals(Optional.of(1L), save.stream().findAny().map(Vote::getOptionId));
         assertEquals(Optional.empty(), delete.stream().findAny().map(Vote::getOptionId));
     }
 
     @Test
     void update_intersection() {
-        var info = new VoteUpdate(1L, 1L, "INTERSECT", Set.of(1l));
+        var info = new VoteUpdate(1L, 1L, "INTERSECT", Set.of(1L));
         var votes = Set.of(new Vote(1L, 1L, 2L));
 
         var save = new HashSet<Vote>();

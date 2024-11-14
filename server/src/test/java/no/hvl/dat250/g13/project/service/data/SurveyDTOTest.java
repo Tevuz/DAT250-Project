@@ -33,14 +33,14 @@ class SurveyDTOTest {
 
     @Test
     void create_ok() {
-        var info = new SurveyCreate("Survey", 1l, default_pollCreate());
+        var info = new SurveyCreate("Survey", 1L, default_pollCreate());
         var violations = validator.validate(info);
         assertEquals(0, violations.size());
     }
 
     @Test
     void create_titleMissing() {
-        var info = new SurveyCreate(null, 1l, default_pollCreate());
+        var info = new SurveyCreate(null, 1L, default_pollCreate());
         var violations = validator.validate(info);
         assertEquals(1, violations.size());
         assertEquals("Survey title is required", violations.iterator().next().getMessage());
@@ -48,7 +48,7 @@ class SurveyDTOTest {
 
     @Test
     void create_titleEmpty() {
-        var info = new SurveyCreate("", 1l, default_pollCreate());
+        var info = new SurveyCreate("", 1L, default_pollCreate());
         var violations = validator.validate(info);
         assertEquals(1, violations.size());
         assertEquals("Survey title is required", violations.iterator().next().getMessage());
@@ -56,7 +56,7 @@ class SurveyDTOTest {
 
     @Test
     void create_titleBlank() {
-        var info = new SurveyCreate(" \n", 1l, default_pollCreate());
+        var info = new SurveyCreate(" \n", 1L, default_pollCreate());
         var violations = validator.validate(info);
         assertEquals(1, violations.size());
         assertEquals("Survey title is required", violations.iterator().next().getMessage());
@@ -74,7 +74,7 @@ class SurveyDTOTest {
 
     @Test
     void create_pollsEmpty() {
-        var info = new SurveyCreate("Survey", 1l, List.of());
+        var info = new SurveyCreate("Survey", 1L, List.of());
         var violations = validator.validate(info);
         assertEquals(1, violations.size());
         assertEquals("Survey polls is required", violations.iterator().next().getMessage());
@@ -82,14 +82,14 @@ class SurveyDTOTest {
 
     @Test
     void create_into() {
-        var survey = new SurveyCreate("Survey", 1l, default_pollCreate()).into();
+        var survey = new SurveyCreate("Survey", 1L, default_pollCreate()).into();
         assertEquals("Survey", survey.getTitle());
         assertEquals("Poll", survey.getPolls().getFirst().getText());
     }
 
     @Test
     void update_ok() {
-        var info = new SurveyUpdate(1l, Optional.empty(),
+        var info = new SurveyUpdate(1L, Optional.empty(),
                 List.of(), List.of(), List.of());
         var violations = validator.validate(info);
         assertEquals(0, violations.size());
@@ -110,7 +110,7 @@ class SurveyDTOTest {
     void update_applyIdMismatch() {
         var survey = default_survey();
 
-        var info = new SurveyUpdate(2l, Optional.empty(),
+        var info = new SurveyUpdate(2L, Optional.empty(),
                 List.of(), List.of(), List.of());
         assertThrows(IllegalArgumentException.class, () -> info.apply(survey), "Id mismatch");
     }
@@ -119,7 +119,7 @@ class SurveyDTOTest {
     void update_applyNoChange() {
         var survey = default_survey();
 
-        var info = new SurveyUpdate(1l, Optional.empty(),
+        var info = new SurveyUpdate(1L, Optional.empty(),
                 List.of(), List.of(), List.of());
         info.apply(survey);
         assertEquals(default_survey(), survey);
@@ -129,7 +129,7 @@ class SurveyDTOTest {
     void update_applyTitleChange() {
         var survey = default_survey();
 
-        var info = new SurveyUpdate(1l, Optional.of("Changed"),
+        var info = new SurveyUpdate(1L, Optional.of("Changed"),
                 List.of(), List.of(), List.of());
         info.apply(survey);
         assertEquals("Changed", survey.getTitle());
@@ -139,7 +139,7 @@ class SurveyDTOTest {
     void update_applyTitleEmpty() {
         var survey = default_survey();
 
-        var info = new SurveyUpdate(1l, Optional.of(""),
+        var info = new SurveyUpdate(1L, Optional.of(""),
                 List.of(), List.of(), List.of());
         info.apply(survey);
         assertEquals("Survey", survey.getTitle());
@@ -149,7 +149,7 @@ class SurveyDTOTest {
     void update_applyTitleBlank() {
         var survey = default_survey();
 
-        var info = new SurveyUpdate(1l, Optional.of(" \n"),
+        var info = new SurveyUpdate(1L, Optional.of(" \n"),
                 List.of(), List.of(), List.of());
         info.apply(survey);
         assertEquals("Survey", survey.getTitle());
@@ -162,7 +162,7 @@ class SurveyDTOTest {
 
         var survey = default_survey();
 
-        var info = new SurveyUpdate(1l, Optional.empty(),
+        var info = new SurveyUpdate(1L, Optional.empty(),
                 List.of(pollAdd), List.of(), List.of());
         info.apply(survey);
         assertEquals(3, survey.getPolls().size());
@@ -171,12 +171,12 @@ class SurveyDTOTest {
 
     @Test
     void update_applyPollModifications() {
-        final var pollUpdate = new PollUpdate(2l, Optional.of("Changed"), Optional.empty(), List.of(), List.of(), List.of());
-        final var pollIgnore = new PollUpdate(9l, Optional.of("Ignored"), Optional.empty(), List.of(), List.of(), List.of());
+        final var pollUpdate = new PollUpdate(2L, Optional.of("Changed"), Optional.empty(), List.of(), List.of(), List.of());
+        final var pollIgnore = new PollUpdate(9L, Optional.of("Ignored"), Optional.empty(), List.of(), List.of(), List.of());
 
         var survey = default_survey();
 
-        var info = new SurveyUpdate(1l, Optional.empty(),
+        var info = new SurveyUpdate(1L, Optional.empty(),
                 List.of(), List.of(pollUpdate, pollIgnore), List.of());
         info.apply(survey);
         assertEquals(2, survey.getPolls().size());
@@ -186,12 +186,12 @@ class SurveyDTOTest {
 
     @Test
     void update_applyPollDeletions() {
-        final var pollDelete = new PollId(1l);
-        final var pollIgnore = new PollId(9l);
+        final var pollDelete = new PollId(1L);
+        final var pollIgnore = new PollId(9L);
 
         var survey = default_survey();
 
-        var info = new SurveyUpdate(1l, Optional.empty(),
+        var info = new SurveyUpdate(1L, Optional.empty(),
                 List.of(), List.of(), List.of(pollDelete, pollIgnore));
         info.apply(survey);
         assertEquals(1, survey.getPolls().size());
@@ -202,7 +202,7 @@ class SurveyDTOTest {
 
     @Test
     void id_ok() {
-        var info = new SurveyId(1l);
+        var info = new SurveyId(1L);
         var violations = validator.validate(info);
         assertEquals(0, violations.size());
     }
@@ -219,31 +219,31 @@ class SurveyDTOTest {
 
     Survey default_survey() {
         var option1 = new Option();
-        option1.setId(1l);
+        option1.setId(1L);
         option1.setText("Option1");
         option1.setIndex(0);
 
         var option2 = new Option();
-        option2.setId(2l);
+        option2.setId(2L);
         option2.setText("Option2");
         option2.setIndex(0);
 
         var poll1 = new Poll();
-        poll1.setId(1l);
+        poll1.setId(1L);
         poll1.setText("Poll1");
         poll1.setIndex(0);
         poll1.setOptions(List.of(option1));
 
         var poll2 = new Poll();
-        poll2.setId(2l);
+        poll2.setId(2L);
         poll2.setText("Poll2");
         poll2.setIndex(0);
         poll2.setOptions(List.of(option2));
 
         var survey = new Survey();
-        survey.setId(1l);
+        survey.setId(1L);
         survey.setTitle("Survey");
-        survey.setAuthorId(1l);
+        survey.setAuthorId(1L);
         survey.setPolls(List.of(poll1, poll2));
         return survey;
     }

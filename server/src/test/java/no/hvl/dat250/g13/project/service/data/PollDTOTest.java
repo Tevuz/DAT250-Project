@@ -85,7 +85,7 @@ class PollDTOTest {
 
     @Test
     void update_ok() {
-        var info = new PollUpdate(1l, Optional.empty(), Optional.empty(), List.of(), List.of(), List.of());
+        var info = new PollUpdate(1L, Optional.empty(), Optional.empty(), List.of(), List.of(), List.of());
         var violations = validator.validate(info);
         assertEquals(0, violations.size());
     }
@@ -102,7 +102,7 @@ class PollDTOTest {
     void update_applyIdMismatch() {
         var poll = default_poll();
 
-        var info = new PollUpdate(2l, Optional.empty(), Optional.empty(), List.of(), List.of(), List.of());
+        var info = new PollUpdate(2L, Optional.empty(), Optional.empty(), List.of(), List.of(), List.of());
         assertThrows(IllegalArgumentException.class, () -> info.apply(poll), "Id mismatch");
     }
 
@@ -110,7 +110,7 @@ class PollDTOTest {
     void update_applyNoChange() {
         var poll = default_poll();
 
-        var info = new PollUpdate(1l, Optional.empty(), Optional.empty(), List.of(), List.of(), List.of());
+        var info = new PollUpdate(1L, Optional.empty(), Optional.empty(), List.of(), List.of(), List.of());
         info.apply(poll);
         assertEquals(default_poll(), poll);
     }
@@ -119,7 +119,7 @@ class PollDTOTest {
     void update_applyTitleChange() {
         var poll = default_poll();
 
-        var info = new PollUpdate(1l, Optional.of("Changed"), Optional.empty(), List.of(), List.of(), List.of());
+        var info = new PollUpdate(1L, Optional.of("Changed"), Optional.empty(), List.of(), List.of(), List.of());
         info.apply(poll);
         assertEquals("Changed", poll.getText());
     }
@@ -128,7 +128,7 @@ class PollDTOTest {
     void update_applyTitleEmpty() {
         var poll = default_poll();
 
-        var info = new PollUpdate(1l, Optional.of(""), Optional.empty(), List.of(), List.of(), List.of());
+        var info = new PollUpdate(1L, Optional.of(""), Optional.empty(), List.of(), List.of(), List.of());
         info.apply(poll);
         assertEquals("Poll", poll.getText());
     }
@@ -137,7 +137,7 @@ class PollDTOTest {
     void update_applyTitleBlank() {
         var poll = default_poll();
 
-        var info = new PollUpdate(1l, Optional.of(" \n"), Optional.empty(), List.of(), List.of(), List.of());
+        var info = new PollUpdate(1L, Optional.of(" \n"), Optional.empty(), List.of(), List.of(), List.of());
         info.apply(poll);
         assertEquals("Poll", poll.getText());
     }
@@ -146,7 +146,7 @@ class PollDTOTest {
     void update_applyIndexChange() {
         var poll = default_poll();
 
-        var info = new PollUpdate(1l, Optional.empty(), Optional.of(1),
+        var info = new PollUpdate(1L, Optional.empty(), Optional.of(1),
                 List.of(), List.of(), List.of());
         info.apply(poll);
         assertEquals(1, poll.getIndex());
@@ -158,7 +158,7 @@ class PollDTOTest {
 
         var poll = default_poll();
 
-        var info = new PollUpdate(1l, Optional.empty(), Optional.empty(),
+        var info = new PollUpdate(1L, Optional.empty(), Optional.empty(),
                 List.of(optionAdd), List.of(), List.of());
         info.apply(poll);
         assertEquals(3, poll.getOptions().size());
@@ -167,12 +167,12 @@ class PollDTOTest {
 
     @Test
     void update_applyOptionModifications() {
-        final var optionUpdate = new OptionUpdate(2l, Optional.of("Changed"), Optional.empty());
-        final var optionIgnore = new OptionUpdate(9l, Optional.of("Ignored"), Optional.empty());
+        final var optionUpdate = new OptionUpdate(2L, Optional.of("Changed"), Optional.empty());
+        final var optionIgnore = new OptionUpdate(9L, Optional.of("Ignored"), Optional.empty());
 
         var poll = default_poll();
 
-        var info = new PollUpdate(1l, Optional.empty(), Optional.empty(),
+        var info = new PollUpdate(1L, Optional.empty(), Optional.empty(),
                 List.of(), List.of(optionUpdate, optionIgnore), List.of());
         info.apply(poll);
         assertEquals(2, poll.getOptions().size());
@@ -182,12 +182,12 @@ class PollDTOTest {
 
     @Test
     void update_applyOptionDeletions() {
-        final var optionDelete = new OptionId(1l);
-        final var optionIgnore = new OptionId(9l);
+        final var optionDelete = new OptionId(1L);
+        final var optionIgnore = new OptionId(9L);
 
         var poll = default_poll();
 
-        var info = new PollUpdate(1l, Optional.empty(), Optional.empty(),
+        var info = new PollUpdate(1L, Optional.empty(), Optional.empty(),
                 List.of(), List.of(), List.of(optionDelete, optionIgnore));
         info.apply(poll);
         assertEquals(1, poll.getOptions().size());
@@ -198,7 +198,7 @@ class PollDTOTest {
 
     @Test
     void id_ok() {
-        var info = new PollId(1l);
+        var info = new PollId(1L);
         var violations = validator.validate(info);
         assertEquals(0, violations.size());
     }
@@ -215,17 +215,17 @@ class PollDTOTest {
 
     Poll default_poll() {
         final var option1 = new Option();
-        option1.setId(1l);
+        option1.setId(1L);
         option1.setText("Option1");
         option1.setIndex(0);
 
         final var option2 = new Option();
-        option2.setId(2l);
+        option2.setId(2L);
         option2.setText("Option2");
         option2.setIndex(0);
 
        final var poll = new Poll();
-       poll.setId(1l);
+       poll.setId(1L);
        poll.setText("Poll");
        poll.setIndex(0);
        poll.setOptions(List.of(option1, option2));

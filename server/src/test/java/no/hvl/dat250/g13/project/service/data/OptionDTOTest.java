@@ -63,7 +63,7 @@ class OptionDTOTest {
 
     @Test
     void update_ok() {
-        var info = new OptionUpdate(1l, Optional.empty(), Optional.empty());
+        var info = new OptionUpdate(1L, Optional.empty(), Optional.empty());
         var violations = validator.validate(info);
         assertEquals(0, violations.size());
     }
@@ -79,11 +79,11 @@ class OptionDTOTest {
     @Test
     void update_applyNoChange() {
         var option = new Option();
-        option.setId(1l);
+        option.setId(1L);
         option.setText("Option");
         option.setIndex(0);
 
-        var info = new OptionUpdate(1l, Optional.empty(), Optional.empty());
+        var info = new OptionUpdate(1L, Optional.empty(), Optional.empty());
         info.apply(option);
         assertEquals("Option", option.getText());
         assertEquals(0, option.getIndex());
@@ -92,22 +92,22 @@ class OptionDTOTest {
     @Test
     void update_applyIdMismatch() {
         var option = new Option();
-        option.setId(1l);
+        option.setId(1L);
         option.setIndex(0);
         option.setText("Option");
 
-        var info = new OptionUpdate(2l, Optional.empty(), Optional.of(1));
+        var info = new OptionUpdate(2L, Optional.empty(), Optional.of(1));
         assertThrows(IllegalArgumentException.class, () -> info.apply(option), "Id mismatch");
     }
 
     @Test
     void update_applyTextChange() {
         var option = new Option();
-        option.setId(1l);
+        option.setId(1L);
         option.setIndex(0);
         option.setText("Option");
 
-        var info = new OptionUpdate(1l, Optional.of("Changed"), Optional.empty());
+        var info = new OptionUpdate(1L, Optional.of("Changed"), Optional.empty());
         info.apply(option);
         assertEquals("Changed", option.getText());
         assertEquals(0, option.getIndex());
@@ -116,11 +116,11 @@ class OptionDTOTest {
     @Test
     void update_applyTextEmpty() {
         var option = new Option();
-        option.setId(1l);
+        option.setId(1L);
         option.setIndex(0);
         option.setText("Option");
 
-        var info = new OptionUpdate(1l, Optional.of(""), Optional.empty());
+        var info = new OptionUpdate(1L, Optional.of(""), Optional.empty());
         info.apply(option);
         assertEquals("Option", option.getText());
     }
@@ -128,11 +128,11 @@ class OptionDTOTest {
     @Test
     void update_applyTextBlank() {
         var option = new Option();
-        option.setId(1l);
+        option.setId(1L);
         option.setIndex(0);
         option.setText("Option");
 
-        var info = new OptionUpdate(1l, Optional.of(" \n"), Optional.empty());
+        var info = new OptionUpdate(1L, Optional.of(" \n"), Optional.empty());
         info.apply(option);
         assertEquals("Option", option.getText());
     }
@@ -140,11 +140,11 @@ class OptionDTOTest {
     @Test
     void update_applyIndexChange() {
         var option = new Option();
-        option.setId(1l);
+        option.setId(1L);
         option.setIndex(0);
         option.setText("Option");
 
-        var info = new OptionUpdate(1l, Optional.empty(), Optional.of(1));
+        var info = new OptionUpdate(1L, Optional.empty(), Optional.of(1));
         info.apply(option);
         assertEquals("Option", option.getText());
         assertEquals(1, option.getIndex());
@@ -152,7 +152,7 @@ class OptionDTOTest {
 
     @Test
     void id_ok() {
-        var info = new OptionId(1l);
+        var info = new OptionId(1L);
         var violations = validator.validate(info);
         assertEquals(0, violations.size());
     }

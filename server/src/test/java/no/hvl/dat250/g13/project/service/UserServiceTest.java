@@ -37,7 +37,7 @@ class UserServiceTest {
         Mockito.when(userRepository.existsById(1L)).thenReturn(true);
         Mockito.when(userRepository.existsById(2L)).thenReturn(false);
 
-        Mockito.when(userRepository.findById(1L)).thenReturn(Optional.of(new UserEntity(1l, "username")));
+        Mockito.when(userRepository.findById(1L)).thenReturn(Optional.of(new UserEntity(1L, "username")));
         Mockito.when(userRepository.findById(2L)).thenReturn(Optional.empty());
     }
 
@@ -58,14 +58,14 @@ class UserServiceTest {
 
     @Test
     void updateUser_ok() {
-        var info = new UserUpdate(1l, Optional.empty());
+        var info = new UserUpdate(1L, Optional.empty());
         var user = userService.updateUser(info);
         assertTrue(user.isOk());
     }
 
     @Test
     void updateUser_usernameChange() {
-        var info = new UserUpdate(1l, Optional.of("changed"));
+        var info = new UserUpdate(1L, Optional.of("changed"));
         var user = userService.updateUser(info);
         assertTrue(user.isOk());
         assertEquals("changed", user.value().username());
@@ -73,7 +73,7 @@ class UserServiceTest {
 
     @Test
     void updateUser_idNotFound() {
-        var info = new UserUpdate(2l, Optional.of("changed"));
+        var info = new UserUpdate(2L, Optional.of("changed"));
         var user = userService.updateUser(info);
         assertTrue(user.isError());
         assertEquals(HttpStatus.NOT_FOUND, user.error().status());
@@ -81,7 +81,7 @@ class UserServiceTest {
 
     @Test
     void updateUser_usernameTaken() {
-        var info = new UserUpdate(1l, Optional.of("exists"));
+        var info = new UserUpdate(1L, Optional.of("exists"));
         var user = userService.updateUser(info);
         assertTrue(user.isError());
         assertEquals(HttpStatus.CONFLICT, user.error().status());
@@ -89,14 +89,14 @@ class UserServiceTest {
 
     @Test
     void readUserById_ok() {
-        var info = new UserId(1l);
+        var info = new UserId(1L);
         var user = userService.readUserById(info);
         assertTrue(user.isOk());
     }
 
     @Test
     void readUserById_idNotFound() {
-        var info = new UserId(2l);
+        var info = new UserId(2L);
         var user = userService.readUserById(info);
         assertTrue(user.isError());
         assertEquals(HttpStatus.NOT_FOUND, user.error().status());
@@ -110,7 +110,7 @@ class UserServiceTest {
 
     @Test
     void deleteUser_ok() {
-        var info = new UserId(1l);
+        var info = new UserId(1L);
         var user = userService.deleteUser(info);
         assertTrue(user.isOk());
         assertTrue(user.getOk().isEmpty());
@@ -118,7 +118,7 @@ class UserServiceTest {
 
     @Test
     void deleteUser_idNotFound() {
-        var info = new UserId(2l);
+        var info = new UserId(2L);
         var user = userService.deleteUser(info);
         assertTrue(user.isError());
         assertEquals(HttpStatus.NOT_FOUND, user.error().status());
