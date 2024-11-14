@@ -1,0 +1,102 @@
+### @no-log
+POST http://localhost:8080/api/users
+Content-Type: application/json
+
+{
+  "username": "user1"
+}
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 201, "Failed to POST user1")
+    })
+    client.log(response.body)
+%}
+
+### @no-log
+POST http://localhost:8080/api/users
+Content-Type: application/json
+
+{
+  "username": "user2"
+}
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 201, "Failed to POST user2")
+    })
+    client.log(response.body)
+%}
+
+### @no-log
+GET http://localhost:8080/api/users/user1
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Failed to GET user1 by username")
+    })
+    client.log(response.body)
+%}
+
+### @no-log
+GET http://localhost:8080/api/users/id/1
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Failed to GET user1 by id")
+    })
+    client.log(response.body)
+%}
+
+### @no-log
+GET http://localhost:8080/api/users
+Content-Type: application/json
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Failed to GET all users")
+    })
+    client.log(response.body)
+%}
+
+### @no-log
+PUT http://localhost:8080/api/users
+Content-Type: application/json
+
+{
+  "id": 1,
+  "username": "Changed1"
+}
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Failed to PUT user")
+    })
+    client.log(response.body)
+%}
+
+### @no-log
+PUT http://localhost:8080/api/users/id/2
+Content-Type: application/json
+
+{
+  "username": "Changed2"
+}
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Failed to POST user")
+    })
+    client.log(response.body)
+%}
+
+### @no-log
+DELETE http://localhost:8080/api/users/id/2
+Content-Type: application/json
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 204, "Failed to DELETE user")
+    })
+    client.log(response.body)
+%}
