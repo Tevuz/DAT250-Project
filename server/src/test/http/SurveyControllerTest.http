@@ -1,0 +1,201 @@
+###
+POST http://localhost:8080/api/surveys
+Content-Type: application/json
+
+{
+  "title": "survey",
+  "author": 1,
+  "polls": [
+    {
+      "title": "poll",
+      "options": [
+        {
+          "text": "option"
+        }
+      ]
+    }
+  ]
+}
+
+> {%
+ client.test("Request executed successfully", function () {
+     client.assert(response.status === 201, "Failed to POST survey")
+ })
+ client.log(response.body)
+ %}
+
+###
+GET http://localhost:8080/api/surveys/1
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Failed to GET survey")
+    })
+    client.log(response.body)
+%}
+
+###
+GET http://localhost:8080/api/surveys
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Failed to GET all surveys")
+    })
+    client.log(response.body)
+%}
+
+###
+PUT http://localhost:8080/api/surveys
+Content-Type: application/json
+
+{
+  "id": 1,
+  "title": "survey with additions",
+  "poll_additions": [
+    {
+      "title": "added poll",
+      "options": [
+        {
+          "text": "added option"
+        }
+      ]
+    }
+  ],
+  "poll_modifications": [],
+  "poll_deletions": []
+}
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Failed to PUT survey")
+    })
+    client.log(response.body)
+%}
+
+###
+PUT http://localhost:8080/api/surveys
+Content-Type: application/json
+
+{
+  "id": 1,
+  "title": "survey with modifications",
+  "poll_additions": [],
+  "poll_modifications": [
+    {
+      "id": 1,
+      "title": "poll with additions",
+      "option_additions": [
+        {
+          "text": "added option"
+        }
+      ],
+      "option_modifications": [],
+      "option_deletions": []
+    }
+  ],
+  "poll_deletions": []
+}
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Failed to PUT survey")
+    })
+    client.log(response.body)
+%}
+
+###
+PUT http://localhost:8080/api/surveys
+Content-Type: application/json
+
+{
+  "id": 1,
+  "title": "survey with modifications",
+  "poll_additions": [],
+  "poll_modifications": [
+    {
+      "id": 1,
+      "title": "poll with modifications",
+      "option_additions": [],
+      "option_modifications": [
+        {
+          "id": 1,
+          "text": "modified option"
+        }
+      ],
+      "option_deletions": []
+    }
+  ],
+  "poll_deletions": []
+}
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Failed to PUT survey")
+    })
+    client.log(response.body)
+%}
+
+###
+PUT http://localhost:8080/api/surveys
+Content-Type: application/json
+
+{
+  "id": 1,
+  "title": "survey with modifications",
+  "poll_additions": [],
+  "poll_modifications": [
+    {
+      "id": 1,
+      "title": "poll with deletions",
+      "option_additions": [],
+      "option_modifications": [],
+      "option_deletions": [
+        {
+          "id": 2
+        }
+      ]
+    }
+  ],
+  "poll_deletions": []
+}
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Failed to PUT survey")
+    })
+    client.log(response.body)
+%}
+
+###
+PUT http://localhost:8080/api/surveys
+Content-Type: application/json
+
+{
+  "id": 1,
+  "title": "survey with deletions",
+  "poll_additions": [],
+  "poll_modifications": [],
+  "poll_deletions": [
+    {
+      "id": 2
+    }
+  ]
+}
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Failed to PUT survey")
+    })
+    client.log(response.body)
+%}
+
+###
+DELETE http://localhost:8080/api/surveys/1
+Content-Type: application/json
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 204, "Failed to DELETE survey")
+    })
+    client.log(response.body)
+%}
