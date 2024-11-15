@@ -3,13 +3,13 @@ package no.hvl.dat250.g13.project.service.data.vote;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import no.hvl.dat250.g13.project.domain.Vote;
-import no.hvl.dat250.g13.project.service.data.Validate;
+import no.hvl.dat250.g13.project.service.data.validation.Validate;
 import org.springframework.data.util.Streamable;
 
 import java.util.Set;
 
-import static no.hvl.dat250.g13.project.service.data.Constraints.MESSAGE_VOTE_SURVEY_ID_REQUIRED;
-import static no.hvl.dat250.g13.project.service.data.Constraints.MESSAGE_VOTE_USER_ID_REQUIRED;
+import static no.hvl.dat250.g13.project.service.data.validation.Constraints.MESSAGE_VOTE_SURVEY_ID_REQUIRED;
+import static no.hvl.dat250.g13.project.service.data.validation.Constraints.MESSAGE_VOTE_USER_ID_REQUIRED;
 
 /**
  * @param user_id

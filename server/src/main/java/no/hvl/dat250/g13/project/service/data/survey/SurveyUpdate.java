@@ -3,7 +3,7 @@ package no.hvl.dat250.g13.project.service.data.survey;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import no.hvl.dat250.g13.project.domain.Survey;
-import no.hvl.dat250.g13.project.service.data.Validate;
+import no.hvl.dat250.g13.project.service.data.validation.Validate;
 import no.hvl.dat250.g13.project.service.data.poll.PollCreate;
 import no.hvl.dat250.g13.project.service.data.poll.PollId;
 import no.hvl.dat250.g13.project.service.data.poll.PollUpdate;
@@ -14,7 +14,7 @@ import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-import static no.hvl.dat250.g13.project.service.data.Constraints.MESSAGE_SURVEY_ID_REQUIRED;
+import static no.hvl.dat250.g13.project.service.data.validation.Constraints.MESSAGE_SURVEY_ID_REQUIRED;
 
 public record SurveyUpdate(
         @NotNull(message = MESSAGE_SURVEY_ID_REQUIRED)

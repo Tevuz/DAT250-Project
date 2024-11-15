@@ -1,7 +1,7 @@
 package no.hvl.dat250.g13.project.service.data.poll;
 
 import no.hvl.dat250.g13.project.domain.Poll;
-import no.hvl.dat250.g13.project.service.data.Validate;
+import no.hvl.dat250.g13.project.service.data.validation.Validate;
 import no.hvl.dat250.g13.project.service.data.option.OptionInfo;
 
 import java.util.List;

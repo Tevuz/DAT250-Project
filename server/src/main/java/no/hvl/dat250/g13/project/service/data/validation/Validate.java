@@ -1,4 +1,4 @@
-package no.hvl.dat250.g13.project.service.data;
+package no.hvl.dat250.g13.project.service.data.validation;
 
 import jakarta.validation.*;
 import org.springframework.validation.BindException;

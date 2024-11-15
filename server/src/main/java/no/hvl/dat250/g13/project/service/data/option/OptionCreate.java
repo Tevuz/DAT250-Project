@@ -2,11 +2,11 @@ package no.hvl.dat250.g13.project.service.data.option;
 
 import jakarta.validation.constraints.NotBlank;
 import no.hvl.dat250.g13.project.domain.Option;
-import no.hvl.dat250.g13.project.service.data.Validate;
+import no.hvl.dat250.g13.project.service.data.validation.Validate;
 
 import java.util.Optional;
 
-import static no.hvl.dat250.g13.project.service.data.Constraints.MESSAGE_OPTION_TEXT_REQUIRED;
+import static no.hvl.dat250.g13.project.service.data.validation.Constraints.MESSAGE_OPTION_TEXT_REQUIRED;
 
 public record OptionCreate(
         @NotBlank(message = MESSAGE_OPTION_TEXT_REQUIRED)

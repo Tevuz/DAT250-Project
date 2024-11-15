@@ -2,7 +2,7 @@ package no.hvl.dat250.g13.project.service.data.poll;
 
 import jakarta.validation.constraints.NotNull;
 import no.hvl.dat250.g13.project.domain.Poll;
-import no.hvl.dat250.g13.project.service.data.Validate;
+import no.hvl.dat250.g13.project.service.data.validation.Validate;
 import no.hvl.dat250.g13.project.service.data.option.OptionCreate;
 import no.hvl.dat250.g13.project.service.data.option.OptionId;
 import no.hvl.dat250.g13.project.service.data.option.OptionUpdate;
@@ -13,7 +13,7 @@ import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-import static no.hvl.dat250.g13.project.service.data.Constraints.MESSAGE_POLL_ID_REQUIRED;
+import static no.hvl.dat250.g13.project.service.data.validation.Constraints.MESSAGE_POLL_ID_REQUIRED;
 
 public record PollUpdate(
         @NotNull(message = MESSAGE_POLL_ID_REQUIRED)

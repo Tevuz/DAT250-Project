@@ -4,9 +4,9 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import no.hvl.dat250.g13.project.domain.UserEntity;
-import no.hvl.dat250.g13.project.service.data.Validate;
+import no.hvl.dat250.g13.project.service.data.validation.Validate;
 
-import static no.hvl.dat250.g13.project.service.data.Constraints.*;
+import static no.hvl.dat250.g13.project.service.data.validation.Constraints.*;
 
 /**
  *

@@ -5,12 +5,12 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import no.hvl.dat250.g13.project.domain.Survey;
-import no.hvl.dat250.g13.project.service.data.Validate;
+import no.hvl.dat250.g13.project.service.data.validation.Validate;
 import no.hvl.dat250.g13.project.service.data.poll.PollCreate;
 
 import java.util.List;
 
-import static no.hvl.dat250.g13.project.service.data.Constraints.*;
+import static no.hvl.dat250.g13.project.service.data.validation.Constraints.*;
 
 public record SurveyCreate(
         @NotBlank(message = MESSAGE_SURVEY_TITLE_REQUIRED)

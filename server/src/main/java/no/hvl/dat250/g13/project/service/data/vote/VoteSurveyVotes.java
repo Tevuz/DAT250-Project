@@ -2,15 +2,15 @@ package no.hvl.dat250.g13.project.service.data.vote;
 
 import jakarta.validation.constraints.NotNull;
 import no.hvl.dat250.g13.project.domain.Vote;
-import no.hvl.dat250.g13.project.service.data.Validate;
+import no.hvl.dat250.g13.project.service.data.validation.Validate;
 import org.springframework.data.util.Streamable;
 
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static no.hvl.dat250.g13.project.service.data.Constraints.MESSAGE_VOTE_OPTIONS_REQUIRED;
-import static no.hvl.dat250.g13.project.service.data.Constraints.MESSAGE_VOTE_SURVEY_ID_REQUIRED;
+import static no.hvl.dat250.g13.project.service.data.validation.Constraints.MESSAGE_VOTE_OPTIONS_REQUIRED;
+import static no.hvl.dat250.g13.project.service.data.validation.Constraints.MESSAGE_VOTE_SURVEY_ID_REQUIRED;
 
 /**
  * @param survey_id

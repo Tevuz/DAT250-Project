@@ -1,7 +1,7 @@
 package no.hvl.dat250.g13.project.service.data.option;
 
 import no.hvl.dat250.g13.project.domain.Option;
-import no.hvl.dat250.g13.project.service.data.Validate;
+import no.hvl.dat250.g13.project.service.data.validation.Validate;
 
 import java.util.Optional;
 
