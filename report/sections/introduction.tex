@@ -1,20 +1,35 @@
 \section{Introduction}
 \label{sec:introduction}
 
-Approximately 1 page on:
+% A brief introduction to the prototype implementation and topic of the project.
+The FeedApp project seeks to develop a running prototype of a full-stack FeedApp. The purpose of this application is to allow users to create and manage polls and surveys. Registered users can also vote on polls using a web-based user interface. 
+\medskip
 
+% Discuss (briefly) the technology stack that has been selected
+\noindent
+The technology stack is as follows:
 \begin{itemize}
-
-\item A brief introduction to the prototype implementation and topic of the project.
-
-\item Discuss (briefly) the technology stack that has been selected
-
-\item A brief account of the results that have been obtained in the project.
-
-\item A one paragraph overview at the end, explaining how the rest of the report is / has been organised.
-
+\item Java with SpringBoot as the general platform/framework,
+\item Spring Web MVC for implementing a HTTP/REST AP,
+\item Svelte + Vite for implementing a Single Page App user interface,
+\item Jakarta Persistence API with Hibernate and Postgres for implementing object-relational database mapping,
+\item MongoDB as a non-relational database,
+\item RabbitMQ as a message broker,
+\item Docker as a container engine.
+\item OAuth 2.0: The chosen authentication protocol ensures secure user authentication and authorization, providing a scalable and standard mechanism to handle access control. We will be conducting a technology assessment according to Brown and Walnau.\cite{brown:96}
 \end{itemize}
 
+% A brief account of the results that have been obtained in the project.
+\noindent
+ *A brief account of the results that have been obtained in the project.*
+\medskip
+
+% A one paragraph overview at the end, explaining how the rest of the report is / has been organised.
 \noindent
 This rest of this report is organised as follows:
-Section~\ref{sec:design} gives an ....
+
+Section~\ref{sec:design} gives a detailed descprition about the functional aspects of the FeedApp application. This includes use cases, domain model and an application flow diagram.
+
+Section~\ref{sec:technology} documents the experiments conducted, following the methodology described in the paper by Brown and Walnau.
+
+Section~\ref{sec:implementation} gives a brief explanation of how the prototype has been implemented. It provides details to those who may want to run the application and how they may develop it further.
