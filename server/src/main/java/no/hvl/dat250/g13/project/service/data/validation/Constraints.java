@@ -21,6 +21,7 @@ public class Constraints {
     public static final int USERNAME_LENGTH_MIN = 3;
     public static final int USERNAME_LENGTH_MAX = 20;
     public static final String USERNAME_PATTERN = "^[a-zA-Z0-9_-]*$";
+    public static final String USER_ID_PATTERN = "^id:[0-9]*$";
 
     // ---- User Messages ----
     public static final String MESSAGE_USER_ID_REQUIRED = "User value is required";

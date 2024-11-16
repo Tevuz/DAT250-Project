@@ -7,7 +7,6 @@ import no.hvl.dat250.g13.project.repository.VoteRepository;
 import no.hvl.dat250.g13.project.service.data.user.UserCreate;
 import no.hvl.dat250.g13.project.service.data.user.UserId;
 import no.hvl.dat250.g13.project.service.data.user.UserUpdate;
-import no.hvl.dat250.g13.project.service.data.user.UserUsername;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -85,7 +84,7 @@ class UserServiceTest {
         var result = userService.updateUser(info);
         assertTrue(result.isOk());
         assertEquals(info.id(), result.value().id());
-        assertEquals(info.username().get(), result.value().username());
+        assertEquals(info.username(), Optional.of(result.value().username()));
     }
 
     @Test
@@ -103,7 +102,7 @@ class UserServiceTest {
         user.setId(info.id());
 
         Mockito.when(userRepository.findById(info.id())).thenReturn(Optional.of(user));
-        Mockito.when(userRepository.existsByUsername(info.username().get())).thenReturn(true);
+        Mockito.when(userRepository.existsByUsername(info.username().orElse(null))).thenReturn(true);
 
         var result = userService.updateUser(info);
         assertTrue(result.isError());
@@ -111,84 +110,84 @@ class UserServiceTest {
     }
 
     @Test
-    void readUserById_ok() {
+    void readUser_ok() {
         var info = new UserId(1L);
         var user = new UserEntity();
-        user.setId(info.id());
+        user.setId(info.id().orElse(null));
 
-        Mockito.when(userRepository.findById(info.id())).thenReturn(Optional.of(user));
+        Mockito.when(userRepository.findBy(info)).thenReturn(Optional.of(user));
 
-        var result = userService.readUserById(info);
+        var result = userService.readUser(info);
         assertTrue(result.isOk());
-        assertEquals(info.id(), result.value().id());
+        assertEquals(info.id(), Optional.of(result.value().id()));
     }
 
     @Test
-    void readUserById_idNotFound() {
+    void readUserNotFound() {
         var info = new UserId(2L);
-        var result = userService.readUserById(info);
+        var result = userService.readUser(info);
         assertTrue(result.isError());
         assertEquals(HttpStatus.NOT_FOUND, result.error().status());
     }
 
     @Test
-    void readUserByUsername_ok() {
-        var info = new UserUsername("user");
+    void readUser_username() {
+        var info = new UserId("user");
         var user = new UserEntity();
         user.setUsername("user");
 
-        Mockito.when(userRepository.findByUsername(info.username())).thenReturn(Optional.of(user));
+        Mockito.when(userRepository.findBy(info)).thenReturn(Optional.of(user));
 
-        var result = userService.readUserByUsername(info);
+        var result = userService.readUser(info);
         assertTrue(result.isOk());
-        assertEquals(info.username(), result.value().username());
+        assertEquals(info.username(), Optional.of(result.value().username()));
     }
 
     @Test
-    void readUserByUsername_usernameNotFound() {
-        var info = new UserUsername("not found");
-        var result = userService.readUserByUsername(info);
+    void readUser_usernameNotFound() {
+        var info = new UserId("not found");
+        var result = userService.readUser(info);
         assertTrue(result.isError());
         assertEquals(HttpStatus.NOT_FOUND, result.error().status());
     }
 
     @Test
-    void readUserVotesByUsername_ok() {
-        var info = new UserUsername("user");
+    void readUserVotes_ok() {
+        var info = new UserId("user");
         var user = new UserEntity();
         user.setId(1L);
 
-        Mockito.when(userRepository.findByUsername(info.username())).thenReturn(Optional.of(user));
+        Mockito.when(userRepository.findBy(info)).thenReturn(Optional.of(user));
 
-        var result = userService.readUserVotesByUsername(info);
+        var result = userService.readUserVotes(info);
         assertTrue(result.isOk());
         assertEquals(user.getId(), result.value().user_id());
     }
 
     @Test
-    void readUserVotesByUsername_usernameNotFound() {
-        var info = new UserUsername("not found");
-        var result = userService.readUserVotesByUsername(info);
+    void readUserVotes_notFound() {
+        var info = new UserId("not found");
+        var result = userService.readUserVotes(info);
         assertTrue(result.isError());
         assertEquals(HttpStatus.NOT_FOUND, result.error().status());
     }
 
     @Test
-    void readUserSurveysByUsername() {
-        var info = new UserUsername("user");
+    void readUserSurveys() {
+        var info = new UserId("user");
         var user = new UserEntity();
         user.setUsername("user");
 
-        Mockito.when(userRepository.findByUsername(info.username())).thenReturn(Optional.of(user));
+        Mockito.when(userRepository.findBy(info)).thenReturn(Optional.of(user));
 
-        var result = userService.readUserSurveysByUsername(info);
+        var result = userService.readUserSurveys(info);
         assertTrue(result.isOk());
     }
 
     @Test
-    void readUserSurveysByUsername_userNameNotFound() {
-        var info = new UserUsername("not found");
-        var result = userService.readUserSurveysByUsername(info);
+    void readUserSurveys_notFound() {
+        var info = new UserId("not found");
+        var result = userService.readUserSurveys(info);
         assertTrue(result.isError());
         assertEquals(HttpStatus.NOT_FOUND, result.error().status());
     }
@@ -203,7 +202,7 @@ class UserServiceTest {
     void deleteUser_ok() {
         var info = new UserId(1L);
 
-        Mockito.when(userRepository.existsById(info.id())).thenReturn(true);
+        Mockito.when(userRepository.existsBy(info)).thenReturn(true);
 
         var result = userService.deleteUser(info);
         assertTrue(result.isOk());

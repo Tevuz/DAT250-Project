@@ -81,8 +81,8 @@ public class UserService {
      *          <li>{@link ServiceError} of {@link HttpStatus#NOT_FOUND NOT_FOUND} if user with {@code info.value} does not exist </li>
      *      </ul>
      */
-    public Result<UserInfo, ServiceError> readUserById(UserId info) {
-        Optional<UserEntity> optional = userRepository.findById(info.id());
+    public Result<UserInfo, ServiceError> readUser(UserId info) {
+        Optional<UserEntity> optional = userRepository.findBy(info);
         if (optional.isEmpty())
             return new Result.Error<>(new ServiceError(HttpStatus.NOT_FOUND,"User does not exist"));
 
@@ -90,35 +90,17 @@ public class UserService {
     }
 
     /**
-     * Read a user by username.
+     * Read a users votes.
      *
-     * @param info {@link UserUsername} with value for the user to read
-     * @return {@code Result<UserInfo, ServiceError>}:
-     *      <ul>
-     *          <li>{@link UserInfo} if found</li>
-     *          <li>{@link ServiceError} of {@link HttpStatus#NOT_FOUND NOT_FOUND} if user with {@code info.value} does not exist </li>
-     *      </ul>
-     */
-    public Result<UserInfo, ServiceError> readUserByUsername(UserUsername info) {
-        Optional<UserEntity> optional = userRepository.findByUsername(info.username());
-        if (optional.isEmpty())
-            return new Result.Error<>(new ServiceError(HttpStatus.NOT_FOUND,"User does not exist"));
-
-        return new Result.Ok<>(new UserInfo(optional.get()));
-    }
-
-    /**
-     * Read a users votes by username.
-     *
-     * @param info {@link UserUsername} with value for the users votes to read
+     * @param info {@link UserId} with value for the users votes to read
      * @return {@code Result<UserVotes, ServiceError>}:
      *      <ul>
      *          <li>{@link UserVotes} if found</li>
      *          <li>{@link ServiceError} of {@link HttpStatus#NOT_FOUND NOT_FOUND} if user with {@code info::username} does not exist </li>
      *      </ul>
      */
-    public Result<UserVotes, ServiceError> readUserVotesByUsername(UserUsername info) {
-        Optional<UserEntity> optional = userRepository.findByUsername(info.username());
+    public Result<UserVotes, ServiceError> readUserVotes(UserId info) {
+        Optional<UserEntity> optional = userRepository.findBy(info);
         if (optional.isEmpty())
             return new Result.Error<>(new ServiceError(HttpStatus.NOT_FOUND,"User does not exist"));
         UserEntity user = optional.get();
@@ -128,17 +110,17 @@ public class UserService {
     }
 
     /**
-     * Read a users surveys by username.
+     * Read a users surveys.
      *
-     * @param info {@link UserUsername} with value for the users surveys to read
+     * @param info {@link UserId} with value for the users surveys to read
      * @return {@code Result<UserSurveys, ServiceError>}:
      *      <ul>
      *          <li>{@link UserSurveys} if found</li>
      *          <li>{@link ServiceError} of {@link HttpStatus#NOT_FOUND NOT_FOUND} if user with {@code info::username} does not exist </li>
      *      </ul>
      */
-    public Result<UserSurveys, ServiceError> readUserSurveysByUsername(UserUsername info) {
-        Optional<UserEntity> optional = userRepository.findByUsername(info.username());
+    public Result<UserSurveys, ServiceError> readUserSurveys(UserId info) {
+        Optional<UserEntity> optional = userRepository.findBy(info);
         if (optional.isEmpty())
             return new Result.Error<>(new ServiceError(HttpStatus.NOT_FOUND,"User does not exist"));
         UserEntity user = optional.get();
@@ -170,10 +152,10 @@ public class UserService {
      *      </ul>
      */
     public Result<UserInfo, ServiceError> deleteUser(UserId info) {
-        if (!userRepository.existsById(info.id()))
+        if (!userRepository.existsBy(info))
             return new Result.Error<>(new ServiceError(HttpStatus.NOT_FOUND,"User does not exist"));
 
-        userRepository.deleteById(info.id());
+        userRepository.deleteBy(info);
         return new Result.Ok<>(null);
     }
 }

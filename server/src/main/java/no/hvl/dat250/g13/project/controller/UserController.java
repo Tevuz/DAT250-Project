@@ -1,11 +1,13 @@
 package no.hvl.dat250.g13.project.controller;
 
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import no.hvl.dat250.g13.project.service.UserService;
 import no.hvl.dat250.g13.project.service.data.user.UserCreate;
 import no.hvl.dat250.g13.project.service.data.user.UserId;
 import no.hvl.dat250.g13.project.service.data.user.UserUpdate;
-import no.hvl.dat250.g13.project.service.data.user.UserUsername;
 import no.hvl.dat250.g13.project.service.error.ServiceError;
 import no.hvl.dat250.g13.project.util.Result;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,8 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 
 import static no.hvl.dat250.g13.project.controller.Common.*;
+import static no.hvl.dat250.g13.project.service.data.validation.Constraints.USERNAME_PATTERN;
+import static no.hvl.dat250.g13.project.service.data.validation.Constraints.USER_ID_PATTERN;
 
 @RestController
 @RequestMapping("/api/users")
@@ -36,41 +40,46 @@ public class UserController {
         };
     }
 
-    @GetMapping("/{username}")
-    public ResponseEntity<?> readUserByUsername(@PathVariable String username) throws BindException {
-        var info = new UserUsername(username);
+    @GetMapping("/{identifier}")
+    public ResponseEntity<?> readUser(
+            @Parameter(required = true, schema =
+                @Schema(type = "string", pattern = USERNAME_PATTERN + "|" + USER_ID_PATTERN), examples =
+                    {@ExampleObject(name="Username", value="user"), @ExampleObject(name="Id", value="id:1")})
+            @PathVariable String identifier
+    ) throws BindException {
+        var info = UserId.parse(identifier);
         info.validate();
-        return switch (userService.readUserByUsername(info)) {
+        return switch (userService.readUser(info)) {
             case Result.Ok<?, ServiceError> result -> responseOk(result);
             case Result.Error<?, ServiceError> result -> responseError(result);
         };
     }
 
-    @GetMapping("/id/{id}")
-    public ResponseEntity<?> readUserByUsername(@PathVariable Long id) throws BindException {
-        var info = new UserId(id);
+    @GetMapping("/{identifier}/votes")
+    public ResponseEntity<?> readUserVotes(
+            @Parameter(required = true, schema =
+            @Schema(type = "string", pattern = USERNAME_PATTERN + "|" + USER_ID_PATTERN), examples =
+                    {@ExampleObject(name="Username", value="user"), @ExampleObject(name="Id", value="id:1")})
+            @PathVariable String identifier
+    ) throws BindException {
+        var info = UserId.parse(identifier);
         info.validate();
-        return switch (userService.readUserById(info)) {
+        return switch (userService.readUserVotes(info)) {
             case Result.Ok<?, ServiceError> result -> responseOk(result);
             case Result.Error<?, ServiceError> result -> responseError(result);
         };
     }
 
-    @GetMapping("/{username}/votes")
-    public ResponseEntity<?> readUserVotesByUsername(@PathVariable String username) throws BindException {
-        var info = new UserUsername(username);
+    @GetMapping("/{identifier}/surveys")
+    public ResponseEntity<?> readUserSurveys(
+            @Parameter(required = true, schema =
+            @Schema(type = "string", pattern = USERNAME_PATTERN + "|" + USER_ID_PATTERN), examples =
+                    {@ExampleObject(name="Username", value="user"), @ExampleObject(name="Id", value="id:1")})
+            @PathVariable String identifier
+    ) throws BindException {
+        var info = UserId.parse(identifier);
         info.validate();
-        return switch (userService.readUserVotesByUsername(info)) {
-            case Result.Ok<?, ServiceError> result -> responseOk(result);
-            case Result.Error<?, ServiceError> result -> responseError(result);
-        };
-    }
-
-    @GetMapping("/{username}/surveys")
-    public ResponseEntity<?> readUserSurveysByUsername(@PathVariable String username) throws BindException {
-        var info = new UserUsername(username);
-        info.validate();
-        return switch (userService.readUserSurveysByUsername(info)) {
+        return switch (userService.readUserSurveys(info)) {
             case Result.Ok<?, ServiceError> result -> responseOk(result);
             case Result.Error<?, ServiceError> result -> responseError(result);
         };
@@ -93,21 +102,14 @@ public class UserController {
         };
     }
 
-    @PutMapping("/id/{id}")
-    public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody UserUpdate info) throws BindException {
-        if (info.id() != null && !id.equals(info.id()))
-            id = null;
-        info = new UserUpdate(id, info.username());
-        info.validate();
-        return switch (userService.updateUser(info)) {
-            case Result.Ok<?, ServiceError> result -> responseOk(result);
-            case Result.Error<?, ServiceError> result -> responseError(result);
-        };
-    }
-
-    @DeleteMapping("/id/{id}")
-    public ResponseEntity<?> deleteUser(@PathVariable Long id) throws BindException {
-        var info = new UserId(id);
+    @DeleteMapping("/{identifier}")
+    public ResponseEntity<?> deleteUser(
+            @Parameter(required = true, schema =
+            @Schema(type = "string", pattern = USERNAME_PATTERN + "|" + USER_ID_PATTERN), examples =
+                    {@ExampleObject(name="Username", value="username"), @ExampleObject(name="Id", value="id:1")})
+            @PathVariable String identifier
+    ) throws BindException {
+        var info = UserId.parse(identifier);
         info.validate();
         return switch (userService.deleteUser(info)) {
             case Result.Ok<?, ServiceError> ignored -> responseNoContent();

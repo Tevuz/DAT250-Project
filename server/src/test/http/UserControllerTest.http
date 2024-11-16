@@ -39,7 +39,7 @@ GET http://localhost:8080/api/users/user1
 %}
 
 ### @no-log
-GET http://localhost:8080/api/users/id/1
+GET http://localhost:8080/api/users/id:1
 
 > {%
     client.test("Request executed successfully", function () {
@@ -76,10 +76,11 @@ Content-Type: application/json
 %}
 
 ### @no-log
-PUT http://localhost:8080/api/users/id/2
+PUT http://localhost:8080/api/users
 Content-Type: application/json
 
 {
+  "id": 2,
   "username": "Changed2"
 }
 
@@ -91,7 +92,18 @@ Content-Type: application/json
 %}
 
 ### @no-log
-DELETE http://localhost:8080/api/users/id/2
+DELETE http://localhost:8080/api/users/Changed1
+Content-Type: application/json
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 204, "Failed to DELETE user")
+    })
+    client.log(response.body)
+%}
+
+### @no-log
+DELETE http://localhost:8080/api/users/id:2
 Content-Type: application/json
 
 > {%
