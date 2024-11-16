@@ -3,122 +3,136 @@ package no.hvl.dat250.g13.project.service;
 import no.hvl.dat250.g13.project.domain.Vote;
 import no.hvl.dat250.g13.project.repository.VoteRepository;
 import no.hvl.dat250.g13.project.service.data.vote.*;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.util.Streamable;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 
+import java.util.List;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.ArgumentMatchers.any;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 class VoteServiceTest {
 
-    @Autowired
-    private VoteService voteService;
-
-    @MockBean
+    @Mock
     private VoteRepository voteRepository;
 
-    @BeforeEach
-    void setupMock() {
-        Mockito.when(voteRepository.save(any())).then(returnsFirstArg());
-
-        Mockito.when(voteRepository.findAllByUserId(2L)).thenReturn(Streamable.of(new Vote(2L, 2L, 1L)));
-        Mockito.when(voteRepository.findAllBySurveyId(2L)).thenReturn(Streamable.of(new Vote(2L, 2L, 1L)));
-
-        Mockito.when(voteRepository.existsByUserIdAndSurveyId(1L, 1L)).thenReturn(false);
-        Mockito.when(voteRepository.existsByUserIdAndSurveyId(2L, 2L)).thenReturn(true);
-        Mockito.when(voteRepository.existsByUserIdAndSurveyId(3L, 3L)).thenReturn(false);
-
-        Mockito.when(voteRepository.findAllByUserIdAndSurveyId(2L, 2L)).thenReturn(Streamable.of(new Vote(2L, 2L, 1L)));
-        Mockito.when(voteRepository.findAllByUserIdAndSurveyId(3L, 3L)).thenReturn(Streamable.of());
-    }
+    @InjectMocks
+    private VoteService voteService;
 
     @Test
     void createVote_ok() {
         var info = new VoteCreate(1L, 1L, Set.of(1L));
-        var vote = voteService.createVote(info);
-        assertTrue(vote.isOk());
+
+        Mockito.when(voteRepository.saveAll(any())).then(returnsFirstArg());
+
+        var result = voteService.createVote(info);
+        assertTrue(result.isOk());
+        assertEquals(info.user_id(), result.value().user_id());
+        assertEquals(info.survey_id(), result.value().survey_id());
+        assertEquals(info.options(), result.value().options());
     }
 
     @Test
     void createVote_exists() {
-        var info = new VoteCreate(2L, 2L, Set.of(1L));
-        var vote = voteService.createVote(info);
-        assertTrue(vote.isError());
-        assertEquals(HttpStatus.CONFLICT, vote.error().status());
+        var info = new VoteCreate(1L, 1L, Set.of(1L));
+
+        Mockito.when(voteRepository.existsByUserIdAndSurveyId(1L, 1L)).thenReturn(true);
+
+        var result = voteService.createVote(info);
+        assertTrue(result.isError());
+        assertEquals(HttpStatus.CONFLICT, result.error().status());
     }
 
     @Test
     void updateVote_ok() {
-        var info = new VoteUpdate(2L, 2L, "REPLACE", Set.of(1L));
-        var vote = voteService.updateVote(info);
-        assertTrue(vote.isOk());
+        var info = new VoteUpdate(1L, 1L, "REPLACE", Set.of(2L));
+        var vote = new Vote(info.user_id(), info.survey_id(), 1L);
+
+        Mockito.when(voteRepository.findAllByUserIdAndSurveyId(info.user_id(), info.survey_id())).thenReturn(List.of(vote));
+        Mockito.when(voteRepository.saveAll(any())).then(returnsFirstArg());
+
+        var result = voteService.updateVote(info);
+        assertTrue(result.isOk());
+        assertEquals(info.user_id(), result.value().user_id());
+        assertEquals(info.survey_id(), result.value().survey_id());
+        assertEquals(info.options(), result.value().options());
     }
 
     @Test
     void updateVote_idNotFound() {
         var info = new VoteUpdate(3L, 3L, "REPLACE", Set.of(1L));
-        var vote = voteService.updateVote(info);
-        assertTrue(vote.isError());
-        assertEquals(HttpStatus.NOT_FOUND, vote.error().status());
+        var result = voteService.updateVote(info);
+        assertTrue(result.isError());
+        assertEquals(HttpStatus.NOT_FOUND, result.error().status());
     }
 
     @Test
     void readVoteById_ok() {
-        var info = new VoteId(2L, 2L);
-        var vote = voteService.readVoteById(info);
-        assertTrue(vote.isOk());
+        var info = new VoteId(1L, 1L);
+        var vote = new Vote(info.user_id(), info.survey_id(), 1L);
+
+        Mockito.when(voteRepository.findAllByUserIdAndSurveyId(info.user_id(), info.survey_id())).thenReturn(List.of(vote));
+
+        var result = voteService.readVoteById(info);
+        assertTrue(result.isOk());
+        assertEquals(info.user_id(), result.value().user_id());
+        assertEquals(info.survey_id(), result.value().survey_id());
+        assertEquals(Set.of(vote.getOptionId()), result.value().options());
     }
 
     @Test
     void readVoteById_notFound() {
-        var info = new VoteId(3L, 3L);
-        var vote = voteService.readVoteById(info);
-        assertTrue(vote.isError());
-        assertEquals(HttpStatus.NOT_FOUND, vote.error().status());
+        var info = new VoteId(1L, 1L);
+        var result = voteService.readVoteById(info);
+        assertTrue(result.isError());
+        assertEquals(HttpStatus.NOT_FOUND, result.error().status());
     }
 
     @Test
     void readVotesByUserId_ok() {
         var info = new VoteUserId(2L);
-        var vote = voteService.readVotesByUserId(info);
-        assertTrue(vote.isOk());
+        var result = voteService.readVotesByUserId(info);
+        assertTrue(result.isOk());
     }
 
     @Test
     void readVotesBySurveyId_ok() {
         var info = new VoteSurveyId(2L);
-        var votes = voteService.readVotesBySurveyId(info);
-        assertTrue(votes.isOk());
+        var results = voteService.readVotesBySurveyId(info);
+        assertTrue(results.isOk());
     }
 
     @Test
     void readAllVotes() {
-        var votes = voteService.readAllVotes();
-        assertTrue(votes.isOk());
+        var results = voteService.readAllVotes();
+        assertTrue(results.isOk());
     }
 
     @Test
     void deleteVote_ok() {
-        var info = new VoteId(2L, 2L);
-        var vote = voteService.deleteVote(info);
-        assertTrue(vote.isOk());
+        var info = new VoteId(1L, 1L);
+        var vote = new Vote(info.user_id(), info.survey_id(), 1L);
+
+        Mockito.when(voteRepository.findAllByUserIdAndSurveyId(info.user_id(), info.survey_id())).thenReturn(List.of(vote));
+
+        var result = voteService.deleteVote(info);
+        assertTrue(result.isOk());
+        assertNull(result.value());
     }
 
     @Test
     void deleteVote_notFound() {
         var info = new VoteId(1L, 1L);
-        var votes = voteService.deleteVote(info);
-        assertTrue(votes.isError());
-        assertEquals(HttpStatus.NOT_FOUND, votes.error().status());
+        var result = voteService.deleteVote(info);
+        assertTrue(result.isError());
+        assertEquals(HttpStatus.NOT_FOUND, result.error().status());
     }
 }
