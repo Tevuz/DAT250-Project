@@ -29,6 +29,6 @@ public record VoteInfo(
 
     public static Iterable<VoteInfo> from(Iterable<Vote> votes) {
         var map = Streamable.of(votes).stream().collect(Collectors.groupingBy(VoteId::new, Collectors.mapping(Vote::getOptionId, Collectors.toSet())));
-        return Streamable.of(map.entrySet()).map(entry -> new VoteInfo(entry.getKey().user_id(), entry.getKey().survey_id(), entry.getValue()));
+        return Streamable.of(map.entrySet()).map(entry -> new VoteInfo(entry.getKey().user_id(), entry.getKey().survey_id(), entry.getValue())).toSet();
     }
 }
