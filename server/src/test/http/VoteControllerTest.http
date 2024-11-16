@@ -1,0 +1,87 @@
+###
+//@no-log
+POST http://localhost:8080/api/votes
+Content-Type: application/json
+
+{
+  "user_id": 1,
+  "survey_id": 1,
+  "options": [0]
+}
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 201, "Failed to POST vote")
+    })
+    client.log(response.body)
+%}
+
+###
+//@no-log
+POST http://localhost:8080/api/votes
+Content-Type: application/json
+
+{
+  "user_id": 2,
+  "survey_id": 1,
+  "options": [1]
+}
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 201, "Failed to POST vote")
+    })
+    client.log(response.body)
+%}
+
+###
+//@no-log
+GET http://localhost:8080/api/votes/1/2
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Failed to GET vote")
+    })
+    client.log(response.body)
+%}
+
+###
+//@no-log
+GET http://localhost:8080/api/votes
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Failed to GET all votes")
+    })
+    client.log(response.body)
+%}
+
+###
+//@no-log
+PUT http://localhost:8080/api/votes
+Content-Type: application/json
+
+{
+  "user_id": 1,
+  "survey_id": 1,
+  "mode": "REPLACE",
+  "options": [1, 2]
+}
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Failed to PUT votes")
+    })
+    client.log(response.body)
+%}
+
+###
+//@no-log
+DELETE http://localhost:8080/api/votes/1/2
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 204, "Failed to DELETE vote")
+    })
+    client.log(response.body)
+%}
