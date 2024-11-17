@@ -6,6 +6,7 @@ import no.hvl.dat250.g13.project.service.data.survey.SurveyCreate;
 import no.hvl.dat250.g13.project.service.data.survey.SurveyId;
 import no.hvl.dat250.g13.project.service.data.survey.SurveyInfo;
 import no.hvl.dat250.g13.project.service.data.survey.SurveyUpdate;
+import no.hvl.dat250.g13.project.service.data.vote.VoteId;
 import no.hvl.dat250.g13.project.service.error.ServiceError;
 import no.hvl.dat250.g13.project.util.Result;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.Objects;
+import java.util.Set;
 
 import static no.hvl.dat250.g13.project.controller.Common.*;
 
@@ -55,6 +57,11 @@ public class SurveyController {
             case Result.Ok<?, ServiceError> result -> responseOk(result);
             case Result.Error<?, ServiceError> result -> responseError(result);
         };
+    }
+
+    @PostMapping ("/batch-read")
+    public ResponseEntity<?> readVotes(@RequestBody Set<SurveyId> info) {
+        return responseOk(new Result.Ok<>(info.stream().filter(SurveyId::isValid).map(surveyService::readSurveyById).flatMap(Result::stream).toList()));
     }
 
     @PutMapping("/{survey_id}")

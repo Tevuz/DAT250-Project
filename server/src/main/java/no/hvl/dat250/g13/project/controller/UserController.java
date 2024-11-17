@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.Objects;
+import java.util.Set;
 
 import static no.hvl.dat250.g13.project.controller.Common.*;
 import static no.hvl.dat250.g13.project.service.data.validation.Constraints.USERNAME_PATTERN;
@@ -94,6 +95,11 @@ public class UserController {
             case Result.Ok<?, ServiceError> result -> responseOk(result);
             case Result.Error<?, ServiceError> result -> responseError(result);
         };
+    }
+
+    @PostMapping ("/batch-read")
+    public ResponseEntity<?> readVotes(@RequestBody Set<UserId> info) {
+        return responseOk(new Result.Ok<>(info.stream().filter(UserId::isValid).map(userService::readUser).flatMap(Result::stream).toList()));
     }
 
     @PutMapping("/{user_id}")

@@ -45,6 +45,23 @@ GET http://localhost:8080/api/surveys
 %}
 
 ###
+POST http://localhost:8080/api/surveys/batch-read
+Content-Type: application/json
+
+[
+    {
+        "id": 1
+    }
+]
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Failed to GET all surveys")
+    })
+    client.log(response.body)
+%}
+
+###
 PUT http://localhost:8080/api/surveys/1
 Content-Type: application/json
 

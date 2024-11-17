@@ -1,5 +1,6 @@
 package no.hvl.dat250.g13.project.service.data.validation;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.*;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
@@ -7,6 +8,11 @@ import org.springframework.validation.FieldError;
 public interface Validate {
 
     static Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+
+    @JsonIgnore
+    default boolean isValid() {
+        return validator.validate(this).isEmpty();
+    }
 
     default void validate() throws BindException {
          var violations = validator.validate(this);

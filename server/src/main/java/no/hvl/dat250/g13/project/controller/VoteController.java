@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.Objects;
+import java.util.Set;
 
 import static no.hvl.dat250.g13.project.controller.Common.*;
 
@@ -45,6 +46,11 @@ public class VoteController {
             case Result.Ok<?, ServiceError> result -> responseOk(result);
             case Result.Error<?, ServiceError> result -> responseError(result);
         };
+    }
+
+    @PostMapping ("/batch-read")
+    public ResponseEntity<?> readVotes(@RequestBody Set<VoteId> info) {
+        return responseOk(new Result.Ok<>(info.stream().filter(VoteId::isValid).map(voteService::readVoteById).flatMap(Result::stream).toList()));
     }
 
     @GetMapping

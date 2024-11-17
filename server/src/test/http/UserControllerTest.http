@@ -60,6 +60,26 @@ Content-Type: application/json
 %}
 
 ### @no-log
+POST http://localhost:8080/api/users/batch-read
+Content-Type: application/json
+
+[
+  {
+    "id": 1
+  },
+  {
+    "username": "user2"
+  }
+]
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Failed to GET users")
+    })
+    client.log(response.body)
+%}
+
+### @no-log
 PUT http://localhost:8080/api/users/1
 Content-Type: application/json
 
