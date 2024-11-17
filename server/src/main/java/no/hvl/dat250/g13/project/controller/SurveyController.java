@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import no.hvl.dat250.g13.project.service.SurveyService;
 import no.hvl.dat250.g13.project.service.data.survey.SurveyCreate;
 import no.hvl.dat250.g13.project.service.data.survey.SurveyId;
+import no.hvl.dat250.g13.project.service.data.survey.SurveyInfo;
 import no.hvl.dat250.g13.project.service.data.survey.SurveyUpdate;
 import no.hvl.dat250.g13.project.service.error.ServiceError;
 import no.hvl.dat250.g13.project.util.Result;
@@ -31,7 +32,7 @@ public class SurveyController {
     @PostMapping
     public ResponseEntity<?> createSurvey(@Valid @RequestBody SurveyCreate info) {
         return switch (surveyService.createSurvey(info)) {
-            case Result.Ok<?, ServiceError> result -> responseCreated(result, URI.create(""));
+            case Result.Ok<SurveyInfo, ServiceError> result -> responseCreated(result, URI.create("/api/surveys/" + result.value().id()));
             case Result.Error<?, ServiceError> result -> responseError(result);
         };
 

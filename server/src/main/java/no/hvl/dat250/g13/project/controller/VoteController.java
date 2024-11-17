@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import no.hvl.dat250.g13.project.service.VoteService;
 import no.hvl.dat250.g13.project.service.data.vote.VoteCreate;
 import no.hvl.dat250.g13.project.service.data.vote.VoteId;
+import no.hvl.dat250.g13.project.service.data.vote.VoteInfo;
 import no.hvl.dat250.g13.project.service.data.vote.VoteUpdate;
 import no.hvl.dat250.g13.project.service.error.ServiceError;
 import no.hvl.dat250.g13.project.util.Result;
@@ -31,7 +32,7 @@ public class VoteController {
     @PostMapping
     public ResponseEntity<?> createVote(@Valid @RequestBody VoteCreate info) {
         return switch (voteService.createVote(info)) {
-            case Result.Ok<?, ServiceError> result -> responseCreated(result, URI.create(""));
+            case Result.Ok<VoteInfo, ServiceError> result -> responseCreated(result, URI.create("/api/votes/" + result.value().survey_id() + "/" + result.value().user_id()));
             case Result.Error<?, ServiceError> result -> responseError(result);
         };
     }

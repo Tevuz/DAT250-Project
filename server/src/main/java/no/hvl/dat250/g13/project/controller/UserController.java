@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import no.hvl.dat250.g13.project.service.UserService;
 import no.hvl.dat250.g13.project.service.data.user.UserCreate;
 import no.hvl.dat250.g13.project.service.data.user.UserId;
+import no.hvl.dat250.g13.project.service.data.user.UserInfo;
 import no.hvl.dat250.g13.project.service.data.user.UserUpdate;
 import no.hvl.dat250.g13.project.service.error.ServiceError;
 import no.hvl.dat250.g13.project.util.Result;
@@ -36,7 +37,7 @@ public class UserController {
     @PostMapping
     public ResponseEntity<?> createUser(@Valid @RequestBody UserCreate info) {
         return switch (userService.createUser(info)) {
-            case Result.Ok<?, ServiceError> result -> responseCreated(result, URI.create(""));
+            case Result.Ok<UserInfo, ServiceError> result -> responseCreated(result, URI.create("/api/users/" + result.value().username()));
             case Result.Error<?, ServiceError> result -> responseError(result);
         };
     }
