@@ -2,6 +2,7 @@ package no.hvl.dat250.g13.project.repository;
 
 import no.hvl.dat250.g13.project.domain.UserEntity;
 import no.hvl.dat250.g13.project.service.data.user.UserId;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -20,6 +21,17 @@ public interface UserRepository extends CrudRepository<UserEntity, Long> {
         return false;
     }
 
+    @Query("SELECT entity.id FROM UserEntity entity WHERE entity.username = :username")
+    Optional<Long> findIdByUsername(String username);
+
+    default Optional<Long> findIdBy(UserId info) {
+        if (info.id().isPresent())
+            return info.id();
+        if (info.username().isPresent())
+            return findIdByUsername(info.username().get());
+        return Optional.empty();
+    }
+
     Optional<UserEntity> findByUsername(String username);
 
     default Optional<UserEntity> findBy(UserId info) {
@@ -32,12 +44,6 @@ public interface UserRepository extends CrudRepository<UserEntity, Long> {
     }
 
     default void deleteBy(UserId info) {
-        if (info.id().isPresent())
-            deleteById(info.id().get());
-        if (info.username().isPresent()) {
-            var entity = findByUsername(info.username().get());
-            entity.map(UserEntity::getId).ifPresent(this::deleteById);
-        }
+        findIdBy(info).ifPresent(this::deleteById);
     }
-
 }

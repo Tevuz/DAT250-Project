@@ -1,7 +1,11 @@
 package no.hvl.dat250.g13.project.service;
 
 import no.hvl.dat250.g13.project.domain.Vote;
+import no.hvl.dat250.g13.project.repository.SurveyRepository;
+import no.hvl.dat250.g13.project.repository.UserRepository;
 import no.hvl.dat250.g13.project.repository.VoteRepository;
+import no.hvl.dat250.g13.project.service.data.survey.SurveyId;
+import no.hvl.dat250.g13.project.service.data.user.UserId;
 import no.hvl.dat250.g13.project.service.data.user.UserVotes;
 import no.hvl.dat250.g13.project.service.data.vote.*;
 import no.hvl.dat250.g13.project.service.error.ServiceError;
@@ -16,9 +20,13 @@ import java.util.HashSet;
 public class VoteService {
 
     private final VoteRepository voteRepository;
+    private final UserRepository userRepository;
+    private final SurveyRepository surveyRepository;
 
-    public VoteService(VoteRepository voteRepository) {
+    public VoteService(VoteRepository voteRepository, UserRepository userRepository, SurveyRepository surveyRepository) {
         this.voteRepository = voteRepository;
+        this.userRepository = userRepository;
+        this.surveyRepository = surveyRepository;
     }
 
     /**
@@ -89,29 +97,38 @@ public class VoteService {
     /**
      * Read all votes registered to a user.
      *
-     * @param info {@link VoteUserId} with user id for the votes to read
+     * @param info {@link UserId} with user id for the votes to read
      * @return {@code Result<UserVotes, ServiceError>}:
      *      <ul>
      *          <li>{@link UserVotes}</li>
+     *          <li>{@link ServiceError} with {@code status=}{@link HttpStatus#NOT_FOUND NOT_FOUND} if user does not exist</li>
      *      </ul>
      */
-    public Result<UserVotes, ServiceError> readVotesByUserId(VoteUserId info) {
-        var votes = voteRepository.findAllByUserId(info.user_id());
-        return new Result.Ok<>(new UserVotes(info.user_id(), votes));
+    public Result<UserVotes, ServiceError> readVotesBy(UserId info) {
+        var user_id = userRepository.findIdBy(info);
+        if (user_id.isEmpty())
+            return new Result.Error<>(new ServiceError(HttpStatus.NOT_FOUND, "User does not exist"));
+
+        var votes = voteRepository.findAllByUserId(user_id.get());
+        return new Result.Ok<>(new UserVotes(user_id.get(), votes));
     }
 
     /**
      * Read all votes registered to a survey.
      *
-     * @param info {@link VoteSurveyId} with survey value for the votes to read
+     * @param info {@link SurveyId} with survey value for the votes to read
      * @return {@code Result<VoteSurveyVotes, ServiceError>}:
      *      <ul>
      *          <li>{@link VoteSurveyVotes}</li>
+     *          <li>{@link ServiceError} with {@code status=}{@link HttpStatus#NOT_FOUND NOT_FOUND} if survey does not exist</li>
      *      </ul>
      */
-    public Result<VoteSurveyVotes, ServiceError> readVotesBySurveyId(VoteSurveyId info) {
-        var votes = voteRepository.findAllBySurveyId(info.survey_id());
-        return new Result.Ok<>(new VoteSurveyVotes(info.survey_id(), votes));
+    public Result<VoteSurveyVotes, ServiceError> readVotesBySurveyId(SurveyId info) {
+        if (!surveyRepository.existsById(info.id()))
+            return new Result.Error<>(new ServiceError(HttpStatus.NOT_FOUND, "Survey does not exist"));
+
+        var votes = voteRepository.findAllBySurveyId(info.id());
+        return new Result.Ok<>(new VoteSurveyVotes(info.id(), votes));
     }
 
     /**
