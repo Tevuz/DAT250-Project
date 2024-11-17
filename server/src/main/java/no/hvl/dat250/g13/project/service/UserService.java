@@ -29,11 +29,11 @@ public class UserService {
     /**
      * Create a user.
      *
-     * @param info {@link UserInfo} with data for the new user
+     * @param info {@link UserCreate} with data for the new user
      * @return {@code Result<UserInfo, ServiceError>}:
      *      <ul>
      *          <li>{@link UserInfo} if created</li>
-     *          <li>{@link ServiceError} with {@link HttpStatus#CONFLICT CONFLICT} if the username is taken </li>
+     *          <li>{@link ServiceError} with {@code status=}{@link HttpStatus#CONFLICT CONFLICT} if the username is taken</li>
      *      </ul>
      */
     public Result<UserInfo, ServiceError> createUser(UserCreate info) {
@@ -47,15 +47,15 @@ public class UserService {
     /**
      * Update a user.
      *
-     * @param info {@link UserInfo} with data to replace the user with value=={@code info.value}
-     * @return {@code Result<UserInfo, ServiceError>}:
+     * @param info {@link UserUpdate} with data to replace the user with value=={@code info.value}
+     * @return {@code Result<Void, ServiceError>}:
      *      <ul>
-     *          <li>{@link UserInfo} if updated</li>
-     *          <li>{@link ServiceError} of {@link HttpStatus#NOT_FOUND NOT_FOUND} if user with {@code info.value} does not exist </li>
-     *          <li>{@link ServiceError} with {@link HttpStatus#CONFLICT CONFLICT} if the username is taken </li>
+     *          <li>{@link Void} if updated</li>
+     *          <li>{@link ServiceError} with {@code status=}{@link HttpStatus#NOT_FOUND NOT_FOUND} if user does not exist</li>
+     *          <li>{@link ServiceError} with {@code status=}{@link HttpStatus#CONFLICT CONFLICT} if the username is taken</li>
      *      </ul>
      */
-    public Result<UserInfo, ServiceError> updateUser(UserUpdate info) {
+    public Result<Void, ServiceError> updateUser(UserUpdate info) {
         Optional<UserEntity> optional = userRepository.findById(info.id());
         if (optional.isEmpty())
             return new Result.Error<>(new ServiceError(HttpStatus.NOT_FOUND,"User does not exist"));
@@ -67,18 +67,18 @@ public class UserService {
             return new Result.Error<>(new ServiceError(HttpStatus.CONFLICT, "Username is not available"));
 
         info.apply(user);
-
-        return new Result.Ok<>(new UserInfo(userRepository.save(user)));
+        userRepository.save(user);
+        return new Result.Ok<>(null);
     }
 
     /**
      * Read a user by value.
      *
-     * @param info {@link UserId} with value for the user to read
+     * @param info {@link UserId} with id for the user to read
      * @return {@code Result<UserInfo, ServiceError>}:
      *      <ul>
      *          <li>{@link UserInfo} if found</li>
-     *          <li>{@link ServiceError} of {@link HttpStatus#NOT_FOUND NOT_FOUND} if user with {@code info.value} does not exist </li>
+     *          <li>{@link ServiceError} with {@code status=}{@link HttpStatus#NOT_FOUND NOT_FOUND} if user does not exist</li>
      *      </ul>
      */
     public Result<UserInfo, ServiceError> readUser(UserId info) {
@@ -92,11 +92,11 @@ public class UserService {
     /**
      * Read a users votes.
      *
-     * @param info {@link UserId} with value for the users votes to read
+     * @param info {@link UserId} with id for the users votes to read
      * @return {@code Result<UserVotes, ServiceError>}:
      *      <ul>
      *          <li>{@link UserVotes} if found</li>
-     *          <li>{@link ServiceError} of {@link HttpStatus#NOT_FOUND NOT_FOUND} if user with {@code info::username} does not exist </li>
+     *          <li>{@link ServiceError} with {@code status=}{@link HttpStatus#NOT_FOUND NOT_FOUND} if user does not exist</li>
      *      </ul>
      */
     public Result<UserVotes, ServiceError> readUserVotes(UserId info) {
@@ -112,11 +112,11 @@ public class UserService {
     /**
      * Read a users surveys.
      *
-     * @param info {@link UserId} with value for the users surveys to read
+     * @param info {@link UserId} with id for the users surveys to read
      * @return {@code Result<UserSurveys, ServiceError>}:
      *      <ul>
      *          <li>{@link UserSurveys} if found</li>
-     *          <li>{@link ServiceError} of {@link HttpStatus#NOT_FOUND NOT_FOUND} if user with {@code info::username} does not exist </li>
+     *          <li>{@link ServiceError} with {@code status=}{@link HttpStatus#NOT_FOUND NOT_FOUND} if user does not exist</li>
      *      </ul>
      */
     public Result<UserSurveys, ServiceError> readUserSurveys(UserId info) {
@@ -144,14 +144,14 @@ public class UserService {
     /**
      * Delete a user.
      *
-     * @param info {@link UserInfo} with value for the user to delete
-     * @return Result&lt;UserInfo, ServiceError&gt;
+     * @param info {@link UserInfo} with id for the user to delete
+     * @return {@code Result<Void, ServiceError>}:
      *      <ul>
-     *          <li>{@link UserInfo null} if deleted successfully</li>
-     *          <li>{@link ServiceError} of {@link HttpStatus#NOT_FOUND NOT_FOUND} if user with {@code info.value} does not exist </li>
+     *          <li>{@link Void} if deleted successfully</li>
+     *          <li>{@link ServiceError} with {@code status=}{@link HttpStatus#NOT_FOUND NOT_FOUND} if user does not exist</li>
      *      </ul>
      */
-    public Result<UserInfo, ServiceError> deleteUser(UserId info) {
+    public Result<Void, ServiceError> deleteUser(UserId info) {
         if (!userRepository.existsBy(info))
             return new Result.Error<>(new ServiceError(HttpStatus.NOT_FOUND,"User does not exist"));
 

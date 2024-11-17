@@ -29,8 +29,8 @@ public class SurveyService {
     /**
      * Create a survey.
      *
-     * @param info {@link SurveyInfo} with data for the new survey
-     * @return {@code Result<SurveyDTO.Info, ServiceError>}:
+     * @param info {@link SurveyCreate} with data for the new survey
+     * @return {@code Result<SurveyInfo, ServiceError>}:
      *      <ul>
      *          <li>{@link SurveyInfo} if created</li>
      *      </ul>
@@ -44,31 +44,31 @@ public class SurveyService {
     /**
      * Update a survey.
      *
-     * @param info {@link SurveyInfo} with data to replace the survey with value=={@code info.value}
-     * @return {@code Result<SurveyDTO.Info, ServiceError>}:
+     * @param info {@link SurveyUpdate} with data to replace the survey with value=={@code info.value}
+     * @return {@code Result<Void, ServiceError>}:
      *      <ul>
-     *          <li>{@link SurveyInfo} if updated</li>
-     *          <li>{@link ServiceError} of {@link HttpStatus#NOT_FOUND NOT_FOUND} if survey with {@code info.value} does not exist </li>
+     *          <li>{@link Void} if updated</li>
+     *          <li>{@link ServiceError} with {@code status=}{@link HttpStatus#NOT_FOUND NOT_FOUND} if survey does not exist</li>
      *      </ul>
      */
-    public Result<SurveyInfo, ServiceError> updateSurvey(SurveyUpdate info) {
+    public Result<Void, ServiceError> updateSurvey(SurveyUpdate info) {
         Optional<Survey> optional = surveyRepository.findById(info.id());
         if (optional.isEmpty())
             return new Result.Error<>(new ServiceError(HttpStatus.NOT_FOUND, "Survey does not exist"));
 
         Survey survey = info.apply(optional.get());
         survey = surveyRepository.save(survey);
-        return new Result.Ok<>(new SurveyInfo(survey));
+        return new Result.Ok<>(null);
     }
 
     /**
      * Read a survey.
      *
-     * @param info {@link SurveyInfo} with value for the survey to read
-     * @return {@code Result<SurveyDTO.Info, ServiceError>}:
+     * @param info {@link SurveyId} with id for the survey to read
+     * @return {@code Result<SurveyInfo, ServiceError>}:
      *      <ul>
      *          <li>{@link SurveyInfo} if found</li>
-     *          <li>{@link ServiceError} of {@link HttpStatus#NOT_FOUND NOT_FOUND} if survey with {@code info.value} does not exist </li>
+     *          <li>{@link ServiceError} with {@code status=}{@link HttpStatus#NOT_FOUND NOT_FOUND} if survey does not exist</li>
      *      </ul>
      */
     public Result<SurveyInfo, ServiceError> readSurveyById(SurveyId info) {
@@ -88,7 +88,7 @@ public class SurveyService {
     /**
      * Read all surveys.
      *
-     * @return {@code Result<SurveyDTO.Info, ServiceError>}:
+     * @return {@code Result<SurveyInfo, ServiceError>}:
      *      <ul>
      *          <li>{@link SurveyInfo} list of all surveys</li>
      *      </ul>
@@ -119,14 +119,14 @@ public class SurveyService {
     /**
      * Delete a survey.
      *
-     * @param info {@link SurveyId}  with value for the survey to delete
-     * @return Result&lt;SurveyDTO.Info, ServiceError&gt;
+     * @param info {@link SurveyId} with value for the survey to delete
+     * @return {@code Result<Void, ServiceError>}:
      *      <ul>
-     *          <li>{@link Object null} if deleted successfully</li>
-     *          <li>{@link ServiceError} of {@link HttpStatus#NOT_FOUND NOT_FOUND} if survey with {@code info.value} does not exist </li>
+     *          <li>{@link Void} if deleted successfully</li>
+     *          <li>{@link ServiceError} with {@code status=}{@link HttpStatus#NOT_FOUND NOT_FOUND} if survey does not exist</li>
      *      </ul>
      */
-    public Result<Object, ServiceError> deleteSurvey(SurveyId info) {
+    public Result<Void, ServiceError> deleteSurvey(SurveyId info) {
         if (!surveyRepository.existsById(info.id()))
             return new Result.Error<>(new ServiceError(HttpStatus.NOT_FOUND, "Survey does not exist"));
 

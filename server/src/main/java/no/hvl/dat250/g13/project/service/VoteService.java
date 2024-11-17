@@ -24,11 +24,11 @@ public class VoteService {
     /**
      * Create a vote.
      *
-     * @param info {@link VoteInfo} with data for the new vote
-     * @return {@code Result<VoteDTO.Info, ServiceError>}:
+     * @param info {@link VoteCreate} with data for the new vote
+     * @return {@code Result<VoteInfo, ServiceError>}:
      *      <ul>
      *          <li>{@link VoteInfo} if created</li>
-     *          <li>{@link ServiceError} with {@link HttpStatus#CONFLICT CONFLICT} if the vote already exists </li>
+     *          <li>{@link ServiceError} with {@code status=}{@link HttpStatus#CONFLICT CONFLICT} if vote already exists</li>
      *      </ul>
      */
     public Result<VoteInfo, ServiceError> createVote(VoteCreate info) {
@@ -43,14 +43,14 @@ public class VoteService {
     /**
      * Update a vote.
      *
-     * @param info {@link VoteInfo} with new options to replace the vote with value=={@code info.value}
-     * @return {@code Result<VoteDTO.Info, ServiceError>}:
+     * @param info {@link VoteUpdate} with data to replace the vote with value=={@code info.value}
+     * @return {@code Result<Void, ServiceError>}:
      *      <ul>
-     *          <li>{@link VoteInfo} if updated</li>
-     *          <li>{@link ServiceError} of {@link HttpStatus#NOT_FOUND NOT_FOUND} if vote with {@code info.value} does not exist </li>
+     *          <li>{@link Void} if updated</li>
+     *          <li>{@link ServiceError} with {@code status=}{@link HttpStatus#NOT_FOUND NOT_FOUND} if vote does not exist </li>
      *      </ul>
      */
-    public Result<VoteInfo, ServiceError> updateVote(VoteUpdate info) {
+    public Result<Void, ServiceError> updateVote(VoteUpdate info) {
         var votes = Streamable.of(voteRepository.findAllByUserIdAndSurveyId(info.user_id(), info.survey_id())).toSet();
         if (votes.isEmpty())
             return new Result.Error<>(new ServiceError(HttpStatus.NOT_FOUND, "Vote does not exist"));
@@ -61,20 +61,20 @@ public class VoteService {
         info.apply(votes, save, delete);
 
         voteRepository.deleteAll(delete);
-        var result = voteRepository.saveAll(save);
+        voteRepository.saveAll(save);
 
-        return new Result.Ok<>(new VoteInfo(info.user_id(), info.survey_id(), result));
+        return new Result.Ok<>(null);
     }
 
 
     /**
      * Read a vote.
      *
-     * @param info {@link VoteInfo} with user value and survey value for the vote to read
-     * @return {@code Result<VoteDTO.Info, ServiceError>}:
+     * @param info {@link VoteId} with user id and survey id for the vote to read
+     * @return {@code Result<VoteInfo, ServiceError>}:
      *      <ul>
      *          <li>{@link VoteInfo} if found</li>
-     *          <li>{@link ServiceError} of {@link HttpStatus#NOT_FOUND NOT_FOUND} if vote with {@code info.value} does not exist </li>
+     *          <li>{@link ServiceError} with {@code status=}{@link HttpStatus#NOT_FOUND NOT_FOUND} if vote does not exist</li>
      *      </ul>
      */
     public Result<VoteInfo, ServiceError> readVoteById(VoteId info) {
@@ -89,10 +89,10 @@ public class VoteService {
     /**
      * Read all votes registered to a user.
      *
-     * @param info {@link VoteInfo} with user value for the votes to read
-     * @return {@code Result<VoteDTO.Info, ServiceError>}:
+     * @param info {@link VoteUserId} with user id for the votes to read
+     * @return {@code Result<UserVotes, ServiceError>}:
      *      <ul>
-     *          <li>{@link Iterable} of {@link VoteInfo}</li>
+     *          <li>{@link UserVotes}</li>
      *      </ul>
      */
     public Result<UserVotes, ServiceError> readVotesByUserId(VoteUserId info) {
@@ -103,10 +103,10 @@ public class VoteService {
     /**
      * Read all votes registered to a survey.
      *
-     * @param info {@link VoteInfo} with survey value for the votes to read
-     * @return {@code Result<VoteDTO.Info, ServiceError>}:
+     * @param info {@link VoteSurveyId} with survey value for the votes to read
+     * @return {@code Result<VoteSurveyVotes, ServiceError>}:
      *      <ul>
-     *          <li>{@link Iterable} of {@link VoteInfo}</li>
+     *          <li>{@link VoteSurveyVotes}</li>
      *      </ul>
      */
     public Result<VoteSurveyVotes, ServiceError> readVotesBySurveyId(VoteSurveyId info) {
@@ -117,9 +117,9 @@ public class VoteService {
     /**
      * Read all votes.
      *
-     * @return {@code Result<VoteDTO.Info, ServiceError>}:
+     * @return {@code Result<Iterable<VoteInfo>, ServiceError>}:
      *      <ul>
-     *          <li>{@link Iterable} of {@link VoteInfo}</li>
+     *          <li>{@link Iterable}&lt;{@link VoteInfo}&gt;</li>
      *      </ul>
      */
     public Result<Iterable<VoteInfo>, ServiceError> readAllVotes() {
@@ -130,14 +130,14 @@ public class VoteService {
     /**
      * Delete a vote.
      *
-     * @param info {@link VoteInfo} with user value and survey value for the vote to delete
-     * @return {@code Result<VoteDTO.Info, ServiceError>}:
+     * @param info {@link VoteId} with user value and survey value for the vote to delete
+     * @return {@code Result<Void, ServiceError>}:
      *      <ul>
-     *          <li>{@link VoteInfo null} if deleted</li>
-     *          <li>{@link ServiceError} of {@link HttpStatus#NOT_FOUND NOT_FOUND} if vote with {@code info.value} does not exist </li>
+     *          <li>{@link Void} if deleted</li>
+     *          <li>{@link ServiceError} with {@code status=}{@link HttpStatus#NOT_FOUND NOT_FOUND} if vote with does not exist </li>
      *      </ul>
      */
-    public Result<VoteInfo, ServiceError> deleteVote(VoteId info) {
+    public Result<Void, ServiceError> deleteVote(VoteId info) {
         var votes = Streamable.of(voteRepository.findAllByUserIdAndSurveyId(info.user_id(), info.survey_id()));
         if (votes.isEmpty())
             return new Result.Error<>(new ServiceError(HttpStatus.NOT_FOUND, "Vote does not exist"));

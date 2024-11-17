@@ -61,9 +61,6 @@ class VoteServiceTest {
 
         var result = voteService.updateVote(info);
         assertTrue(result.isOk());
-        assertEquals(info.user_id(), result.value().user_id());
-        assertEquals(info.survey_id(), result.value().survey_id());
-        assertEquals(info.options(), result.value().options());
     }
 
     @Test

@@ -69,7 +69,6 @@ class UserServiceTest {
 
         var result = userService.updateUser(info);
         assertTrue(result.isOk());
-        assertEquals(info.id(), result.value().id());
     }
 
     @Test
@@ -83,8 +82,6 @@ class UserServiceTest {
 
         var result = userService.updateUser(info);
         assertTrue(result.isOk());
-        assertEquals(info.id(), result.value().id());
-        assertEquals(info.username(), Optional.of(result.value().username()));
     }
 
     @Test
