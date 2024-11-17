@@ -34,8 +34,6 @@ public record UserId(
             throw exception;
         }
 
-        System.out.println(identifier);
-
         try {
             if (identifier.startsWith("id:")) {
                 return new UserId(Long.parseLong(identifier.substring(3)));

@@ -35,7 +35,6 @@ public interface UserRepository extends CrudRepository<UserEntity, Long> {
     Optional<UserEntity> findByUsername(String username);
 
     default Optional<UserEntity> findBy(UserId info) {
-        System.out.println("findBy() : " + info);
         if (info.id().isPresent())
             return findById(info.id().get());
         if (info.username().isPresent())

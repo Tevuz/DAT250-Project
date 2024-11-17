@@ -7,7 +7,7 @@ import org.springframework.validation.FieldError;
 
 public interface Validate {
 
-    static Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+    Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
     @JsonIgnore
     default boolean isValid() {

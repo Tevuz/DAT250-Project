@@ -6,7 +6,6 @@ import no.hvl.dat250.g13.project.service.data.survey.SurveyCreate;
 import no.hvl.dat250.g13.project.service.data.survey.SurveyId;
 import no.hvl.dat250.g13.project.service.data.survey.SurveyInfo;
 import no.hvl.dat250.g13.project.service.data.survey.SurveyUpdate;
-import no.hvl.dat250.g13.project.service.data.vote.VoteId;
 import no.hvl.dat250.g13.project.service.error.ServiceError;
 import no.hvl.dat250.g13.project.util.Result;
 import org.springframework.http.ResponseEntity;
