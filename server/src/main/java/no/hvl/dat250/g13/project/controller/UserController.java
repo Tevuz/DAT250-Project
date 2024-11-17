@@ -16,6 +16,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.Objects;
 
 import static no.hvl.dat250.g13.project.controller.Common.*;
 import static no.hvl.dat250.g13.project.service.data.validation.Constraints.USERNAME_PATTERN;
@@ -94,10 +95,12 @@ public class UserController {
         };
     }
 
-    @PutMapping()
-    public ResponseEntity<?> updateUser(@Valid @RequestBody UserUpdate info) {
+    @PutMapping("/{user_id}")
+    public ResponseEntity<?> updateUser(@PathVariable Long user_id, @Valid @RequestBody UserUpdate info) {
+        if (!Objects.equals(user_id, info.id()))
+            responseBadRequest("Path variable user_id does not match user update");
         return switch (userService.updateUser(info)) {
-            case Result.Ok<?, ServiceError> result -> responseOk(result);
+            case Result.Ok<?, ServiceError> ignored -> responseNoContent();
             case Result.Error<?, ServiceError> result -> responseError(result);
         };
     }

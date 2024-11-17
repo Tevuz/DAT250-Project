@@ -13,6 +13,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.Objects;
 
 import static no.hvl.dat250.g13.project.controller.Common.*;
 
@@ -55,22 +56,12 @@ public class SurveyController {
         };
     }
 
-    @PutMapping()
-    public ResponseEntity<?> updateSurvey(@Valid @RequestBody SurveyUpdate info) {
+    @PutMapping("/{survey_id}")
+    public ResponseEntity<?> updateSurvey(@PathVariable Long survey_id, @Valid @RequestBody SurveyUpdate info) {
+        if (!Objects.equals(survey_id, info.id()))
+            responseBadRequest("Path variable survey_id does not match vote update");
         return switch (surveyService.updateSurvey(info)) {
-            case Result.Ok<?, ServiceError> result -> responseOk(result);
-            case Result.Error<?, ServiceError> result -> responseError(result);
-        };
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateSurvey(@PathVariable Long id, @RequestBody SurveyUpdate info) throws BindException {
-        if (info.id() != null && !id.equals(info.id()))
-            id = null;
-        info = new SurveyUpdate(id, info.title(), info.poll_additions(), info.poll_modifications(), info.poll_deletions());
-        info.validate();
-        return switch (surveyService.updateSurvey(info)) {
-            case Result.Ok<?, ServiceError> result -> responseOk(result);
+            case Result.Ok<?, ServiceError> ignored -> responseNoContent();
             case Result.Error<?, ServiceError> result -> responseError(result);
         };
     }

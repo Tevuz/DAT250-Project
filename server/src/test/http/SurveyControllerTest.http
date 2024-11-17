@@ -45,7 +45,7 @@ GET http://localhost:8080/api/surveys
 %}
 
 ###
-PUT http://localhost:8080/api/surveys
+PUT http://localhost:8080/api/surveys/1
 Content-Type: application/json
 
 {
@@ -67,13 +67,13 @@ Content-Type: application/json
 
 > {%
     client.test("Request executed successfully", function () {
-        client.assert(response.status === 200, "Failed to PUT survey")
+        client.assert(response.status === 204, "Failed to PUT survey")
     })
     client.log(response.body)
 %}
 
 ###
-PUT http://localhost:8080/api/surveys
+PUT http://localhost:8080/api/surveys/1
 Content-Type: application/json
 
 {
@@ -98,13 +98,13 @@ Content-Type: application/json
 
 > {%
     client.test("Request executed successfully", function () {
-        client.assert(response.status === 200, "Failed to PUT survey")
+        client.assert(response.status === 204, "Failed to PUT survey")
     })
     client.log(response.body)
 %}
 
 ###
-PUT http://localhost:8080/api/surveys
+PUT http://localhost:8080/api/surveys/1
 Content-Type: application/json
 
 {
@@ -130,13 +130,13 @@ Content-Type: application/json
 
 > {%
     client.test("Request executed successfully", function () {
-        client.assert(response.status === 200, "Failed to PUT survey")
+        client.assert(response.status === 204, "Failed to PUT survey")
     })
     client.log(response.body)
 %}
 
 ###
-PUT http://localhost:8080/api/surveys
+PUT http://localhost:8080/api/surveys/1
 Content-Type: application/json
 
 {
@@ -161,13 +161,13 @@ Content-Type: application/json
 
 > {%
     client.test("Request executed successfully", function () {
-        client.assert(response.status === 200, "Failed to PUT survey")
+        client.assert(response.status === 204, "Failed to PUT survey")
     })
     client.log(response.body)
 %}
 
 ###
-PUT http://localhost:8080/api/surveys
+PUT http://localhost:8080/api/surveys/1
 Content-Type: application/json
 
 {
@@ -184,7 +184,7 @@ Content-Type: application/json
 
 > {%
     client.test("Request executed successfully", function () {
-        client.assert(response.status === 200, "Failed to PUT survey")
+        client.assert(response.status === 204, "Failed to PUT survey")
     })
     client.log(response.body)
 %}

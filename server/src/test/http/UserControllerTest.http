@@ -60,7 +60,7 @@ Content-Type: application/json
 %}
 
 ### @no-log
-PUT http://localhost:8080/api/users
+PUT http://localhost:8080/api/users/1
 Content-Type: application/json
 
 {
@@ -70,13 +70,13 @@ Content-Type: application/json
 
 > {%
     client.test("Request executed successfully", function () {
-        client.assert(response.status === 200, "Failed to PUT user")
+        client.assert(response.status === 204, "Failed to PUT user")
     })
     client.log(response.body)
 %}
 
 ### @no-log
-PUT http://localhost:8080/api/users
+PUT http://localhost:8080/api/users/2
 Content-Type: application/json
 
 {
@@ -86,7 +86,7 @@ Content-Type: application/json
 
 > {%
     client.test("Request executed successfully", function () {
-        client.assert(response.status === 200, "Failed to POST user")
+        client.assert(response.status === 204, "Failed to POST user")
     })
     client.log(response.body)
 %}

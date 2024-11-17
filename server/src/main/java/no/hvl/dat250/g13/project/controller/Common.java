@@ -9,6 +9,8 @@ import java.net.URI;
 
 public class Common {
 
+    record Message(String message) {}
+
     static ResponseEntity<?> responseOk(Result.Ok<?, ServiceError> result) {
         return ResponseEntity.status(HttpStatus.OK).body(result.value());
     }
@@ -22,6 +24,10 @@ public class Common {
     }
 
     static ResponseEntity<?> responseError(Result.Error<?, ServiceError> result) {
-        return ResponseEntity.status(result.error().status().value()).body(result.error().message());
+        return ResponseEntity.status(result.error().status().value()).body(new Message(result.error().message()));
+    }
+
+    static ResponseEntity<?> responseBadRequest(String message) {
+        return ResponseEntity.badRequest().body(new Message(message));
     }
 }

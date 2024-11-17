@@ -13,6 +13,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.Objects;
 
 import static no.hvl.dat250.g13.project.controller.Common.*;
 
@@ -54,10 +55,12 @@ public class VoteController {
         };
     }
 
-    @PutMapping()
-    public ResponseEntity<?> updateVote(@Valid @RequestBody VoteUpdate info) {
+    @PutMapping("/{survey_id}/{user_id}")
+    public ResponseEntity<?> updateVote(@PathVariable Long survey_id, @PathVariable Long user_id, @Valid @RequestBody VoteUpdate info) {
+        if (!Objects.equals(survey_id, info.survey_id()) || !Objects.equals(user_id, info.user_id()))
+            responseBadRequest("Path variable survey_id or user_id does not match vote update");
         return switch (voteService.updateVote(info)) {
-            case Result.Ok<?, ServiceError> result -> responseOk(result);
+            case Result.Ok<?, ServiceError> ignored -> responseNoContent();
             case Result.Error<?, ServiceError> result -> responseError(result);
         };
     }
