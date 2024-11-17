@@ -1,6 +1,7 @@
 package no.hvl.dat250.g13.project.util;
 
 import java.util.Optional;
+import java.util.stream.Stream;
 
 public abstract sealed class Result<T, E> permits Result.Ok, Result.Error{
 
@@ -28,6 +29,10 @@ public abstract sealed class Result<T, E> permits Result.Ok, Result.Error{
         return false;
     }
 
+    public Stream<T> stream() {
+        return Stream.empty();
+    }
+
     public static final class Ok<T, E> extends Result<T, E> {
         private final T value;
 
@@ -46,6 +51,10 @@ public abstract sealed class Result<T, E> permits Result.Ok, Result.Error{
 
         public T value() {
             return value;
+        }
+
+        public Stream<T> stream() {
+            return Stream.of(value);
         }
     }
 
