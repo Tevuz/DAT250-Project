@@ -4,7 +4,8 @@
   import { onMount } from 'svelte';
   import LoginButton from './routes/LoginButton.svelte'; // Assuming you have this component
   import Register from "./Components/Login.svelte";
-
+  import Survey from './Components/Survey.svelte';
+  
   let authenticated;
 
   // Subscribe to the store
@@ -20,8 +21,8 @@
 
 {#if authenticated}
   <!-- Main application content -->
-  <h1>Welcome to the App!</h1>
-  <p>This is the main content that only shows when logged in.</p>
+  <Survey/>
+
 {:else}
   <!-- Login Screen -->
   <h1>Please log in</h1>

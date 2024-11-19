@@ -49,6 +49,7 @@ public class SurveyController {
         };
     }
 
+    @CrossOrigin(origins = "http://localhost:5173")
     @GetMapping
     public ResponseEntity<?> readAllSurveys() {
         // TODO: implement pagination
