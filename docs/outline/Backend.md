@@ -27,6 +27,9 @@ classDiagram
     class User {
         long id
         String username
+        String password
+        String providerId
+        String providerSecret
     }
     class Survey {
         long id
@@ -44,7 +47,6 @@ classDiagram
     }
     class Vote {
         long id
-        List~long~ options
     }
     
     Survey "1" *-- "1..n" Poll : Polls
@@ -54,6 +56,7 @@ classDiagram
     
     Vote "1" --> "0..*" Survey : Vote
     Vote "1" --> "0..*" User : Voter
+    Vote "1" --> "0..*" Option : option
 ```
 
 ## Data Transfer Objects
