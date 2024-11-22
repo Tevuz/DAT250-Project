@@ -19,14 +19,19 @@ repositories {
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter")
-    implementation("jakarta.persistence:jakarta.persistence-api:3.1.0") // Jakarta Persistence API
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-validation:3.3.5")
+    implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-api:2.6.0")
+    implementation("jakarta.persistence:jakarta.persistence-api:3.1.0")
+
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.springframework.security:spring-security-test")
+
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+
     runtimeOnly("com.h2database:h2")
 }
 

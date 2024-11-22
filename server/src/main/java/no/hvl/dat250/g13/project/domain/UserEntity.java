@@ -12,14 +12,16 @@ public class UserEntity {
     private Long id;
 
     private String username;
+    private String password;
 
     // Default constructor (required by JPA)
     public UserEntity() {}
 
     // All-arguments constructor
-    public UserEntity(Long id, String username) {
+    public UserEntity(Long id, String username, String password) {
         setId(id);
         setUsername(username);
+        setPassword(password);
     }
 
     // Getters and Setters
@@ -39,12 +41,20 @@ public class UserEntity {
         this.username = username;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserEntity that = (UserEntity) o;
-        return Objects.equals(id, that.id) && Objects.equals(username, that.username);
+        return Objects.equals(id, that.id) && Objects.equals(username, that.username) && Objects.equals(password, that.password);
     }
 
     @Override
