@@ -1,0 +1,10 @@
+{
+  "client": {
+    "paths": {
+      "/": {
+        "name": "Feed",
+        "component": "pages/Feed.svelte"
+      }
+    }
+  }
+}
