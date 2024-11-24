@@ -45,6 +45,7 @@ public class SecurityConfiguration {
                     request.requestMatchers("/login").permitAll();
                     request.anyRequest().authenticated(); })
                 .formLogin(form -> form.loginPage("/login").defaultSuccessUrl("/"))
+                .logout(Customizer.withDefaults())
                 .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .addFilterBefore(new ApiAccessFilter(), AuthorizationFilter.class)

@@ -4,6 +4,14 @@
       "/": {
         "name": "Feed",
         "component": "pages/Feed.svelte"
+      },
+      "/login": {
+        "name": "Login",
+        "component": "pages/Login.svelte"
+      },
+      "/logout": {
+        "name": "Logout",
+        "component": "pages/Logout.svelte"
       }
     }
   }
