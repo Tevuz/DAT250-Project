@@ -1,0 +1,9 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="ServerApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+    <module name="server.main" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="no.hvl.dat250.g13.project.ServerApplication" />
+    <method v="2">
+      <option name="Gradle.BeforeRunTask" enabled="true" tasks="build" externalProjectPath="$PROJECT_DIR$/server" vmOptions="" scriptParameters="" />
+    </method>
+  </configuration>
+</component>
