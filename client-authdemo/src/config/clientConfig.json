@@ -12,6 +12,10 @@
       "/logout": {
         "name": "Logout",
         "component": "pages/Logout.svelte"
+      },
+      "/users": {
+        "name": "Users",
+        "component": "pages/Users.svelte"
       }
     }
   }
