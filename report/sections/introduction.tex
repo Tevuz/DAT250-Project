@@ -9,14 +9,14 @@ The FeedApp project seeks to develop a running prototype of a full-stack FeedApp
 \noindent
 The technology stack is as follows:
 \begin{itemize}
-\item Java with SpringBoot as the general platform/framework,
-\item Spring Web MVC for implementing a HTTP/REST AP,
-\item Svelte + Vite for implementing a Single Page App user interface,
-\item Jakarta Persistence API with Hibernate and Postgres for implementing object-relational database mapping,
-\item MongoDB as a non-relational database,
-\item RabbitMQ as a message broker,
-\item Docker as a container engine.
-\item OAuth 2.0: The chosen authentication protocol ensures secure user authentication and authorization, providing a scalable and standard mechanism to handle access control. We will be conducting a technology assessment according to Brown and Walnau.\cite{brown:96}
+\item \textbf{Java with SpringBoot}: Serving as the core platform and framework, Spring Boot provides the foundation for building a lightweight and production-ready application.
+\item \textbf{Spring Web MVC}: This framework enables the development of a RESTful HTTP API, facilitating communication between the front-end and back-end services.
+\item \textbf{Svelte + Vite}: An innovative and modern approach to front-end development, where Svelte offers a highly reactive and efficient framework for building Single Page Applications (SPAs), and Vite ensures fast build times and optimized development workflows.
+\item \textbf{Jakarta Persistence API with Hibernate and Postgres}:  For object-relational database mapping, JPA with Hibernate will interact with a PostgreSQL database to manage structured data such as users, surveys, polls, and votes.
+\item \textbf{MongoDB}: A non-relational database to store and manage unstructured or semi-structured data, complementing the relational data model.
+\item \textbf{RabbitMQ}: A message broker facilitating asynchronous communication between various components of the application, ensuring scalability and reliability.
+\item \textbf{Docker}: A containerization engine to streamline development, deployment, and orchestration of the application across different environments.
+\item \textbf{OAuth 2.0}: Ensures secure user authentication and authorization, providing a scalable and standard mechanism to handle access control. Further in this report we conduct a technology assessment according to Brown and Walnau.\cite{brown:96} based on this technology.
 \end{itemize}
 
 % A brief account of the results that have been obtained in the project.
@@ -28,8 +28,15 @@ The technology stack is as follows:
 \noindent
 This rest of this report is organised as follows:
 
+\smallskip
+
+\noindent
 Section~\ref{sec:design} gives a detailed descprition about the functional aspects of the FeedApp application. This includes use cases, domain model and an application flow diagram.
+\smallskip
 
+\noindent
 Section~\ref{sec:technology} documents the experiments conducted, following the methodology described in the paper by Brown and Walnau.
+\smallskip
 
+\noindent
 Section~\ref{sec:implementation} gives a brief explanation of how the prototype has been implemented. It provides details to those who may want to run the application and how they may develop it further.

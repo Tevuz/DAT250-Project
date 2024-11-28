@@ -43,9 +43,12 @@
 \maketitle
 
 \begin{abstract}
+%Abstract: 10-15 lines with the software technology and the highlights from the project that has been undertaken.
+This project focuses on the design and implementation of FeedApp, an interactive web application for creating and participating in surveys and polls. Built with a modern technology stack, the project highlights the integration of OAuth 2.0 for secure user authentication and token-based authorization, ensuring a seamless and secure experience for end-users. The backend leverages Spring Boot and Spring Web MVC to provide a robust RESTful API, while the frontend, developed using Svelte + Vite, delivers a fast and responsive Single Page Application (SPA).
 
-  10-15 lines with the software technology and the highlights from the
-  project that has been undertaken.
+The application is underpinned by a well-defined domain model, capturing the relationships between key entities such as users, surveys, polls, and votes. Data persistence is managed using PostgreSQL and MongoDB, accommodating structured and unstructured data needs, while RabbitMQ ensures efficient message-driven communication between services. The system is containerized using Docker, enabling smooth deployment and scalability.
+
+A technology assessment was conducted to validate the decision to implement OAuth 2.0, comparing it to alternatives like API Keys and Basic Authentication. The assessment highlights OAuth 2.0's superior scalability, security, and flexibility, making it a suitable choice for modern web applications.This project demonstrates how a modular, scalable architecture can enable collaborative participation in surveys and polls in real-time, while ensuring robust security and an intuitive user experience.
 
 \end{abstract}
 
