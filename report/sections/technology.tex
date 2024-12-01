@@ -89,19 +89,68 @@ The results are analyzed based on the defined metrics, focusing on how OAuth 2.0
 
 %For some reports, you may have to include a table with experimental
 %results or other kinds of tables that, for instance, compare technologies. 
-Table~\ref{tab:results} gives an example of how to create a table.
+Table~\ref{tab:security-comparison} shows first hypothesis.
 
-\begin{table}[bth]
-	\centering
-	\begin{tabular}{llrrrrrr}
-		Metric & OAuth 2.0 & API Keys& Basic Authentication
-		\\ \hline \hline
-		Login Flow Latency & 00ms   &   00ms  &   00ms \\
-		API Call Latency & 00ms   &   00ms  &   00ms \\
-		Scalability (10k users) & 00\% success   & 00\% success  &  00\% success \\
-		Security Score & High   &   Low  &   Very Low \\
-		\hline \hline
-	\end{tabular}
-	\caption{Selected experimental results on the communication protocol example.}
-	\label{tab:results}
+\begin{table}[h!]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{Security Feature}               & \textbf{OAuth 2.0}         & \textbf{Basic Authentication} & \textbf{API Key}       \\ \hline
+\textbf{Token Expiration}               & Supported                  & Not Applicable                & Not Applicable         \\ \hline
+\textbf{Token Revocation}               & Supported                  & Not Applicable                & Not Applicable         \\ \hline
+\textbf{Replay Attack Prevention}       & Resistant (Nonce/Scopes)   & Weak                          & Weak                   \\ \hline
+\textbf{Granular Permissions (Scopes)}  & Supported                  & Not Applicable                & Limited (via keys)     \\ \hline
+\textbf{Credential Storage Risk}        & Low (Tokens Only)          & High (Requires Password)      & Medium (Static Key)    \\ \hline
+\textbf{Ease of Key Rotation}           & Supported (Token Refresh)  & Not Applicable                & Limited (Manual Keys)  \\ \hline
+\textbf{Transport Security Requirement} & TLS Required               & TLS Strongly Recommended      & TLS Strongly Recommended \\ \hline
+\end{tabular}
+}
+\caption{Security Feature Comparison of Authentication Mechanisms}
+\label{tab:security-comparison}
 \end{table}
+
+
+
+\begin{table}[h!]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|c|c|p{6cm}|}
+\hline
+\textbf{Metric} & \textbf{Basic Authentication (100 VUs)} & \textbf{OAuth 2.0 (100 VUs)} & \textbf{Notes} \\ \hline
+\textbf{Average Response Time} & 795.26 ms & TBD ms & OAuth is expected to be faster due to stateless token validation. \\ \hline
+\textbf{Median Response Time} & 909.66 ms & TBD ms & Median reflects the typical experience for most users. \\ \hline
+\textbf{90th Percentile Response Time} & 1.21 s & TBD ms & 90\% of requests complete within this time. \\ \hline
+\textbf{95th Percentile Response Time} & 1.29 s & TBD ms & 95\% of requests complete within this time. \\ \hline
+\textbf{Throughput} & 48.78 requests/second & TBD requests/second & Higher throughput suggests better scalability. \\ \hline
+\textbf{Error Rate} & 0\% & 0\% & Both methods handle the load without dropping requests. \\ \hline
+\textbf{CPU Utilization} & High & TBD & OAuth's lightweight token validation likely reduces CPU usage. \\ \hline
+\textbf{Memory Utilization} & Moderate & TBD & OAuth avoids keeping session states or handling repeated logins. \\ \hline
+\end{tabular}
+}
+\caption{Scalability Test Results}
+\label{tab:scalability-results}
+\end{table}
+
+
+\begin{table}[h!]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{Metric}                          & \textbf{OAuth 2.0}         & \textbf{Basic Authentication} & \textbf{API Key}       \\ \hline
+\textbf{Development Time (hrs)}          & 15 (Approx.)               & 5 (Approx.)                   & 5 (Approx.)            \\ \hline
+\textbf{Code Complexity}                 & High                       & Low                           & Low                    \\ \hline
+\textbf{Configuration Overhead}          & High (Token Server Needed) & Low                           & Medium                 \\ \hline
+\textbf{Third-Party Integration Ease}    & Excellent                  & Poor                          & Moderate               \\ \hline
+\textbf{Scalability Benefits}            & High                       & Low                           & Moderate               \\ \hline
+\textbf{Maintainability (Long-Term)}     & High                       & Low                           & Medium                 \\ \hline
+\textbf{Error-Prone Areas}               & Token Handling             & Password Storage              & API Key Leaks          \\ \hline
+\end{tabular}
+}
+\caption{Implementation Complexity Comparison of Authentication Mechanisms}
+\label{tab:implementation-complexity}
+\end{table}
+
+
+
