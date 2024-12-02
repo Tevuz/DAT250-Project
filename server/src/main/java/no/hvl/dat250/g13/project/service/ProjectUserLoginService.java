@@ -13,13 +13,14 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class UserDetailsLoginService implements UserDetailsService {
+public class ProjectUserLoginService implements UserDetailsService {
 
-    Logger logger = LoggerFactory.getLogger(UserDetailsLoginService.class);
+    Logger logger = LoggerFactory.getLogger(ProjectUserLoginService.class);
 
     private final UserRepository userRepository;
 
-    public UserDetailsLoginService(UserRepository userRepository) {
+    public ProjectUserLoginService(UserRepository userRepository) {
+        logger.info("🔑 UserDetailsLoginService");
         this.userRepository = userRepository;
     }
 

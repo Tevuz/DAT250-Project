@@ -18,9 +18,14 @@ public record SurveyInfo(
         @NotBlank(message = MESSAGE_SURVEY_TITLE_REQUIRED)
         String title,
         List<PollInfo> polls,
-        Optional<Long> voteTotal
+        Optional<Long> voteTotal,
+        boolean voted
 ) implements Validate {
     public SurveyInfo(Survey survey) {
-        this(survey.getId(), survey.getTitle(), survey.getPolls().stream().map(PollInfo::new).toList(), Optional.ofNullable(survey.getVoteTotal()));
+        this(survey, false);
+    }
+
+    public SurveyInfo(Survey survey, boolean voted) {
+        this(survey.getId(), survey.getTitle(), survey.getPolls().stream().map(PollInfo::new).toList(), Optional.ofNullable(survey.getVoteTotal()), voted);
     }
 }

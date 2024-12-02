@@ -13,9 +13,13 @@
         "name": "Logout",
         "component": "pages/Logout.svelte"
       },
-      "/users": {
-        "name": "Users",
-        "component": "pages/Users.svelte"
+      "/account": {
+        "name": "Account",
+        "component": "pages/Account.svelte"
+      },
+      "/post": {
+        "name": "NewPoll",
+        "component": "pages/NewPoll.svelte"
       }
     }
   }

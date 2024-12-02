@@ -1,61 +1,219 @@
+:root {
+    --col-dark: #182030;
+    --col-background: #202838;
+    --col-accent: #303850;
+    --col-highlight: #485070;
+    --col-text-dim: #707890;
+    --col-text: #e0e0e0;
+}
+
 body {
+    background-color: var(--col-background);
+    color: var(--col-text);
+
     margin: 0;
     padding: 0;
 }
 
-.nav-head {
-    display: block;
-    min-width: 100%;
-    position: sticky;
-    padding: 8px;
-    top: 0;
-    box-shadow: 0 0 3px;
-
+h1 {
+    font-size: 220%;
+    text-align: center;
 }
 
-.nav-wrap {
-    display: block;
-    max-width: 900px;
-    margin: 0 auto;
-    position: relative;
+.app {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
 
-    a {
-        position: relative;
-        line-height: 38px;
-        font-size: 16px;
-        font-weight: 600;
-        text-align: center;
-        box-sizing: border-box;
+    width: 1200px;
+    max-width: calc(100vw - 16px);
+    margin-inline: auto;
+
+    background-color: red;
+}
+
+.menu {
+    display: block;
+    width: 180px;
+    overflow: hidden;
+    position: fixed;
+
+    ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
     }
-}
 
-.nav-left {
-    height: 36px;
-    left: 180px;
-    position: absolute;
-    top: 0;
-}
+    a.selected {
+        background-color: var(--col-accent);
+    }
 
-.nav-right {
-    height: 36px;
-    position: absolute;
-    right: 12px;
-    top: 0;
-    align-items: center;
-    padding-left: 20px;
+    a:hover, a:focus-visible {
+        background-color: var(--col-highlight);
+    }
+
+    a, .a-mimic {
+        color: var(--col-text);
+
+        display: block;
+        padding: 12px;
+        width: 100%;
+        height: 100%;
+
+        font-size: 150%;
+        text-decoration: none;
+    }
 }
 
 .logo {
     display: block;
     width: 180px;
     height: 36px;
-    background: url("./assets/logo.png") center center;
+    background: url("assets/logo.png") center center;
     background-size: cover;
 }
 
-.content-wrap {
+.content {
     display: block;
-    max-width: 900px;
-    margin: 0 auto;
-    position: relative;
+    position: fixed;
+
+    padding: 0 12px;
+    margin-left: 180px;
+    margin-right: 180px;
+    width: 800px;
+    height: 100%;
+
+    background-color: var(--col-background);
+    outline: 2px solid var(--col-accent);
+}
+
+.form {
+    margin: auto;
+
+    form {
+        position: relative;
+        max-width: 400px;
+        margin: 0 auto 40px;
+
+        input {
+            width: 100%;
+            margin: 0 0 15px;
+            padding: 15px;
+            box-sizing: border-box;
+
+            outline: 0;
+            border: 0;
+
+            background-color: var(--col-dark);
+            color: var(--col-text);
+
+            font-size: 150%;
+        }
+
+        input::placeholder {
+            color: var(--col-text-dim);
+        }
+
+        label {
+            width: 100%;
+            margin: 0 0 0 20px;
+            color: var(--col-text-dim);
+            text-align: left;
+            font-size: 125%;
+        }
+
+
+        button {
+            width: 100%;
+            margin: 0 0 15px;
+            padding: 15px;
+            box-sizing: border-box;
+
+            outline: 0;
+            border: 0;
+
+            background-color: var(--col-accent);
+            color: var(--col-text);
+
+            font-size: 150%;
+        }
+
+        input:hover, input:focus-visible {
+            outline: 2px solid var(--col-highlight);
+            background-color: var(--col-accent);
+        }
+
+        button:hover, button:focus-visible {
+            background-color: var(--col-highlight);
+        }
+    }
+
+    .wide {
+        max-width: 720px;
+    }
+
+    p {
+        font-size: 150%;
+        text-align: center;
+    }
+
+    a {
+        color: var(--col-text)
+    }
+}
+
+.message {
+    font-size: 125%;
+    text-align: center;
+}
+
+.feed {
+
+    form {
+        margin: auto;
+        padding: 16px;
+        width: 720px;
+        --progress: 0%;
+
+        outline: 2px solid var(--col-accent);
+
+        h2 {
+            margin: auto auto 12px;
+            font-size: 150%;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        li {
+            position: relative;
+
+            height: 36px;
+            margin: 16px auto;
+
+            outline: 2px solid var(--col-dark);
+            background-image: linear-gradient(to right, var(--col-accent) var(--progress), var(--col-background) var(--progress));
+        }
+
+        li:has(input:checked, input:focus-visible) {
+            background-color: var(--col-accent);
+        }
+
+        label {
+            font-size: 125%;
+
+            padding-left: 24px;
+
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+    }
 }

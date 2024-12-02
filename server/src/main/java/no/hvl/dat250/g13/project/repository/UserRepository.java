@@ -24,6 +24,10 @@ public interface UserRepository extends CrudRepository<UserEntity, Long> {
     @Query("SELECT entity.id FROM UserEntity entity WHERE entity.username = :username")
     Optional<Long> findIdByUsername(String username);
 
+    Optional<UserEntity> findByGoogleId(String googleId);
+
+    Optional<UserEntity> findByGithubId(String githubId);
+
     default Optional<Long> findIdBy(UserId info) {
         if (info.id().isPresent())
             return info.id();

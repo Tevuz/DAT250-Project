@@ -22,6 +22,7 @@ import static no.hvl.dat250.g13.project.controller.Common.*;
 @RestController
 @RequestMapping("/api/votes")
 @Validated
+@CrossOrigin
 public class VoteController {
 
     private final VoteService voteService;

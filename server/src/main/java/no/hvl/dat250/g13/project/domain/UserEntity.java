@@ -14,6 +14,9 @@ public class UserEntity {
     private String username;
     private String password;
 
+    private String googleId;
+    private String githubId;
+
     // Default constructor (required by JPA)
     public UserEntity() {}
 
@@ -49,12 +52,28 @@ public class UserEntity {
         this.password = password;
     }
 
+    public String getGoogleId() {
+        return googleId;
+    }
+
+    public void setGoogleId(String google_id) {
+        this.googleId = google_id;
+    }
+
+    public String getGithubId() {
+        return githubId;
+    }
+
+    public void setGithubId(String github_id) {
+        this.githubId = github_id;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserEntity that = (UserEntity) o;
-        return Objects.equals(id, that.id) && Objects.equals(username, that.username) && Objects.equals(password, that.password);
+        return Objects.equals(id, that.id) && Objects.equals(username, that.username);
     }
 
     @Override

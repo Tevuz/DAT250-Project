@@ -1,6 +1,7 @@
 <script>
     import NotFound from "./pages/NotFound.svelte"
     import { views } from "./generated/Views.js"
+    import { account } from "./pages/Account.svelte"
 
     let path = location.pathname;
 
@@ -16,34 +17,38 @@
     window.addEventListener("popstate", refresh);
 
     /** @param {Event} event */
-    function navigate(event) {
+    function route(event) {
         event.preventDefault();
-        history.pushState(null, null, this.href);
+        history.pushState({}, null, this.href);
     }
 
 </script>
 
-<header class="nav-head">
-    <div class="nav-wrap">
-        <a class="logo" href="/" on:click={navigate} aria-label="Poll app"></a>
-        <nav>
-            <span class="nav-left">
-                <a href="/users" on:click={navigate}>Users</a>
-            </span>
-            <span class="nav-right">
-                <a href="/login" on:click={navigate}>Login</a>
-                <a href="/logout" on:click={navigate}>Logout</a>
-            </span>
-        </nav>
-    </div>
-</header>
+<svelte:head>
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon.ico" />
+</svelte:head>
 
-<main>
-    <div class="content-wrap">
+<div class="app">
+
+    <nav class="menu">
+        <div>
+            <ul>
+                <li><div class="a-mimic"></div></li>
+                <li><a href="/" on:click={route} class={path === "/" ? "selected" : ""}>Feed</a></li>
+                <li><a href="/account" on:click={route} class={path === "/account" ? "selected" : ""}>Account</a></li>
+                <li><a href="/login" on:click={route} class={path === "/login" ? "selected" : ""}>Log in</a></li>
+                <li><a href="/logout" on:click={route} class={path === "/logout" ? "selected" : ""}>Log out</a></li>
+                <li><div class="a-mimic"></div></li>
+                <li><a href="/post" on:click={route} class={path === "/post" ? "selected" : ""}>New Poll</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="content">
         {#if path in views}
             <svelte:component this={views[path]} />
         {:else}
             <NotFound />
         {/if}
-    </div>
-</main>
+    </main>
+</div>

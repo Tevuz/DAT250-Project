@@ -5,6 +5,8 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import no.hvl.dat250.g13.project.domain.UserEntity;
 import no.hvl.dat250.g13.project.service.data.validation.Validate;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import static no.hvl.dat250.g13.project.service.data.validation.Constraints.*;
 

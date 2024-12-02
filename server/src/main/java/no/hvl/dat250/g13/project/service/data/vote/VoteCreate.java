@@ -5,6 +5,7 @@ import no.hvl.dat250.g13.project.domain.Vote;
 import no.hvl.dat250.g13.project.service.data.validation.Validate;
 import org.springframework.data.util.Streamable;
 
+import java.util.List;
 import java.util.Set;
 
 import static no.hvl.dat250.g13.project.service.data.validation.Constraints.*;
@@ -20,9 +21,9 @@ public record VoteCreate(
         @NotNull(message = MESSAGE_VOTE_SURVEY_ID_REQUIRED)
         Long survey_id,
         @NotNull(message = MESSAGE_VOTE_OPTIONS_REQUIRED)
-        Set<Long> options
+        List<Long> options
 ) implements Validate {
-    public Set<Vote> into() {
-        return Streamable.of(options).map(option -> new Vote(user_id, survey_id, option)).toSet();
+    public List<Vote> into() {
+        return Streamable.of(options).map(option -> new Vote(user_id, survey_id, option)).toList();
     }
 }

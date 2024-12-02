@@ -22,6 +22,7 @@ import static no.hvl.dat250.g13.project.controller.Common.*;
 @RestController
 @RequestMapping("/api/surveys")
 @Validated
+@CrossOrigin
 public class SurveyController {
 
     private final SurveyService surveyService;

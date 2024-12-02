@@ -28,6 +28,7 @@ dependencies {
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-api:2.6.0")
     implementation("jakarta.persistence:jakarta.persistence-api:3.1.0")
+    implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
 
     developmentOnly("org.springframework.boot:spring-boot-devtools")
 
@@ -82,7 +83,7 @@ tasks.register("compileSvelte") {
     }
 }
 
-tasks.named("build") {
+tasks.named("assemble") {
     dependsOn("compileSvelte")
 }
 

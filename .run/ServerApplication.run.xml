@@ -1,9 +1,11 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="ServerApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+    <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateResources" />
     <module name="server.main" />
     <option name="SPRING_BOOT_MAIN_CLASS" value="no.hvl.dat250.g13.project.ServerApplication" />
+    <option name="UPDATE_ACTION_UPDATE_POLICY" value="UpdateTriggerFile" />
     <method v="2">
-      <option name="Gradle.BeforeRunTask" enabled="true" tasks="build" externalProjectPath="$PROJECT_DIR$/server" vmOptions="" scriptParameters="" />
+      <option name="Gradle.BeforeRunTask" enabled="true" tasks="assemble" externalProjectPath="$PROJECT_DIR$/server" vmOptions="" scriptParameters="" />
     </method>
   </configuration>
 </component>
