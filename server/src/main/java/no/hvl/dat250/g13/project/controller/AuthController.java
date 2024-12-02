@@ -36,16 +36,16 @@ public class AuthController {
     public ResponseEntity<?> getLogIn(Authentication authentication) {
         //assert (authentication.isAuthenticated()): "Invalid security chain, require authenticated user";
 
-        logger.debug("👤 Username: {}", "");
+//        logger.debug("👤 Username: {}", "");
+//
+//        String username = switch (authentication) {
+//            case UserDetails login -> login.getUsername();
+//            case OAuth2AuthenticationToken login -> login.getPrincipal().getAttribute("login");
+//            default -> "";
+//        };
 
-        String username = switch (authentication) {
-            case UserDetails login -> login.getUsername();
-            case OAuth2AuthenticationToken login -> login.getPrincipal().getAttribute("login");
-            default -> "";
-        };
 
-
-        return switch (userService.readUser(new UserId(username))) {
+        return switch (userService.readUser(new UserId(authentication.getName()))) {
             case Result.Ok<?, ServiceError> result -> responseOk(result);
             case Result.Error<?, ServiceError> result -> responseError(result);
         };
