@@ -39,7 +39,7 @@ class VoteServiceTest {
 
     @Test
     void createVote_ok() {
-        var info = new VoteCreate(1L, 1L, Set.of(1L));
+        var info = new VoteCreate(1L, 1L, List.of(1L));
 
         Mockito.when(voteRepository.saveAll(any())).then(returnsFirstArg());
 
@@ -47,12 +47,12 @@ class VoteServiceTest {
         assertTrue(result.isOk());
         assertEquals(info.user_id(), result.value().user_id());
         assertEquals(info.survey_id(), result.value().survey_id());
-        assertEquals(info.options(), result.value().options());
+        assertEquals(Set.copyOf(info.options()), result.value().options());
     }
 
     @Test
     void createVote_exists() {
-        var info = new VoteCreate(1L, 1L, Set.of(1L));
+        var info = new VoteCreate(1L, 1L, List.of(1L));
 
         Mockito.when(voteRepository.existsByUserIdAndSurveyId(1L, 1L)).thenReturn(true);
 

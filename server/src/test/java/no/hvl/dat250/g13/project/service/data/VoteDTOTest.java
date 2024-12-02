@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -27,7 +28,7 @@ class VoteDTOTest {
 
     @Test
     void create_ok() {
-        var info = new VoteCreate(1L, 1L, Set.of());
+        var info = new VoteCreate(1L, 1L, List.of());
         var violations = validator.validate(info);
         assertEquals(0, violations.size());
     }
@@ -35,7 +36,7 @@ class VoteDTOTest {
 
     @Test
     void create_userIdMissing() {
-        var info = new VoteCreate(null, 1L, Set.of());
+        var info = new VoteCreate(null, 1L, List.of());
         var violations = validator.validate(info);
         assertEquals(1, violations.size());
         assertEquals("User value is required", violations.iterator().next().getMessage());
@@ -43,7 +44,7 @@ class VoteDTOTest {
 
     @Test
     void create_surveyIdMissing() {
-        var info = new VoteCreate(1L,null, Set.of());
+        var info = new VoteCreate(1L,null, List.of());
         var violations = validator.validate(info);
         assertEquals(1, violations.size());
         assertEquals("Survey value is required", violations.iterator().next().getMessage());
