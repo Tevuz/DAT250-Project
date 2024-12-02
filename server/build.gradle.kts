@@ -62,25 +62,28 @@ val clientBuildDst = File(serverResources, applicationProperties.getProperty("re
 val clientConfigSrc = File(clientResources, "src/config/clientConfig.json")
 val clientConfigName = File(applicationProperties.getProperty("resources.client.config")).name.ifBlank { "config.json" }!!
 
-tasks.register("compileSvelte") {
-    doLast {
-        exec {
-            workingDir = clientResources
-            commandLine("npm.cmd", "run", "build")
-        }
-
+tasks.register<Exec>("buildSvelte") {
+    workingDir = clientResources
+    commandLine("npm.cmd", "run", "build")
+}
+tasks.register<Copy>("copyGenerated") {
+    doFirst {
         delete(clientBuildDst)
-
-        copy {
-            from(clientBuildSrc)
-            into(clientBuildDst)
-        }
-        copy {
-            from(clientConfigSrc)
-            into(clientBuildDst)
-            rename { clientConfigName }
-        }
     }
+
+    copy {
+        from(clientBuildSrc)
+        into(clientBuildDst)
+    }
+    copy {
+        from(clientConfigSrc)
+        into(clientBuildDst)
+        rename { clientConfigName }
+    }
+}
+
+tasks.register("compileSvelte") {
+    dependsOn("buildSvelte", "copyGenerated")
 }
 
 tasks.named("assemble") {
