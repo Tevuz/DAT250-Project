@@ -21,8 +21,14 @@ The purpose of this evaluation is to compare these two technologies in the conte
 
 \subsection{Experiment Design}
 To evaluate the two technologies, we designed experiments that focused on three main hypotheses. First, we hypothesized that Basic Authentication would provide lower average request durations due to its simplicity and better throughput under moderate loads. This expectation was based on its lightweight nature and lack of cryptographic overhead. Second, we anticipated that OAuth 2.0 would outperform Basic Authentication in terms of scalability under higher loads. Token-based systems like OAuth 2.0 are generally recognized as more scalable compared to Basic Authentication in high-load environments due to their stateless architecture. Third, we expected that both methods would experience failures under extreme concurrency but that OAuth 2.0 would fail more gracefully due to its token-based architecture.
-
+\subsubsection*{Experiment Setup and Tools}
 The experiments involved simulating various levels of concurrent users, ranging from 50 to 10,000, accessing a protected API endpoint. These requests were designed to replicate real-world interactions, such as retrieving data or performing secure operations. Key metrics, including average request duration, failure rates, and throughput, were recorded to evaluate each method’s performance and scalability.
+
+For initial testing and validation of the API functionality, Postman was used to manually verify that the endpoints were behaving as expected. Following this, Newman, the command-line interface (CLI) version of Postman, was employed to automate test script execution. Newman allowed us to measure key metrics such as response times, failure rates, and data throughput under moderate loads, specifically scenarios with up to 100 virtual users.
+
+As the need to simulate higher concurrency arose, K6 was introduced as the primary load testing tool. K6 enabled the simulation of up to 10,000 concurrent users and provided detailed metrics such as average request durations, failure rates, and system throughput. Custom scripts were written in JavaScript for K6 to implement both Basic Authentication and OAuth 2.0 flows. These scripts primarily tested the \texttt{/api/protected} endpoint, which required valid authentication for access. The tests captured key performance indicators, including latency and the system’s ability to handle extreme loads.
+
+The FeedApp backend was deployed locally for all experiments, running on a Spring Boot server with a PostgreSQL database for structured data storage. For the OAuth 2.0 tests, Google’s Authorization Server was used for issuing and validating tokens, ensuring a real-world implementation of this authentication method. 
 
 \subsubsection*{Hypotheses}
 The primary goals of this assessment are to compare the performance metrics of Basic Authentication and OAuth 2.0, including average request durations, failure rates, and data overhead. Assess the scalability of each method under increasing load. Provide recommendations for scenarios where each technology would be most effective.
@@ -34,7 +40,6 @@ The primary goals of this assessment are to compare the performance metrics of B
 \end{enumerate}
 
 \subsection{Experiment Evaluation}
-
 The experimental results provided valuable insights into the strengths and limitations of both authentication methods. At lower loads, both OAuth 2.0 and Basic Authentication performed well, with no significant differences in metrics such as average request durations or failure rates. However, as concurrency increased, clear differences began to emerge.
 
 Basic Authentication demonstrated faster response times and better throughput under moderate loads, owing to its simple design that requires fewer computational steps. However, its reliance on a centralized database for validating credentials became a bottleneck as the number of concurrent users grew. This dependency led to higher latencies and increased failure rates under heavy loads, particularly beyond 1000 virtual users.
