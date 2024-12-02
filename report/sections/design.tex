@@ -87,38 +87,55 @@ This domain model provides a solid foundation for implementing the core features
 	\label{fig:architecture}
 \end{figure}
 
-\medskip
+The architecture of FeedApp, shown in Figure~\ref{fig:architecture}, follows a modular, layered design. It includes a frontend, backend, and supporting infrastructure, all working together to provide a secure and scalable application.
 
-\noindent
-The architecture of the FeedApp as shown in figure~\ref{fig:architecture}  is a layered, modular design that leverages modern frameworks and tools to ensure scalability, security, and maintainability. It comprises three primary layers: the frontend, the backend, and the supporting infrastructure. This design follows the principles of separation of concerns, ensuring that each layer is independent and focused on its specific role, yet works seamlessly with others.
-\medskip
+The frontend, built with Svelte, offers users a fast and responsive interface for interacting with surveys. This Single Page Application (SPA) communicates with the backend using HTTP requests and includes OAuth 2.0 token-based authentication to keep interactions secure.
 
-\noindent
-The frontend is implemented using Svelte, a reactive framework that enables the creation of a lightweight Single Page Application (SPA). This layer serves as the primary interface for users, providing an interactive and responsive experience for creating and participating in surveys. The SPA communicates with the backend through HTTP requests, incorporating token-based authentication via OAuth 2.0 to ensure secure interactions.
-\medskip
+The backend is implemented using Spring Boot. It provides a RESTful API through Spring Web MVC, which handles requests from the frontend and coordinates with the business logic and persistence layers. Core functionalities, such as survey and vote management, are handled in this layer.
 
-\noindent
-The backend is constructed using Spring Boot, with a RESTful API developed through Spring Web MVC. This API acts as the mediator between the frontend and the business logic layer, handling requests from the Web UI and ensuring secure and efficient processing of user data. The business logic layer implements the core functionalities of the application, such as survey and vote management, and interacts with the persistence layer to retrieve or store data.
-\medskip
+The persistence layer uses both PostgreSQL and MongoDB. PostgreSQL stores structured data like users, surveys, polls, and votes, ensuring data consistency. MongoDB handles unstructured or semi-structured data, such as analytics and logs, allowing flexible queries.
 
-\noindent
-The persistence layer employs a hybrid database approach, utilizing PostgreSQL for structured data and MongoDB for unstructured or semi-structured data. The relational database is used for managing users, surveys, polls, and votes, ensuring consistency and reliability. Meanwhile, the non-relational database supports the analytics component by storing aggregated data and logs for flexible querying and reporting.
-\medskip
+RabbitMQ, a message broker, enables communication between components and supports asynchronous tasks like vote aggregation. This design ensures the system can handle high loads efficiently.
 
-\noindent
-To facilitate communication between components and enable scalability, the architecture incorporates RabbitMQ as a message broker. This ensures asynchronous processing of tasks such as vote aggregation and analytics updates, allowing the system to handle high loads without compromising performance. The analytics component processes messages from RabbitMQ and stores the results in MongoDB, enabling real-time insights and historical analysis.
-\medskip
+Security is a core focus, with OAuth 2.0 providing robust user authentication and authorization. Tokens issued by an external or custom Authorization Server are used to validate user identities and enforce access controls.
 
-\noindent
-Security is a key focus of the architecture. Authentication and authorization are implemented using OAuth 2.0, which ensures that only authenticated users can interact with the system. Tokens issued by an external or custom Authorization Server are included in API requests to verify user identity and enforce access control.
-\medskip
-
-\noindent
-The layered architecture of FeedApp ensures that it is both modular and extensible. Each component operates independently, making the system easier to test, maintain, and scale. The use of modern technologies and best practices guarantees a robust platform capable of supporting a wide range of user interactions, from survey creation to advanced analytics. This architectural design not only meets the current requirements but also provides a strong foundation for future enhancements and growth.
+This layered design makes FeedApp modular, easy to maintain, and scalable. It is well-suited for the current requirements and provides a strong foundation for future improvements.
 
 
 
+%%%%
+\subsubsection{OAuth 2.0: How It Works (Google Implementation)}
+OAuth 2.0 is a framework that allows secure access to user resources without exposing their credentials. It is widely used for authenticating users and authorizing API calls, and Google’s implementation is one of the most commonly used examples.
 
+Figure~\ref{fig:oauth2-google} illustrates the sequence of interactions in an OAuth 2.0 flow, specifically using Google's implementation. Here's a step-by-step explanation of the process:
+\begin{enumerate}
+\item \textbf{Request Token}:
+The user begins by interacting with the FeedApp (referred to as "Your JS App" in the figure) and initiates the login process. The application sends a request to Google’s servers to obtain an authorization token.
 
-%You may have a look at the \href{https://github.com/selabhvl/dat250public/blob/master/projectdescription/README.md}{Examples on GitHub}.
+\item \textbf{User Login and Consent}:
+Google then prompts the user to log in and provide consent for the requested scopes (permissions). These scopes define what the application is allowed to access on the user's behalf, such as their profile or email address.
+
+\item \textbf{Token Response}:
+Once the user consents, Google generates and returns an Access Token to the application. This token represents the user’s identity and their permissions.
+
+\item \textbf{Validate Token}:
+Before making API requests, the application can validate the token with Google’s servers to ensure it is legitimate and has not expired. This step ensures an additional layer of security.
+
+\item \textbf{Use Token to Call Google API}:
+After validation, the application can use the token to securely call Google’s APIs or perform other operations. The token is included in the Authorization header of API requests.
+\end{enumerate}
+
+This flow highlights the key advantage of OAuth 2.0: the user's credentials are never directly shared with the application, reducing security risks. Instead, a short-lived token is used, which can be revoked or scoped as needed \cite{google:oauth}.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[scale=0.5]{figs/OAuthGoogle.png}
+\caption{OAuth 2.0 Flow with Google Implementation.}
+\label{fig:oauth2-google}
+\end{figure}
+
+Security and Benefits
+OAuth 2.0's token-based approach is highly secure, as tokens can be limited in scope and validity. Google’s implementation also ensures strong user consent flows, making it suitable for applications requiring sensitive data access. For FeedApp, this implementation guarantees that only authenticated and authorized users can create surveys, cast votes, and access results.
+
+This explanation is based on official documentation from Google Developers, which provides further detai
 
