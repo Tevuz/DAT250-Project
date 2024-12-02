@@ -10,7 +10,7 @@ jobs:
         uses: gradle/actions/setup-gradle@af1da67850ed9a4cedd57bfd976089dd991e2582
 
       - name: Generate resources
-        working-directory: ./server
+        working-directory: server
         run: ./gradlew compileSvelte
 
       - name: Login to Docker Hub
