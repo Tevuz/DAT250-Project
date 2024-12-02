@@ -40,7 +40,7 @@ public class AuthController {
 
         String username = switch (authentication) {
             case UserDetails login -> login.getUsername();
-            case OAuth2AuthenticationToken login -> login.getPrincipal().getAttribute("login");\
+            case OAuth2AuthenticationToken login -> login.getPrincipal().getAttribute("login");
             default -> "";
         };
 
