@@ -2,41 +2,18 @@
 \label{sec:introduction}
 
 % A brief introduction to the prototype implementation and topic of the project.
-The FeedApp project seeks to develop a running prototype of a full-stack FeedApp. The purpose of this application is to allow users to create and manage polls and surveys. Registered users can also vote on polls using a web-based user interface. 
-\medskip
+The FeedApp project focuses on creating a functional prototype of a web application where users can create, manage, and participate in surveys and polls. The main goal of the project is to provide users with an easy-to-use interface for voting on polls and managing surveys. At the same time, the project explores and evaluates different authentication methods to determine the best fit for this kind of application.
 
-% Discuss (briefly) the technology stack that has been selected
-\noindent
-The technology stack is as follows:
-\begin{itemize}
-\item \textbf{Java with SpringBoot}: Serving as the core platform and framework, Spring Boot provides the foundation for building a lightweight and production-ready application.
-\item \textbf{Spring Web MVC}: This framework enables the development of a RESTful HTTP API, facilitating communication between the front-end and back-end services.
-\item \textbf{Svelte + Vite}: An innovative and modern approach to front-end development, where Svelte offers a highly reactive and efficient framework for building Single Page Applications (SPAs), and Vite ensures fast build times and optimized development workflows.
-\item \textbf{Jakarta Persistence API with Hibernate and Postgres}:  For object-relational database mapping, JPA with Hibernate will interact with a PostgreSQL database to manage structured data such as users, surveys, polls, and votes.
-\item \textbf{MongoDB}: A non-relational database to store and manage unstructured or semi-structured data, complementing the relational data model.
-\item \textbf{RabbitMQ}: A message broker facilitating asynchronous communication between various components of the application, ensuring scalability and reliability.
-\item \textbf{Docker}: A containerization engine to streamline development, deployment, and orchestration of the application across different environments.
-\item \textbf{OAuth 2.0}: Ensures secure user authentication and authorization, providing a scalable and standard mechanism to handle access control. Further in this report we conduct a technology assessment according to Brown and Walnau.\cite{brown:96} based on this technology.
-\end{itemize}
+FeedApp is built using a modern technology stack. For the backend, we used Java with Spring Boot, a popular framework that simplifies building web applications. Spring Web MVC is used to create a REST API, which allows the frontend and backend to communicate. On the frontend, Svelte and Vite were chosen to build a fast and interactive Single Page Application (SPA), providing a smooth experience for users.
 
-% A brief account of the results that have been obtained in the project.
-\noindent
- *A brief account of the results that have been obtained in the project.*
-\medskip
+For data management, we used PostgreSQL with Hibernate and Jakarta Persistence API (JPA) to handle structured data like users and polls, while MongoDB was included for storing unstructured data. RabbitMQ was used to handle communication between different parts of the application, making it more reliable and scalable. Docker was used for packaging and deployment, simplifying the process of running the application across different environments. To secure the application, we implemented OAuth 2.0, a modern authentication framework that handles user authentication and permissions. The project also compares OAuth 2.0 with other authentication methods to evaluate their performance, scalability, and ease of use.
 
-% A one paragraph overview at the end, explaining how the rest of the report is / has been organised.
-\noindent
-This rest of this report is organised as follows:
+The project successfully implemented the main features of FeedApp while also providing insights into how different authentication technologies perform under various conditions. These experiments gave a better understanding of how to design secure and scalable web applications.
 
-\smallskip
+The rest of this report is structured as follows:
 
-\noindent
-Section~\ref{sec:design} gives a detailed descprition about the functional aspects of the FeedApp application. This includes use cases, domain model and an application flow diagram.
-\smallskip
+Section~\ref{sec:design} explains the functional aspects of FeedApp, including its use cases, the domain model, and the application’s flow.
 
-\noindent
-Section~\ref{sec:technology} documents the experiments conducted, following the methodology described in the paper by Brown and Walnau.
-\smallskip
+Section~\ref{sec:technology} discusses the experiments conducted to compare different authentication technologies, following Brown and Walnau’s evaluation framework.
 
-\noindent
-Section~\ref{sec:implementation} gives a brief explanation of how the prototype has been implemented. It provides details to those who may want to run the application and how they may develop it further.
+Section~\ref{sec:implementation} describes how the prototype was implemented and provides instructions for running the application or extending its functionality.
