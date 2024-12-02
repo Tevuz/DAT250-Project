@@ -64,7 +64,7 @@ val clientConfigName = File(applicationProperties.getProperty("resources.client.
 
 tasks.register<Exec>("buildSvelte") {
     workingDir = clientResources
-    commandLine("npm.cmd", "run", "build")
+    commandLine("npm", "run", "build")
 }
 tasks.register<Copy>("copyGenerated") {
     doFirst {
